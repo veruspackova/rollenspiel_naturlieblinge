@@ -1,2 +1,5 @@
-package backend.gameBoard;public class GameBoard {
+package backend.gameBoard;
+
+public class GameBoard {
+    
 }
