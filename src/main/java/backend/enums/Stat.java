@@ -17,6 +17,10 @@ public enum Stat {
      */
     STR,
 
+    /**
+     * Dexterity
+     * (agility)
+     */
     DEX,
 
     /**
