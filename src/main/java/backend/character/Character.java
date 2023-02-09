@@ -36,6 +36,9 @@ public abstract class Character {
         setConstitution(constitution);
         setIntelligence(intelligence);
         setWisdom(wisdom);
+
+        RaceStatBonusHelper bonusHelper = new RaceStatBonusHelper();
+        bonusHelper.addStatBonuses(this);
     }
 
     public Race getRace() {
