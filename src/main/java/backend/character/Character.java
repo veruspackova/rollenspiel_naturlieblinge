@@ -4,7 +4,7 @@ import backend.enums.Race;
 import backend.enums.Stat;
 import backend.gameBoard.RoomField;
 
-public class Character {
+public abstract class Character {
     private Race race;
     private String name;
     private RoomField position;
@@ -20,11 +20,29 @@ public class Character {
     private int intelligence;
     private int wisdom;
 
+    public Character(
+            Race race,
+            String name,
+            int strength,
+            int dexterity,
+            int constitution,
+            int intelligence,
+            int wisdom
+    ) {
+        setRace(race);
+        setName(name);
+        setStrength(strength);
+        setDexterity(dexterity);
+        setConstitution(constitution);
+        setIntelligence(intelligence);
+        setWisdom(wisdom);
+    }
+
     public Race getRace() {
         return race;
     }
 
-    public void setRace(Race race) {
+    protected void setRace(Race race) {
         this.race = race;
     }
 
