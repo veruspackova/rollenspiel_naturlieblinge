@@ -24,7 +24,10 @@ public class Dice {
      * Constructor
      * (generates a Dice with any size)
      */
-    public Dice(int DSize) {
+    public Dice(int DSize){
+        if(DSize < 6){
+            throw new IllegalArgumentException("Invalide dice size");
+        }
         dSize = DSize;
     }
 
