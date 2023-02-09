@@ -22,6 +22,9 @@ public class Dice {
      * (generates a Dice with any size)
      */
     public Dice(int DSize){
+        if(DSize < 6){
+            throw new IllegalArgumentException("Invalide dice size");
+        }
         dSize = DSize;
     }
     /**

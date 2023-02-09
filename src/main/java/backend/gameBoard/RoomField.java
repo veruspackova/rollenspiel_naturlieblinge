@@ -1,7 +1,7 @@
 package backend.gameBoard;
 
 import backend.enums.RoomType;
-import backend.aritfacts.Item;
+import backend.artifacts.Item;
 /**
  * RoomFiled class
  * <p>
@@ -84,4 +84,5 @@ public class RoomField {
     public void setItem(Item item) {
         this.item = item;
     }
+
 }

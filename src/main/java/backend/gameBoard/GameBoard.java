@@ -17,6 +17,9 @@ public class GameBoard {
      * (generates a Gamboard with a given size)
      */
     public GameBoard(int size){
+        if(size < 1){
+            throw new IllegalArgumentException("Invalide board size");
+        }
         board = new RoomField[size][size];
     }
     /**
