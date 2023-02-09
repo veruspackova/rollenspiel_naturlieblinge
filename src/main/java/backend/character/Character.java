@@ -2,9 +2,18 @@ package backend.character;
 
 import backend.enums.Race;
 import backend.enums.Stat;
+import backend.gameBoard.RoomField;
 
 public class Character {
     private Race race;
+    private String name;
+    private RoomField position;
+//    private Direction direction; --> to be implemented, +getters,setters
+    private int hitPoints;
+    private int armourClass;
+//    private Dice damage; --> to be implemented, +getters,setters
+//    private Dice hitDice; --> to be implemented, +getters,setters
+    private int hitDiceAvailable;
     private int strength;
     private int dexterity;
     private int constitution;
@@ -17,6 +26,46 @@ public class Character {
 
     public void setRace(Race race) {
         this.race = race;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public RoomField getPosition() {
+        return position;
+    }
+
+    public void setPosition(RoomField position) {
+        this.position = position;
+    }
+
+    public int getHitPoints() {
+        return hitPoints;
+    }
+
+    public void setHitPoints(int hitPoints) {
+        this.hitPoints = hitPoints;
+    }
+
+    public int getArmourClass() {
+        return armourClass;
+    }
+
+    public void setArmourClass(int armourClass) {
+        this.armourClass = armourClass;
+    }
+
+    public int getHitDiceAvailable() {
+        return hitDiceAvailable;
+    }
+
+    public void setHitDiceAvailable(int hitDiceAvailable) {
+        this.hitDiceAvailable = hitDiceAvailable;
     }
 
     public int getStat(Stat stat) {
