@@ -1,2 +1,4 @@
-package backend.misc;public class Item {
+package backend.misc;
+
+public class Item {
 }

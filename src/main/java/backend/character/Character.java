@@ -1,2 +1,4 @@
-package backend.character;public class Character {
+package backend.character;
+
+public class Character {
 }

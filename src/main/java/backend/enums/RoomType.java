@@ -1,2 +1,7 @@
-package backend.enums;public enum RoomType {
+package backend.enums;
+
+public enum RoomType {
+    Room,
+    Hallway,
+    Door
 }
