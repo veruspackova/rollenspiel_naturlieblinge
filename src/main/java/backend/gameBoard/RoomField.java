@@ -1,7 +1,7 @@
 package backend.gameBoard;
 
 import backend.enums.RoomType;
-import backend.misc.Item;
+import backend.aritfacts.Item;
 
 public class RoomField {
     private RoomType roomType;
