@@ -3,6 +3,9 @@ package backend.character;
 import backend.enums.Race;
 import backend.enums.Stat;
 import backend.gameBoard.RoomField;
+import backend.logic.Dice;
+
+import static java.lang.Math.floor;
 
 public abstract class Character {
     private Race race;
@@ -11,7 +14,7 @@ public abstract class Character {
 //    private Direction direction; --> to be implemented, +getters,setters
     private int hitPoints;
     private int armourClass;
-//    private Dice damage; --> to be implemented, +getters,setters
+    private Dice attackDice;
 //    private Dice hitDice; --> to be implemented, +getters,setters
     private int hitDiceAvailable;
     private int strength;
@@ -103,6 +106,12 @@ public abstract class Character {
         return value;
     }
 
+    // to determine an ability modifier, subtract 10 from the ability score
+    // and then divide the result by 2 (round down)
+    public int getStatModifier(Stat stat) {
+        return (int) floor((getStat(stat) - 10) / 2.0);
+    }
+
     public void setStat(Stat stat, int value) {
         switch (stat) {
             case STR -> setStrength(value);
@@ -131,5 +140,13 @@ public abstract class Character {
 
     public void setWisdom(int wisdom) {
         this.wisdom = wisdom;
+    }
+
+    public Dice getAttackDice() {
+        return attackDice;
+    }
+
+    public void setAttackDice(Dice attack) {
+        this.attackDice = attack;
     }
 }
