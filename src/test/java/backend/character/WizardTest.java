@@ -88,27 +88,27 @@ class WizardTest {
     @org.junit.jupiter.api.Test
     void testGetAttackDice() {
         Wizard w = new Wizard(Race.ELF, "Wizard", 10, 15, 12, 15, 10);
-        assertEquals(new Dice(8).getDSize(), w.getAttackDice().getDSize());
+        assertEquals(8, w.getAttackDice().getDSize());
     }
 
     @org.junit.jupiter.api.Test
     void testSetAttackDice() {
         Wizard w = new Wizard(Race.ELF, "Wizard", 10, 15, 12, 15, 10);
         w.setAttackDice(new Dice(12));
-        assertEquals(new Dice(12).getDSize(), w.getAttackDice().getDSize());
+        assertEquals(12, w.getAttackDice().getDSize());
     }
 
     @org.junit.jupiter.api.Test
     void testGetHitDice() {
         Wizard w = new Wizard(Race.ELF, "Wizard", 10, 15, 12, 15, 10);
-        assertEquals(new Dice(6).getDSize(), w.getHitDice().getDSize());
+        assertEquals(6, w.getHitDice().getDSize());
     }
 
     @org.junit.jupiter.api.Test
     void testSetHitDice() {
         Wizard w = new Wizard(Race.ELF, "Wizard", 10, 15, 12, 15, 10);
         w.setHitDice(new Dice(12));
-        assertEquals(new Dice(12).getDSize(), w.getHitDice().getDSize());
+        assertEquals(12, w.getHitDice().getDSize());
     }
 
     @org.junit.jupiter.api.Test
