@@ -1,9 +1,12 @@
 package backend.character;
 
+import backend.enums.Direction;
 import backend.enums.Race;
 import backend.enums.Stat;
 import backend.gameBoard.RoomField;
 import backend.logic.Dice;
+
+import java.util.ArrayList;
 
 import static java.lang.Math.floor;
 
@@ -11,7 +14,7 @@ public abstract class Character {
     private Race race;
     private String name;
     private RoomField position;
-//    private Direction direction; --> to be implemented, +getters,setters
+    private Direction direction;
     private int hitPoints;
     private int armourClass;
     private Dice attackDice;
@@ -22,6 +25,7 @@ public abstract class Character {
     private int constitution;
     private int intelligence;
     private int wisdom;
+    //private ArrayList<Item> items;
 
     public Character(
             Race race,
@@ -30,6 +34,7 @@ public abstract class Character {
             int dexterity,
             int constitution,
             int intelligence,
+            //ArrayList<Item> items,
             int wisdom
     ) {
         setRace(race);
@@ -39,6 +44,8 @@ public abstract class Character {
         setConstitution(constitution);
         setIntelligence(intelligence);
         setWisdom(wisdom);
+        setDirection(Direction.North);
+        //setItems(ArrayList<Item> items);
 
         RaceStatBonusHelper bonusHelper = new RaceStatBonusHelper();
         bonusHelper.addStatBonuses(this);
@@ -66,6 +73,15 @@ public abstract class Character {
 
     public void setPosition(RoomField position) {
         this.position = position;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction)
+    {
+        this.direction = direction;
     }
 
     public int getHitPoints() {
@@ -157,4 +173,43 @@ public abstract class Character {
     public void setHitDice(Dice hitDice) {
         this.hitDice = hitDice;
     }
+
+    /**
+     * @todo uncomment when item is implemented
+     * public ArrayList<Item> getItems()
+     * {
+     *     return this.items;
+     * }
+     *
+     * public void setItems(ArrayList<Item> items)
+     * {
+     *     this.items = items;
+     * }
+     *
+     * public void removeItem(Item item)
+     * {
+     *     items.remove(item);
+     * }
+     *
+     * public void addItem(Item item)
+     * {
+     *     items.add(item);
+     * }
+     */
+
+    public void rest()
+    {
+        //@todo change after rollins answer
+        setHitPoints(hitPoints + 5);
+    }
+
+    public void turn(Direction direction)
+    {
+        this.setDirection(direction);
+    }
+
+    /*public ISearchable search()
+    {
+        return RoomField.search();
+    }*/
 }
