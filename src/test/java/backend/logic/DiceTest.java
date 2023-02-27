@@ -2,23 +2,21 @@ package backend.logic;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DiceTest {
 
     @Test
-    void diceSizetoLow() {
-        assertThrows(IllegalArgumentException.class,
-                () ->{
-                    new Dice(5);
-                }
-        );
+    void diceSizeTooLow() {
+        assertThrows(IllegalArgumentException.class, () -> new Dice(0));
+        assertThrows(IllegalArgumentException.class, () -> new Dice(-1));
     }
 
     @Test
-    void rollTest(){
+    void testRoll() {
         Dice dice = new Dice(20);
-        assertTrue(-1 < dice.roll());
+        assertTrue(dice.roll() > 0);
         assertTrue(dice.roll() < 21);
     }
 }
