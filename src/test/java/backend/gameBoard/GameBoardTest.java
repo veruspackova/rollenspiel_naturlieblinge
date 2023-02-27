@@ -14,5 +14,9 @@ class GameBoardTest {
                 }
         );
     }
+    @Test
+    void generateBoard(){
+        GameBoard board = new GameBoard();
+    }
 
 }
