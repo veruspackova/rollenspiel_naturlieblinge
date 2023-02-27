@@ -15,7 +15,7 @@ public abstract class Character {
     private int hitPoints;
     private int armourClass;
     private Dice attackDice;
-//    private Dice hitDice; --> to be implemented, +getters,setters
+    private Dice hitDice;
     private int hitDiceAvailable;
     private int strength;
     private int dexterity;
@@ -148,5 +148,13 @@ public abstract class Character {
 
     public void setAttackDice(Dice attack) {
         this.attackDice = attack;
+    }
+
+    public Dice getHitDice() {
+        return hitDice;
+    }
+
+    public void setHitDice(Dice hitDice) {
+        this.hitDice = hitDice;
     }
 }
