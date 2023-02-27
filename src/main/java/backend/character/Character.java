@@ -101,6 +101,7 @@ public abstract class Character {
             case CON -> value = constitution;
             case INT -> value = intelligence;
             case WIS -> value = wisdom;
+            case NONE -> value = 10;
         }
 
         return value;
