@@ -83,6 +83,7 @@ class WizardTest {
         assertEquals(2, w.getStatModifier(Stat.CON));
         assertEquals(4, w.getStatModifier(Stat.INT));
         assertEquals(-1, w.getStatModifier(Stat.WIS));
+        assertEquals(0, w.getStatModifier(Stat.NONE));
     }
 
     @org.junit.jupiter.api.Test
