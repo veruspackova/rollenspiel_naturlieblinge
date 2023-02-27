@@ -1,5 +1,6 @@
 package backend.artifacts.weapons;
 
+import backend.enums.Stat;
 import backend.logic.Attack;
 import backend.logic.Dice;
 
@@ -8,6 +9,10 @@ public abstract class SimpleWeapon implements Attack {
 
     public SimpleWeapon(Dice damageDice) {
         this.damageDice = damageDice;
+    }
+
+    public Stat getWeaponProficiencyStat() {
+        return Stat.STR;
     }
 
     @Override
