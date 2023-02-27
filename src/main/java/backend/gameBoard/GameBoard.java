@@ -4,6 +4,10 @@ import backend.character.Character;
 import backend.character.Fighter;
 import backend.enums.Race;
 import backend.enums.RoomType;
+
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Gameboard class
  * <p>
@@ -15,6 +19,7 @@ import backend.enums.RoomType;
  */
 public class GameBoard {
     public RoomField[][] board;
+    public int size;
     /**
      * Constructor
      * (generates a Gamboard with a given size)
@@ -24,14 +29,17 @@ public class GameBoard {
             throw new IllegalArgumentException("Invalide board size");
         }
         board = new RoomField[size][size];
+        this.size = size;
     }
     /**
      * Default Constructor
      * (generates a Gameboard with a size fo 20)
      */
     public GameBoard(){
-        board = new RoomField[10][20];
+        board = new RoomField[20][20];
+        this.size = 20;
         generateStandartLayout();
+        //generateLayout(20);
         printBoard();
     }
     /**
@@ -40,12 +48,46 @@ public class GameBoard {
      */
     public void generateLayout(int size) {
         //To-Do
-        //automaticly generate Gameboard with rooms and hallways
+        //automaticly generate Gameboard with rooms, hallways and doors
         for(int x = 0; x < size; x++){
             for(int y = 0; y < size; y++){
-
+                List<RoomType> neighbours = Arrays.stream(getNeighbours(x, y)).toList();
+                if(neighbours.contains(RoomType.Room) && neighbours.contains(RoomType.Hallway) && !neighbours.contains(RoomType.Door)){
+                   board[x][y] = new RoomField(RoomType.Door);
+                }
+                if(neighbours.contains(RoomType.Door) && neighbours.contains(RoomType.Room) && !neighbours.contains(RoomType.Hallway)){
+                    board[x][y] = new RoomField(RoomType.Room);
+                }
+                if(neighbours.contains(RoomType.Door) && neighbours.contains(RoomType.Hallway) && !neighbours.contains(RoomType.Room)){
+                    board[x][y] = new RoomField(RoomType.Hallway);
+                }
             }
         }
+    }
+
+    public RoomType[] getNeighbours(int x, int y){
+        RoomType[] erg = new RoomType[4];
+        if(y <= 0 || board[x][y-1] == null){
+            erg[0] = null;
+        }else {
+            erg[0] = board[x][y-1].getRoomType();
+        }
+        if(x == size-1 || board[x+1][y] == null){
+            erg[1] = null;
+        }else {
+            erg[1] = board[x+1][y].getRoomType();
+        }
+        if(y == size-1 || board[x][y+1] == null){
+            erg[2] = null;
+        }else {
+            erg[2] = board[x][y+1].getRoomType();
+        }
+        if(x <= 0 || board[x-1][y] == null){
+            erg[3] = null;
+        }else {
+            erg[3] = board[x-1][y].getRoomType();
+        }
+        return erg;
     }
 
     public  void generateStandartLayout(){
@@ -61,11 +103,9 @@ public class GameBoard {
         Character test = new Fighter(Race.HUM, "jeff", 10, 10,10,10,10);
         board[3][9] = new RoomField(RoomType.Hallway, test);
     }
-
-
     /**
      * printBoard
-     * (generates a Console output for the map showing teh difference between rooms, hallways doors, walls and characters
+     * (generates a Console output for the map showing the difference between rooms, hallways, doors, walls and characters
      * wall: *
      * room: .
      * door: |

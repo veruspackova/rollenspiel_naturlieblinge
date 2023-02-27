@@ -16,7 +16,9 @@ class GameBoardTest {
     }
     @Test
     void generateBoard(){
-        GameBoard board = new GameBoard();
+        GameBoard board = new GameBoard(20);
+        board.generateLayout(20);
+        board.printBoard();
     }
 
 }
