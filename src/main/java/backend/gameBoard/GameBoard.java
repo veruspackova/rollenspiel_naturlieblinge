@@ -2,6 +2,7 @@ package backend.gameBoard;
 
 import backend.character.Character;
 import backend.character.Fighter;
+import backend.enums.Direction;
 import backend.enums.Race;
 import backend.enums.RoomType;
 
@@ -49,21 +50,26 @@ public class GameBoard {
     public void generateMap(){
         double x = Math.random()*size;
         double y = Math.random()*size;
+        Direction lastMove = null;
         for (int i = 0; i < (size*size); i++){
             board[(int) x][(int) y] = new RoomField(RoomType.Room);
             double direction = Math.random()*10;
             if(direction <= 5){
-                if(direction < 2 && x > 0){
+                if(direction < 2 && x > 0 && lastMove != Direction.East){
                     x--;
-                }else if(x < size-1){
+                    lastMove = Direction.West;
+                }else if(x < size-1 && lastMove != Direction.West){
                     x++;
+                    lastMove = Direction.East;
                 }
             }
             if(direction > 5){
-                if(direction < 8 && y > 0){
+                if(direction < 8 && y > 0 && lastMove != Direction.North){
                     y--;
-                }else if(y < size-1){
+                    lastMove = Direction.South;
+                }else if(y < size-1 && lastMove != Direction.South){
                     y++;
+                    lastMove = Direction.North;
                 }
             }
         }
@@ -76,9 +82,7 @@ public class GameBoard {
                 if(board[x][y] != null){
                     if(isHallway(x, y)){
                         double rnd = Math.random();
-                        if(rnd < 0.8){
-                            board[x][y] = new RoomField(RoomType.Hallway);
-                        }else {
+                        if(rnd >= 0.8){
                             board[x][y] = new RoomField(RoomType.Door);
                         }
                     }
@@ -134,23 +138,23 @@ public class GameBoard {
         for(int x = 0; x < board.length; x++){
             for(int y = 0; y < board[0].length; y++){
                 if(board[x][y] == null){
-                    System.out.print("*");
+                    System.out.print("*  ");
                 }
                 else if (board[x][y].getCharacter() != null) {
                     //to-do
                     //unterscheidung monster und spieler
-                    System.out.print("0");
+                    System.out.print("0  ");
                 }
                 else {
                     switch (board[x][y].getRoomType()){
                         case Door:
-                            System.out.print("|");
+                            System.out.print("|  ");
                             break;
                         case Room:
-                            System.out.print(".");
+                            System.out.print(".  ");
                             break;
                         case Hallway:
-                            System.out.print(",");
+                            System.out.print(",  ");
                             break;
                     }
                 }
