@@ -16,7 +16,10 @@ class GameBoardTest {
     }
     @Test
     void generateBoard(){
-        GameBoard board = new GameBoard();
+        GameBoard board = new GameBoard(20);
+        board.generateMap();
+        //board.generateStandartLayout();
+        board.printBoard();
     }
 
 }
