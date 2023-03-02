@@ -26,7 +26,7 @@ public class RoomField {
      * Room character
      * (gives information about the characters standing on this field)
      */
-    private Character character;
+    private backend.character.Character character;
     /**
      * Constructor
      * (generates Roomfiled without items or Characters on it)
@@ -38,15 +38,16 @@ public class RoomField {
      * Constructor
      * (generates Roomfiled without any Characters on it)
      */
-    public RoomField(RoomType roomType, Item item){
-        this.roomType = roomType;
-        this.item = item;
-    }
+//    public RoomField(RoomType roomType, Item item){
+//        this.roomType = roomType;
+//        this.item = item;
+//    }
     /**
      * Constructor
      * (generates Roomfiled without any items on it)
      */
-    public RoomField(RoomType roomType, Character character){
+    public RoomField(RoomType roomType,
+                     backend.character.Character character){
         this.roomType = roomType;
         this.character = character;
     }
@@ -54,13 +55,13 @@ public class RoomField {
      * Constructor
      * (generates Roomfiled with items and characters)
      */
-    public RoomField(RoomType roomType, Item item, Character character){
+    public RoomField(RoomType roomType, Item item, backend.character.Character character){
         this.roomType = roomType;
         this.item = item;
         this.character = character;
     }
     //getter
-    public Character getCharacter() {
+    public backend.character.Character getCharacter() {
         return character;
     }
     public RoomType getRoomType() {
@@ -74,7 +75,7 @@ public class RoomField {
      * setCharacter
      * (place a character on this field)
      */
-    public void setCharacter(Character character) {
+    public void setCharacter(backend.character.Character character) {
         this.character = character;
     }
     /**
