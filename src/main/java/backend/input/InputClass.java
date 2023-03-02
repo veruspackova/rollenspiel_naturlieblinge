@@ -14,6 +14,7 @@ public class InputClass {
 
     public ArrayList<String> read() throws IOException {
         String temp = reader.readLine();
+        temp = temp.toLowerCase();
         String[] templist = temp.split(" ");
         return new ArrayList<String>(Arrays.asList(templist));
     }
