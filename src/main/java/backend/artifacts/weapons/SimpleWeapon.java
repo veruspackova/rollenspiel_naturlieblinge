@@ -15,6 +15,10 @@ public abstract class SimpleWeapon implements Attack {
         return Stat.STR;
     }
 
+    public int getRequiredStrength() {
+        return 0;
+    }
+
     @Override
     public int rollDamage() {
         return damageDice.roll();
