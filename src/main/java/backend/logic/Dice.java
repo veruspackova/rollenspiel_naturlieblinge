@@ -6,15 +6,13 @@ package backend.logic;
  * generate a Die and roll it<br>
  * Dice have variable sizes
  * </p>
- *
- * @author jonasmalsbenden
  */
 public class Dice {
     protected int dSize;
 
     /**
      * Default constructor
-     * (generates a Dice with size 10)
+     * (generates a Dice-Object with size 10)
      */
     public Dice() {
         dSize = 10;
@@ -22,18 +20,18 @@ public class Dice {
 
     /**
      * Constructor
-     * (generates a Dice with any size)
+     * (generates a Dice-Object with the given size)
      */
-    public Dice(int DSize){
-        if(DSize < 6){
-            throw new IllegalArgumentException("Invalide dice size");
+    public Dice(int DSize) {
+        if (DSize < 1) {
+            throw new IllegalArgumentException("Invalid dice size");
         }
         dSize = DSize;
     }
 
     /**
      * Dice roll
-     * (generates a random number between 0 and the Dice size)
+     * (generates a random number between 1 and the Dice size)
      */
     public int roll() {
         return (int) (Math.random() * dSize) + 1;
