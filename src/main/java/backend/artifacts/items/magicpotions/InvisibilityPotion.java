@@ -7,6 +7,6 @@ public class InvisibilityPotion implements Item {
 
     @Override
     public void use(Character character) {
-//   tbd
+//   tbd --> invisibility
     }
 }

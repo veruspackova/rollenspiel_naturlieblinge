@@ -9,6 +9,6 @@ public class Cape implements Item {
 
     @Override
     public void use(Character character) {
-//        tbd
+//        tbd --> invisibility
     }
 }
