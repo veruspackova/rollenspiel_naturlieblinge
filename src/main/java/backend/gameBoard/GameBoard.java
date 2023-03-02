@@ -43,51 +43,68 @@ public class GameBoard {
         printBoard();
     }
     /**
-     * generate Layout
+     * generate Map
      * (generates a gameboard layout randomly)
      */
-    public void generateLayout(int size) {
-        //To-Do
-        //automaticly generate Gameboard with rooms, hallways and doors
+    public void generateMap(){
+        double x = Math.random()*size;
+        double y = Math.random()*size;
+        for (int i = 0; i < (size*size); i++){
+            board[(int) x][(int) y] = new RoomField(RoomType.Room);
+            double direction = Math.random()*10;
+            if(direction <= 5){
+                if(direction < 2 && x > 0){
+                    x--;
+                }else if(x < size-1){
+                    x++;
+                }
+            }
+            if(direction > 5){
+                if(direction < 8 && y > 0){
+                    y--;
+                }else if(y < size-1){
+                    y++;
+                }
+            }
+        }
+        setRooms();
+    }
+
+    public void setRooms(){
         for(int x = 0; x < size; x++){
             for(int y = 0; y < size; y++){
-                List<RoomType> neighbours = Arrays.stream(getNeighbours(x, y)).toList();
-                if(neighbours.contains(RoomType.Room) && neighbours.contains(RoomType.Hallway) && !neighbours.contains(RoomType.Door)){
-                   board[x][y] = new RoomField(RoomType.Door);
-                }
-                if(neighbours.contains(RoomType.Door) && neighbours.contains(RoomType.Room) && !neighbours.contains(RoomType.Hallway)){
-                    board[x][y] = new RoomField(RoomType.Room);
-                }
-                if(neighbours.contains(RoomType.Door) && neighbours.contains(RoomType.Hallway) && !neighbours.contains(RoomType.Room)){
-                    board[x][y] = new RoomField(RoomType.Hallway);
+                if(board[x][y] != null){
+                    if(isHallway(x, y)){
+                        double rnd = Math.random();
+                        if(rnd < 0.8){
+                            board[x][y] = new RoomField(RoomType.Hallway);
+                        }else {
+                            board[x][y] = new RoomField(RoomType.Door);
+                        }
+                    }
                 }
             }
         }
     }
 
-    public RoomType[] getNeighbours(int x, int y){
-        RoomType[] erg = new RoomType[4];
+    public boolean isHallway(int x, int y){
+        int counter = 0;
         if(y <= 0 || board[x][y-1] == null){
-            erg[0] = null;
-        }else {
-            erg[0] = board[x][y-1].getRoomType();
+            counter++;
         }
         if(x == size-1 || board[x+1][y] == null){
-            erg[1] = null;
-        }else {
-            erg[1] = board[x+1][y].getRoomType();
+            counter++;
         }
         if(y == size-1 || board[x][y+1] == null){
-            erg[2] = null;
-        }else {
-            erg[2] = board[x][y+1].getRoomType();
+            counter++;
         }
         if(x <= 0 || board[x-1][y] == null){
-            erg[3] = null;
-        }else {
-            erg[3] = board[x-1][y].getRoomType();
+            counter++;
         }
-        return erg;
+        if(counter >= 2){
+            return true;
+        }
+        else return false;
     }
 
     public  void generateStandartLayout(){
