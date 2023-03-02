@@ -5,22 +5,22 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class NoneTest {
+class NoWeaponTest {
     @Test
     void getWeaponProficiencyStat() {
-        None noWeapon = new None();
+        NoWeapon noWeapon = new NoWeapon();
         assertEquals(Stat.STR, noWeapon.getWeaponProficiencyStat());
     }
 
     @Test
     void getRequiredStrength() {
-        None noWeapon = new None();
+        NoWeapon noWeapon = new NoWeapon();
         assertEquals(0, noWeapon.getRequiredStrength());
     }
 
     @Test
     void rollDamage() {
-        None noWeapon = new None();
+        NoWeapon noWeapon = new NoWeapon();
         assertEquals(1, noWeapon.rollDamage());
     }
 }
