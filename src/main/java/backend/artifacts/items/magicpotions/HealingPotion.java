@@ -6,15 +6,15 @@ import backend.character.Character;
 
 public class HealingPotion implements Item {
 
-    private Dice dice;
+    private final Dice dice;
 
-    public HealingPotion(Dice dice) {
+    public HealingPotion() {
         dice = new Dice(4);
     }
 
     public void use(Character character) {
         int newHP = character.getHitPoints() + dice.roll() + dice.roll();
         character.setHitPoints(newHP);
-        System.out.println(character.getName() + " gained " + character.getHitPoints() + " HP.");
+        System.out.println(character.getName() + " has " + character.getHitPoints() + " HP.");
     }
 }

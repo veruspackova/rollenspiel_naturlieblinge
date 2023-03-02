@@ -1,9 +1,12 @@
 package backend.character;
 
+import backend.artifacts.items.Item;
 import backend.enums.Race;
 import backend.enums.Stat;
 import backend.logic.Dice;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,19 +14,19 @@ class ThiefTest {
 
     @Test
     void testGetRace() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>());
         assertEquals(Race.HOB, t.getRace());
     }
 
     @Test
     void testGetName() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>());
         assertEquals("Thief", t.getName());
     }
 
     @Test
     void testSetHitPoints() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>());
         assertEquals(10, t.getHitPoints());
 
         t.setHitPoints(0);
@@ -32,7 +35,7 @@ class ThiefTest {
 
     @Test
     void testSetArmourClass() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>());
         assertEquals(10, t.getArmourClass());
 
         t.setArmourClass(20);
@@ -41,7 +44,7 @@ class ThiefTest {
 
     @Test
     void testSetHitDiceAvailable() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>());
         assertEquals(1, t.getHitDiceAvailable());
 
         t.setHitDiceAvailable(4);
@@ -50,7 +53,7 @@ class ThiefTest {
 
     @Test
     void testGetStatModifier() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>());
         assertEquals(4, t.getStatModifier(Stat.DEX));
 
         t.setDexterity(8);
@@ -65,7 +68,7 @@ class ThiefTest {
 
     @Test
     void testSetStat() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>());
         assertEquals(18, t.getStat(Stat.DEX));
 
         t.setStat(Stat.DEX, 10);
@@ -74,7 +77,7 @@ class ThiefTest {
 
     @Test
     void testSetAttackDice() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>());
         assertEquals(8, t.getAttackDice().getDSize());
 
         t.setAttackDice(new Dice(12));
@@ -83,7 +86,7 @@ class ThiefTest {
 
     @Test
     void testSetHitDice() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>());
         assertEquals(8, t.getHitDice().getDSize());
 
         t.setHitDice(new Dice(12));

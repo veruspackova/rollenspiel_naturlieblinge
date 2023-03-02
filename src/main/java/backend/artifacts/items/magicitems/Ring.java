@@ -20,4 +20,11 @@ public class Ring implements Item {
             character.setStat(Stat.INT, intelligence);
         }
     }
+
+    public void setWearing(boolean wearing) {
+        this.wearing = wearing;
+    }
+    public boolean isWearing() {
+        return wearing;
+    }
 }

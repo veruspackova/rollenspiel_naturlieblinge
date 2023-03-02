@@ -2,7 +2,6 @@ package backend.artifacts.items.magicitems;
 
 import backend.artifacts.items.Item;
 import backend.character.Character;
-import backend.enums.Stat;
 
 public class Amulet implements Item {
 
@@ -18,5 +17,13 @@ public class Amulet implements Item {
             ac = character.getArmourClass() + 3;
             character.setArmourClass(ac);
         }
+    }
+
+    public void setWearing(boolean wearing) {
+        this.wearing = wearing;
+    }
+
+    public boolean isWearing() {
+        return wearing;
     }
 }
