@@ -4,17 +4,20 @@ package backend.character;
 //-- Armor Class (AC): 10
 //-- Attack/Damage: d8
 
+import backend.artifacts.items.Item;
 import backend.enums.Race;
 import backend.enums.Stat;
 import backend.logic.Dice;
+
+import java.util.ArrayList;
 
 public class Wizard extends Character {
 
     private int slotsHeal;
 
     // Beginning items: dagger
-    public Wizard(Race race, String name, int strength, int dexterity, int constitution, int intelligence, int wisdom) {
-        super(race, name, strength, dexterity, constitution, intelligence, wisdom);
+    public Wizard(Race race, String name, int strength, int dexterity, int constitution, int intelligence, int wisdom, ArrayList<Item> items) {
+        super(race, name, strength, dexterity, constitution, intelligence, wisdom, items);
         initialiseSpellSlots();
 
         setHitPoints(8 + getStatModifier(Stat.CON));
