@@ -1,5 +1,6 @@
 package backend.artifacts.items;
 
+import backend.artifacts.ISearchable;
 import backend.character.Character;
 
 public interface Item extends ISearchable {
