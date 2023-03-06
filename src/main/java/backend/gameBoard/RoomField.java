@@ -1,7 +1,7 @@
 package backend.gameBoard;
 
 import backend.enums.RoomType;
-import backend.artifacts.Item;
+import backend.artifacts.items.Item;
 /**
  * RoomFiled class
  * <p>
