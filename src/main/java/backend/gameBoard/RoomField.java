@@ -2,6 +2,8 @@ package backend.gameBoard;
 
 import backend.enums.RoomType;
 import backend.artifacts.items.Item;
+import backend.character.Character;
+
 /**
  * RoomFiled class
  * <p>
@@ -26,7 +28,7 @@ public class RoomField {
      * Room character
      * (gives information about the characters standing on this field)
      */
-    private backend.character.Character character;
+    private Character character;
     /**
      * Constructor
      * (generates Roomfiled without items or Characters on it)
@@ -47,7 +49,7 @@ public class RoomField {
      * (generates Roomfiled without any items on it)
      */
     public RoomField(RoomType roomType,
-                     backend.character.Character character){
+                     Character character){
         this.roomType = roomType;
         this.character = character;
     }
@@ -55,13 +57,13 @@ public class RoomField {
      * Constructor
      * (generates Roomfiled with items and characters)
      */
-    public RoomField(RoomType roomType, Item item, backend.character.Character character){
+    public RoomField(RoomType roomType, Item item, Character character){
         this.roomType = roomType;
         this.item = item;
         this.character = character;
     }
     //getter
-    public backend.character.Character getCharacter() {
+    public Character getCharacter() {
         return character;
     }
     public RoomType getRoomType() {
@@ -75,7 +77,7 @@ public class RoomField {
      * setCharacter
      * (place a character on this field)
      */
-    public void setCharacter(backend.character.Character character) {
+    public void setCharacter(Character character) {
         this.character = character;
     }
     /**

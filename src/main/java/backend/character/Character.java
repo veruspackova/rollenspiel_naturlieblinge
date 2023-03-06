@@ -7,6 +7,7 @@ import backend.enums.Stat;
 import backend.gameBoard.RoomField;
 import backend.logic.Dice;
 import java.util.ArrayList;
+
 import static java.lang.Math.floor;
 
 public abstract class Character {
@@ -45,7 +46,6 @@ public abstract class Character {
         setWisdom(wisdom);
         setItems(items);
         setDirection(Direction.North);
-
         RaceStatBonusHelper bonusHelper = new RaceStatBonusHelper();
         bonusHelper.addStatBonuses(this);
     }
@@ -174,8 +174,6 @@ public abstract class Character {
         this.hitDice = hitDice;
     }
 
-    /**
-     * @todo uncomment when item is implemented*/
       public ArrayList<Item> getItems()
       {
           return this.items;
