@@ -21,10 +21,6 @@ public class RingTest {
         Ring ring = new Ring();
         ring.setWearing(false);
         ring.use(f);
-        if (ring.isWearing()) {
-            assertTrue(f.getStat(Stat.INT) < initInt);
-        } else {
-            assertTrue(f.getStat(Stat.INT) > initInt);
-        }
+        assertTrue(f.getStat(Stat.INT) > initInt);
     }
 }

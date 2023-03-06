@@ -19,10 +19,6 @@ public class AmuletTest {
         Amulet amulet = new Amulet();
         amulet.setWearing(false);
         amulet.use(f);
-        if (amulet.isWearing()) {
-            assertTrue(f.getArmourClass() < initAC);
-        } else {
-            assertTrue(f.getArmourClass() > initAC);
-        }
+        assertTrue(f.getArmourClass() > initAC);
     }
 }

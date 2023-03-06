@@ -15,9 +15,11 @@ public class Ring implements Item {
         if (wearing) {
             intelligence = character.getStat(Stat.INT) - 3;
             character.setStat(Stat.INT, intelligence);
+            wearing = false;
         } else {
             intelligence = character.getStat(Stat.INT) + 3;
             character.setStat(Stat.INT, intelligence);
+            wearing = true;
         }
     }
 

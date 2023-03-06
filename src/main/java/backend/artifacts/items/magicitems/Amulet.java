@@ -13,9 +13,11 @@ public class Amulet implements Item {
         if (wearing) {
             ac = character.getArmourClass() - 3;
             character.setArmourClass(ac);
+            wearing = false;
         } else {
             ac = character.getArmourClass() + 3;
             character.setArmourClass(ac);
+            wearing = true;
         }
     }
 
