@@ -1,11 +1,11 @@
 package backend.character;
 
 import backend.enums.Direction;
+import backend.artifacts.items.Item;
 import backend.enums.Race;
 import backend.enums.Stat;
 import backend.gameBoard.RoomField;
 import backend.logic.Dice;
-
 import java.util.ArrayList;
 
 import static java.lang.Math.floor;
@@ -25,7 +25,7 @@ public abstract class Character {
     private int constitution;
     private int intelligence;
     private int wisdom;
-    //private ArrayList<Item> items;
+    private ArrayList<Item> items;
 
     public Character(
             Race race,
@@ -34,8 +34,8 @@ public abstract class Character {
             int dexterity,
             int constitution,
             int intelligence,
-            //ArrayList<Item> items,
-            int wisdom
+            int wisdom,
+            ArrayList<Item> items
     ) {
         setRace(race);
         setName(name);
@@ -44,9 +44,8 @@ public abstract class Character {
         setConstitution(constitution);
         setIntelligence(intelligence);
         setWisdom(wisdom);
+        setItems(items);
         setDirection(Direction.North);
-        //setItems(ArrayList<Item> items);
-
         RaceStatBonusHelper bonusHelper = new RaceStatBonusHelper();
         bonusHelper.addStatBonuses(this);
     }
@@ -175,28 +174,26 @@ public abstract class Character {
         this.hitDice = hitDice;
     }
 
-    /**
-     * @todo uncomment when item is implemented
-     * public ArrayList<Item> getItems()
-     * {
-     *     return this.items;
-     * }
-     *
-     * public void setItems(ArrayList<Item> items)
-     * {
-     *     this.items = items;
-     * }
-     *
-     * public void removeItem(Item item)
-     * {
-     *     items.remove(item);
-     * }
-     *
-     * public void addItem(Item item)
-     * {
-     *     items.add(item);
-     * }
-     */
+      public ArrayList<Item> getItems()
+      {
+          return this.items;
+      }
+
+      public void setItems(ArrayList<Item> items)
+      {
+          this.items = items;
+      }
+
+      public void removeItem(Item item)
+      {
+          items.remove(item);
+      }
+
+      public void addItem(Item item)
+      {
+          items.add(item);
+      }
+
 
     public void rest()
     {

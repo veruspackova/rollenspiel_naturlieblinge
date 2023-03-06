@@ -1,8 +1,15 @@
 package backend.gameBoard;
 
 import backend.enums.RoomType;
-import backend.artifacts.Item;
+import backend.artifacts.items.Item;
 import backend.character.Character;
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
+import java.security.KeyPair;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * RoomFiled class
  * <p>
@@ -13,6 +20,7 @@ import backend.character.Character;
  * @author jonasmalsbenden
  */
 public class RoomField {
+    private Map<Integer, Integer> coordinates = new HashMap<>();
     /**
      * Room type
      * (gives information about the type of field)
@@ -22,7 +30,7 @@ public class RoomField {
      * Room item
      * (gives information about the items sored on this field)
      */
-    private Item item;
+    private List<Item> itemList = new ArrayList<>();
     /**
      * Room character
      * (gives information about the characters standing on this field)
@@ -32,8 +40,9 @@ public class RoomField {
      * Constructor
      * (generates Roomfiled without items or Characters on it)
      */
-    public RoomField(RoomType roomType){
+    public RoomField(RoomType roomType, int x, int y){
         this.roomType = roomType;
+        this.coordinates.put(x, y);
     }
     /**
      * Constructor
@@ -47,19 +56,20 @@ public class RoomField {
      * Constructor
      * (generates Roomfiled without any items on it)
      */
-    public RoomField(RoomType roomType,
-                     Character character){
+    public RoomField(RoomType roomType, Character character, int x, int y){
         this.roomType = roomType;
         this.character = character;
+        this.coordinates.put(x, y);
     }
     /**
      * Constructor
      * (generates Roomfiled with items and characters)
      */
-    public RoomField(RoomType roomType, Item item, Character character){
+    public RoomField(RoomType roomType, Item item, Character character, int x, int y){
         this.roomType = roomType;
-        this.item = item;
+        this.itemList.add(item);
         this.character = character;
+        this.coordinates.put(x, y);
     }
     //getter
     public Character getCharacter() {
@@ -68,8 +78,12 @@ public class RoomField {
     public RoomType getRoomType() {
         return roomType;
     }
-    public Item getItem() {
-        return item;
+    public List<Item> getItemList() {
+        return itemList;
+    }
+
+    public Map<Integer, Integer> getCoordinates() {
+        return coordinates;
     }
     //setter
     /**
@@ -83,8 +97,15 @@ public class RoomField {
      * setItem
      * (place an item on this field)
      */
-    public void setItem(Item item) {
-        this.item = item;
+    public void setItemList(List<Item> itemList) {
+        this.itemList = itemList;
     }
 
+    public void addItem(Item item){
+        this.itemList.add(item);
+    }
+
+    public void setCoordinates(int x, int y) {
+        this.coordinates.put(x, y);
+    }
 }
