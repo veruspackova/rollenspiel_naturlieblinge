@@ -48,11 +48,11 @@ public class GameBoard {
      * (generates a gameboard layout randomly)
      */
     public void generateMap(){
-        double x = Math.random()*size;
-        double y = Math.random()*size;
+        int x = (int) (Math.random()*size);
+        int y = (int) (Math.random()*size);
         Direction lastMove = null;
         for (int i = 0; i < (size*size); i++){
-            board[(int) x][(int) y] = new RoomField(RoomType.Room);
+            board[x][y] = new RoomField(RoomType.Room, x, y);
             double direction = Math.random()*10;
             if(direction <= 5){
                 if(direction < 2 && x > 0 && lastMove != Direction.East){
@@ -83,7 +83,7 @@ public class GameBoard {
                     if(isHallway(x, y)){
                         double rnd = Math.random();
                         if(rnd >= 0.8){
-                            board[x][y] = new RoomField(RoomType.Door);
+                            board[x][y] = new RoomField(RoomType.Door, x, y);
                         }
                     }
                 }
@@ -114,15 +114,15 @@ public class GameBoard {
     public  void generateStandartLayout(){
         for(int x = 0; x < 6; x++){
             for (int y = 0; y < 4; y++){
-                board[x][y] = new RoomField(RoomType.Room);
+                board[x][y] = new RoomField(RoomType.Room, x, y);
             }
         }
-        board[3][4] = new RoomField(RoomType.Door);
+        board[3][4] = new RoomField(RoomType.Door, 3, 4);
         for (int y = 5; y < 9; y++){
-            board[3][y] = new RoomField(RoomType.Hallway);
+            board[3][y] = new RoomField(RoomType.Hallway, 3, y);
         }
         Character test = new Fighter(Race.HUM, "jeff", 10, 10,10,10,10);
-        board[3][9] = new RoomField(RoomType.Hallway, test);
+        board[3][9] = new RoomField(RoomType.Hallway, test, 3, 9);
     }
     /**
      * printBoard
@@ -143,7 +143,7 @@ public class GameBoard {
                 else if (board[x][y].getCharacter() != null) {
                     //to-do
                     //unterscheidung monster und spieler
-                    System.out.print("0  ");
+                    System.out.print("@  ");
                 }
                 else {
                     switch (board[x][y].getRoomType()){
