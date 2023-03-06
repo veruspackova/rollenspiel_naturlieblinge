@@ -10,13 +10,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Map;
 
 public class GameRoundLogic {
 
     private GameBoard gameBoard;
     private Character character;
 
-    private int movecounter = 2;
+    private int movecounter;
     private BufferedReader inputReader;
 
     public GameRoundLogic(Character character, BufferedReader inputReader, GameBoard gameBoard)
@@ -24,6 +25,7 @@ public class GameRoundLogic {
         this.inputReader = inputReader;
         this.setCharacter(character);
         this.gameBoard = gameBoard;
+        this.movecounter = 2;
     }
 
     public GameBoard getGameBoard() {
@@ -116,24 +118,20 @@ public class GameRoundLogic {
         } else if (input.get(0) == "move") {
             if (movecounter > 0)
             {
-                //@todo waiting for position on roomfield
-                //@todo check for doors or walls in the way
-                //@todo set old fields empty
-                //gameBoard.board character.getPosition()
-                if (input.get(1) != null && input.get(2) != null
-                        && Integer.parseInt(input.get(1)) > 0 && Integer.parseInt(input.get(2)) > 0)
-                {
-                    int cordX = Integer.parseInt(input.get(1));
-                    int cordY = Integer.parseInt(input.get(2));
-                    RoomField roomField = gameBoard.board[cordX][cordY];
-                    if (roomField != null)
-                    {
-                        character.setPosition(roomField);
+                //@todo move character
+                if(input.get(1) == null){
+                    move(character, 1);
+                }else {
+                    try{
+                        int distance = Integer.parseInt(input.get(1));
+                        move(character, distance);
+                    }catch (Exception  e){
+                        System.out.println("Invalid input for move distance given");
                     }
                 }
-                else {
-                    throw new InputMismatchException("Invalid coordinates");
-                }
+
+                //@todo set old fields empty
+
             }
             else {
                 System.out.println("Move not allowed cuz movecounter is 0");
@@ -162,5 +160,53 @@ public class GameRoundLogic {
         } else {
             throw new InputMismatchException("Invalid action in game round logic.");
         }
+    }
+
+    //Move funktion gets called on input move
+    public void move(Character character, int distance){
+        for(int i = 0; i < distance; i++){
+            RoomField target = null;
+            RoomField current = character.getPosition();
+            ArrayList<Integer> cords = current.getCoordinates();
+            switch (character.getDirection()){
+                case North:
+                    target= gameBoard.board[cords.get(0)][cords.get(1) - 1];
+                    break;
+                case NorthEast:
+                    target = gameBoard.board[cords.get(0) + 1][cords.get(1) - 1];
+                    break;
+                case East:
+                    target = gameBoard.board[cords.get(0) + 1][cords.get(1)];
+                    break;
+                case SouthEast:
+                    target = gameBoard.board[cords.get(0) + 1][cords.get(1) + 1];
+                    break;
+                case South:
+                    target = gameBoard.board[cords.get(0)][cords.get(1) + 1];
+                    break;
+                case SouthWest:
+                    target = gameBoard.board[cords.get(0) - 1][cords.get(1) + 1];
+                    break;
+                case West:
+                    target = gameBoard.board[cords.get(0) - 1][cords.get(1)];
+                    break;
+                case NorthWest:
+                    target = gameBoard.board[cords.get(0) - 1][cords.get(1) - 1];
+                    break;
+            }
+            if(moveToTarget(character, target, current) == false){
+                i = distance;
+                System.out.println("Invalid move. Something is in the way.");
+            }
+        }
+    }
+    //moves the character and updates references
+    public boolean moveToTarget(Character character, RoomField target, RoomField current){
+        if(target != null){
+            current.setCharacter(null);
+            target.setCharacter(character);
+            character.setPosition(target);
+            return true;
+        }else return false;
     }
 }
