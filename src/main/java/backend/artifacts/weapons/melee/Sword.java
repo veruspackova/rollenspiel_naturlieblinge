@@ -1,9 +1,9 @@
 package backend.artifacts.weapons.melee;
 
-import backend.artifacts.weapons.SimpleWeapon;
+import backend.artifacts.weapons.WeaponBase;
 import backend.logic.Dice;
 
-public class Sword extends SimpleWeapon {
+public class Sword extends WeaponBase {
     public Sword() {
         super(new Dice(8));
     }

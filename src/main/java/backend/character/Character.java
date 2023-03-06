@@ -1,5 +1,6 @@
 package backend.character;
 
+import backend.artifacts.weapons.WeaponBase;
 import backend.enums.Direction;
 import backend.artifacts.items.Item;
 import backend.enums.Race;
@@ -26,6 +27,8 @@ public abstract class Character {
     private int intelligence;
     private int wisdom;
     private ArrayList<Item> items;
+    private WeaponBase selectedWeapon;
+    private ArrayList<WeaponBase> weapons;
 
     public Character(
             Race race,
@@ -35,7 +38,9 @@ public abstract class Character {
             int constitution,
             int intelligence,
             int wisdom,
-            ArrayList<Item> items
+            ArrayList<Item> items,
+            WeaponBase selectedWeapon,
+            ArrayList<WeaponBase> weapons
     ) {
         setRace(race);
         setName(name);
@@ -45,6 +50,8 @@ public abstract class Character {
         setIntelligence(intelligence);
         setWisdom(wisdom);
         setItems(items);
+        setSelectedWeapon(selectedWeapon);
+        setWeapons(weapons);
         setDirection(Direction.North);
         RaceStatBonusHelper bonusHelper = new RaceStatBonusHelper();
         bonusHelper.addStatBonuses(this);
@@ -173,8 +180,7 @@ public abstract class Character {
     public void setHitDice(Dice hitDice) {
         this.hitDice = hitDice;
     }
-
-      public ArrayList<Item> getItems()
+    public ArrayList<Item> getItems()
       {
           return this.items;
       }
@@ -184,16 +190,45 @@ public abstract class Character {
           this.items = items;
       }
 
-      public void removeItem(Item item)
+    public void removeItem(Item item)
       {
           items.remove(item);
       }
 
-      public void addItem(Item item)
+    public void addItem(Item item)
       {
           items.add(item);
       }
 
+    public ArrayList<WeaponBase> getWeapons()
+    {
+        return this.weapons;
+    }
+
+    public void setWeapons(ArrayList<WeaponBase> weapons)
+    {
+        this.weapons = weapons;
+    }
+
+    public void addWeapon(WeaponBase weapon)
+    {
+        this.weapons.add(weapon);
+    }
+
+    public void removeWeapon(WeaponBase weapon)
+    {
+        this.weapons.remove(weapon);
+    }
+
+    public WeaponBase getSelectedWeapon()
+    {
+        return this.selectedWeapon;
+    }
+
+    public void setSelectedWeapon(WeaponBase selectedWeapon)
+    {
+        this.selectedWeapon = selectedWeapon;
+    }
 
     public void rest()
     {
