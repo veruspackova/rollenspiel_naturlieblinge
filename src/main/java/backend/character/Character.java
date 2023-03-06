@@ -1,5 +1,6 @@
 package backend.character;
 
+import backend.enums.Direction;
 import backend.artifacts.items.Item;
 import backend.enums.Race;
 import backend.enums.Stat;
@@ -12,7 +13,7 @@ public abstract class Character {
     private Race race;
     private String name;
     private RoomField position;
-//    private Direction direction; --> to be implemented, +getters,setters
+    private Direction direction;
     private int hitPoints;
     private int armourClass;
     private Dice attackDice;
@@ -43,6 +44,7 @@ public abstract class Character {
         setIntelligence(intelligence);
         setWisdom(wisdom);
         setItems(items);
+        setDirection(Direction.North);
 
         RaceStatBonusHelper bonusHelper = new RaceStatBonusHelper();
         bonusHelper.addStatBonuses(this);
@@ -70,6 +72,15 @@ public abstract class Character {
 
     public void setPosition(RoomField position) {
         this.position = position;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction)
+    {
+        this.direction = direction;
     }
 
     public int getHitPoints() {
@@ -105,6 +116,7 @@ public abstract class Character {
             case CON -> value = constitution;
             case INT -> value = intelligence;
             case WIS -> value = wisdom;
+            case NONE -> value = 10;
         }
 
         return value;
@@ -162,7 +174,42 @@ public abstract class Character {
         this.hitDice = hitDice;
     }
 
-    public void setItems(ArrayList<Item> items) { this.items = items; }
+    /**
+     * @todo uncomment when item is implemented*/
+      public ArrayList<Item> getItems()
+      {
+          return this.items;
+      }
 
-    public ArrayList<Item> getItems() { return items; }
+      public void setItems(ArrayList<Item> items)
+      {
+          this.items = items;
+      }
+
+      public void removeItem(Item item)
+      {
+          items.remove(item);
+      }
+
+      public void addItem(Item item)
+      {
+          items.add(item);
+      }
+
+
+    public void rest()
+    {
+        //@todo change after rollins answer
+        setHitPoints(hitPoints + 5);
+    }
+
+    public void turn(Direction direction)
+    {
+        this.setDirection(direction);
+    }
+
+    /*public ISearchable search()
+    {
+        return RoomField.search();
+    }*/
 }

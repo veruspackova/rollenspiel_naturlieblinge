@@ -49,4 +49,8 @@ public enum Stat {
      * but Intelligence and Wisdom can't be collapsed into one ability score ...
      */
     CHA,
+    /**
+     * there are some weapons that don't allow use of a stat bonus
+     */
+    NONE,
 }
