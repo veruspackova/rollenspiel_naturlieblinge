@@ -2,6 +2,7 @@ package backend.gameBoard;
 
 import backend.character.Character;
 import backend.character.Fighter;
+import backend.character.Monster;
 import backend.enums.Direction;
 import backend.enums.Race;
 import backend.enums.RoomType;
@@ -161,7 +162,45 @@ public class GameBoard {
             }
             System.out.print("\n");
         }
-        System.out.println("_______________________________________________________________________________________________\n");
+        System.out.println("_______________________________________________________________________________________________");
+    }
+
+    public void printBoardforPlayer(Character currentCharacter){
+        for(int x = 0; x < board.length; x++){
+            for(int y = 0; y < board[0].length; y++){
+                if(board[x][y] == null){
+                    System.out.print("*  ");
+                }
+                else if (board[x][y].getCharacter() != null) {
+                    //to-do
+                    Character character = board[x][y].getCharacter();
+                    //unterscheidung monster und spieler
+                    if(character.getClass() == Monster.class){
+                        System.out.print("X  ");
+                    }else if(character == currentCharacter){
+                        System.out.print("@  ");
+                    }else {
+                        System.out.print("O  ");
+                    }
+
+                }
+                else {
+                    switch (board[x][y].getRoomType()){
+                        case Door:
+                            System.out.print("|  ");
+                            break;
+                        case Room:
+                            System.out.print(".  ");
+                            break;
+                        case Hallway:
+                            System.out.print(",  ");
+                            break;
+                    }
+                }
+            }
+            System.out.print("\n");
+        }
+        System.out.println("_______________________________________________________________________________________________");
     }
 
     public void placeCharacter(Character character){
@@ -170,6 +209,7 @@ public class GameBoard {
             int y = (int) (Math.random()*size);
             if(board[x][y] != null){
                 board[x][y].setCharacter(character);
+                character.setPosition(board[x][y]);
                 i = size;
             }
         }

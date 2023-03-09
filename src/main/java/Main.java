@@ -1,5 +1,7 @@
 import backend.character.Character;
 import backend.character.Fighter;
+import backend.character.Monster;
+import backend.character.Thief;
 import backend.enums.Race;
 import backend.gameBoard.GameBoard;
 import backend.gameBoard.RoomField;
@@ -17,27 +19,35 @@ public class Main {
     static List<Character> characterList = new ArrayList<>();
     public static void main(String[] args) {
         init();
-        run();
+        while (true){
+            run();
+        }
     }
 
     public static void init(){
         gameBoard = new GameBoard(20);
         gameBoard.generateMap();
-        gameBoard.printBoard();
         Character testChar = new Fighter(Race.HUM,"test", 10,10,10,10,10,null);
+        Character testChar2 = new Thief(Race.HUM,"test", 10,10,10,10,10,null);
+        Character testChar3 = new Monster("test", 10,10,10,10,10,10, 10, 10, null);
         characterList.add(testChar);
+        characterList.add(testChar2);
+        characterList.add(testChar3);
         gameBoard.placeCharacter(testChar);
-        gameBoard.printBoard();
+        gameBoard.placeCharacter(testChar2);
+        gameBoard.placeCharacter(testChar3);
+
     }
 
     public static void run(){
         for(Character character: characterList){
-            GameRoundLogic logic = new GameRoundLogic(character, new BufferedReader(new InputStreamReader(System.in)), gameBoard);
-            InputClass input = new InputClass(new BufferedReader(new InputStreamReader(System.in)));
-            try {
-                logic.play(input.read());
-            }catch (IOException e){
-
+            if(character.getClass() != Monster.class){
+                System.out.println(character.getName() + " ist am Zug\n");
+                gameBoard.printBoardforPlayer(character);
+                GameRoundLogic logic = new GameRoundLogic(character, new BufferedReader(new InputStreamReader(System.in)), gameBoard);
+                logic.play();
+                System.out.println("_______________________________________________________________________________________________");
+                System.out.println("_______________________________________________________________________________________________");
             }
         }
     }
