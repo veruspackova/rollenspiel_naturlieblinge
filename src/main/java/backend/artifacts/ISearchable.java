@@ -4,5 +4,5 @@ import java.util.ArrayList;
 import backend.character.Character;
 
 public interface ISearchable {
-    public void search(Character character);
+    public void search(Character player);
 }

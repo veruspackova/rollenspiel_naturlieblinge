@@ -9,8 +9,9 @@ public interface Item extends ISearchable {
 
     void use(Character character);
 
-    public default void search(Character character)
+    public default void search(Character player)
     {
-        character.addItem(this);
+        System.out.println(player.getName() + " found item!\n" + this + "\n");
+        player.addItem(this);
     }
 }
