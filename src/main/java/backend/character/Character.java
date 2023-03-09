@@ -1,12 +1,15 @@
 package backend.character;
 
+import backend.artifacts.armour.BaseArmour;
+import backend.artifacts.armour.NoArmour;
+import backend.artifacts.items.Item;
 import backend.artifacts.weapons.WeaponBase;
 import backend.enums.Direction;
-import backend.artifacts.items.Item;
 import backend.enums.Race;
 import backend.enums.Stat;
 import backend.gameBoard.RoomField;
 import backend.logic.Dice;
+
 import java.util.ArrayList;
 
 import static java.lang.Math.floor;
@@ -29,6 +32,7 @@ public abstract class Character {
     private ArrayList<Item> items;
     private WeaponBase selectedWeapon;
     private ArrayList<WeaponBase> weapons;
+    private BaseArmour armour;
 
     public Character(
             Race race,
@@ -52,9 +56,12 @@ public abstract class Character {
         setItems(items);
         setSelectedWeapon(selectedWeapon);
         setWeapons(weapons);
+
         setDirection(Direction.North);
         RaceStatBonusHelper bonusHelper = new RaceStatBonusHelper();
         bonusHelper.addStatBonuses(this);
+        setDirection(Direction.North);
+        setArmour(new NoArmour());
     }
 
     public Race getRace() {
@@ -85,8 +92,7 @@ public abstract class Character {
         return direction;
     }
 
-    public void setDirection(Direction direction)
-    {
+    public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
@@ -112,6 +118,28 @@ public abstract class Character {
 
     public void setHitDiceAvailable(int hitDiceAvailable) {
         this.hitDiceAvailable = hitDiceAvailable;
+    }
+
+    /**
+     * The table that appears in your class description shows your <b>proficiency bonus</b>,
+     * which is +2 for a 1st-level character.
+     * Your proficiency bonus applies to many of the numbers you’ll be recording on your character sheet:
+     * • Attack rolls using weapons you’re proficient with
+     * • Attack rolls with spells you cast
+     * • Ability checks using skills you’re proficient in
+     * • Ability checks using tools you’re proficient with
+     * • Saving throws you’re proficient in
+     * • Saving throw DCs for spells you cast (explained in each spellcasting class)
+     */
+    public int getProficiencyBonus() {
+        return 2;
+    }
+
+    public boolean getSavingThrowSuccessful(Stat stat, int difficultyClass) {
+        Dice d20 = new Dice(20);
+        int savingThrow = d20.roll() + getStatModifier(stat);
+
+        return savingThrow >= difficultyClass;
     }
 
     public int getStat(Stat stat) {
@@ -180,65 +208,62 @@ public abstract class Character {
     public void setHitDice(Dice hitDice) {
         this.hitDice = hitDice;
     }
-    public ArrayList<Item> getItems()
-      {
-          return this.items;
-      }
 
-      public void setItems(ArrayList<Item> items)
-      {
-          this.items = items;
-      }
+    public ArrayList<Item> getItems() {
+        return this.items;
+    }
 
-    public void removeItem(Item item)
-      {
-          items.remove(item);
-      }
+    public void setItems(ArrayList<Item> items) {
+        this.items = items;
+    }
 
-    public void addItem(Item item)
-      {
-          items.add(item);
-      }
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
 
-    public ArrayList<WeaponBase> getWeapons()
-    {
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public ArrayList<WeaponBase> getWeapons() {
         return this.weapons;
     }
 
-    public void setWeapons(ArrayList<WeaponBase> weapons)
-    {
+    public void setWeapons(ArrayList<WeaponBase> weapons) {
         this.weapons = weapons;
     }
 
-    public void addWeapon(WeaponBase weapon)
-    {
+    public void addWeapon(WeaponBase weapon) {
         this.weapons.add(weapon);
     }
 
-    public void removeWeapon(WeaponBase weapon)
-    {
+    public void removeWeapon(WeaponBase weapon) {
         this.weapons.remove(weapon);
     }
 
-    public WeaponBase getSelectedWeapon()
-    {
+    public WeaponBase getSelectedWeapon() {
         return this.selectedWeapon;
     }
 
-    public void setSelectedWeapon(WeaponBase selectedWeapon)
-    {
+    public void setSelectedWeapon(WeaponBase selectedWeapon) {
         this.selectedWeapon = selectedWeapon;
     }
 
-    public void rest()
-    {
+    public void rest() {
         //@todo change after rollins answer
         setHitPoints(hitPoints + 5);
     }
 
-    public void turn(Direction direction)
-    {
+    public void turn(Direction direction) {
         this.setDirection(direction);
+    }
+
+    public BaseArmour getArmour() {
+        return armour;
+    }
+
+    public void setArmour(BaseArmour armour) {
+        this.armour = armour;
     }
 
     /*public ISearchable search()
