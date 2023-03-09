@@ -121,8 +121,8 @@ public class GameBoard {
         for (int y = 5; y < 9; y++){
             board[3][y] = new RoomField(RoomType.Hallway, 3, y);
         }
-        Character test = new Fighter(Race.HUM, "jeff", 10, 10,10,10,10);
-        board[3][9] = new RoomField(RoomType.Hallway, test, 3, 9);
+        //Fighter test = new Fighter(Race.HUM, "jeff", 10, 10,10,10,10);
+        //board[3][9] = new RoomField(RoomType.Hallway, test, 3, 9);
     }
     /**
      * printBoard
@@ -160,6 +160,18 @@ public class GameBoard {
                 }
             }
             System.out.print("\n");
+        }
+        System.out.println("_______________________________________________________________________________________________\n");
+    }
+
+    public void placeCharacter(Character character){
+        for(int i = 0; i < size-1; i++){
+            int x = (int) (Math.random()*size);
+            int y = (int) (Math.random()*size);
+            if(board[x][y] != null){
+                board[x][y].setCharacter(character);
+                i = size;
+            }
         }
     }
 }

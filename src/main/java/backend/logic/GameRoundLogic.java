@@ -88,7 +88,7 @@ public class GameRoundLogic {
 
     public void play(ArrayList<String> input) throws InputMismatchException
     {
-        if (input.get(0) == "fight") {
+        if (input.get(0).equals("fight")) {
             if (input.get(1) != null && input.get(2) != null && input.get(3) != null
                     && Integer.parseInt(input.get(1)) > 0 && Integer.parseInt(input.get(2)) > 0)
             {
@@ -115,7 +115,7 @@ public class GameRoundLogic {
                 throw new InputMismatchException("Invalid coordinates.");
             }
 
-        } else if (input.get(0) == "move") {
+        } else if (input.get(0).equals("move")) {
             if (movecounter > 0)
             {
                 //@todo move character
@@ -141,14 +141,14 @@ public class GameRoundLogic {
             //check if move is possible and allowed (movecounter and wall check)
             //look on gameplan if where i want to goo is a character and then see if i want to fight them
             // after looking, move there
-        } else if (input.get(0) == "rest") {
+        } else if (input.get(0).equals("rest")) {
             character.rest();
-        } else if (input.get(0) == "search") {
+        } else if (input.get(0).equals("search")) {
             //@todo waiting for isearchable
-        } else if (input.get(0) == "use") {
+        } else if (input.get(0).equals("use")) {
             String item = input.get(1);
             //@todo waiting for items
-        } else if (input.get(0) == "turn") {
+        } else if (input.get(0).equals("turn")) {
             Direction temp = character.getDirection();
             switch (input.get(1)) {
                 case "north" -> temp = Direction.North;
@@ -158,7 +158,7 @@ public class GameRoundLogic {
             }
             character.turn(temp);
         } else {
-            throw new InputMismatchException("Invalid action in game round logic.");
+            System.out.println("Invalid action in game round logic.");
         }
     }
 

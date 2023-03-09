@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class RoomField {
     //coordinates give the coordinates of this RoomField. index 0 is x, index 1 is y
-    private ArrayList<Integer> coordinates = new ArrayList<Integer>();
+    private ArrayList<Integer> coordinates = new ArrayList<>();
     /**
      * Room type
      * (gives information about the type of field)
@@ -40,8 +40,8 @@ public class RoomField {
      */
     public RoomField(RoomType roomType, int x, int y){
         this.roomType = roomType;
-        this.coordinates.set(0, x);
-        this.coordinates.set(1, y);
+        this.coordinates.add(x);
+        this.coordinates.add(y);
     }
     /**
      * Constructor
@@ -58,8 +58,8 @@ public class RoomField {
     public RoomField(RoomType roomType, Character character, int x, int y){
         this.roomType = roomType;
         this.character = character;
-        this.coordinates.set(0, x);
-        this.coordinates.set(1, y);
+        this.coordinates.add(x);
+        this.coordinates.add(y);
     }
     /**
      * Constructor
@@ -69,8 +69,8 @@ public class RoomField {
         this.roomType = roomType;
         this.itemList.add(item);
         this.character = character;
-        this.coordinates.set(0, x);
-        this.coordinates.set(1, y);
+        this.coordinates.add(x);
+        this.coordinates.add(y);
     }
     //getter
     public Character getCharacter() {
@@ -107,7 +107,7 @@ public class RoomField {
     }
 
     public void setCoordinates(int x, int y) {
-        this.coordinates.set(0, x);
-        this.coordinates.set(1, y);
+        this.coordinates.add(x);
+        this.coordinates.add(y);
     }
 }
