@@ -1,22 +1,19 @@
-package backend.artifacts.items;
+package backend.artifacts.spells;
 
-import backend.artifacts.items.magicpotions.HealingPotion;
 import backend.character.Fighter;
 import backend.enums.Race;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class HealingPotionTest {
+public class HealTest {
 
     @Test
-    void testUse() {
+    void testCast() {
         Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10, null, null, null);
         int initHP = f.getHitPoints();
-        HealingPotion healingPotion = new HealingPotion();
-        healingPotion.use(f);
+        Heal h = new Heal();
+        h.cast(f);
         assertTrue(f.getHitPoints() > initHP);
     }
 }

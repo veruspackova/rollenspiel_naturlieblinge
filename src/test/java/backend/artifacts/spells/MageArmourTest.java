@@ -14,7 +14,7 @@ public class MageArmourTest {
 
     @Test
     void testCast() {
-        Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10, new ArrayList<Item>());
+        Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10, null, null, null);
         int initAC = f.getArmourClass();
         MageArmour mg = new MageArmour();
         mg.cast(f);
