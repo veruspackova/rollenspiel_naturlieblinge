@@ -27,9 +27,9 @@ public class Main {
     public static void init(){
         gameBoard = new GameBoard(20);
         gameBoard.generateMap();
-        Character testChar = new Fighter(Race.HUM,"test", 10,10,10,10,10,null);
-        Character testChar2 = new Thief(Race.HUM,"test", 10,10,10,10,10,null);
-        Character testChar3 = new Monster("test", 10,10,10,10,10,10, 10, 10, null);
+        Character testChar = new Fighter(Race.HUM,"test", 10,10,10,10,10,null, null, null);
+        Character testChar2 = new Thief(Race.HUM,"test", 10,10,10,10,10,null, null, null);
+        Character testChar3 = new Monster("test", 10,10,10,10,10,10, 10, 10, null, null, null);
         characterList.add(testChar);
         characterList.add(testChar2);
         characterList.add(testChar3);

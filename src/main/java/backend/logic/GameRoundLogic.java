@@ -136,11 +136,29 @@ public class GameRoundLogic {
 
     //Move funktion gets called on input move
     public boolean move(Character character){
-        RoomField target = null;
         RoomField current = character.getPosition();
+        RoomField target = getTargetRoom(current, character.getDirection());
+        if (moveToTarget(character, target, current) == false) {
+            System.out.println("Invalid move. Something is in the way.");
+            return false;
+        }
+        return true;
+    }
+    //moves the character and updates references
+    public boolean moveToTarget(Character character, RoomField target, RoomField current){
+        if(target != null){
+            current.setCharacter(null);
+            target.setCharacter(character);
+            character.setPosition(target);
+            return true;
+        }else return false;
+    }
+
+    public RoomField getTargetRoom(RoomField current, Direction direction){
+        RoomField target = null;
         ArrayList<Integer> cords = current.getCoordinates();
 
-        switch (character.getDirection()) {
+        switch (direction) {
             case North:
                 target = gameBoard.board[cords.get(0) - 1][cords.get(1)];
                 break;
@@ -166,19 +184,6 @@ public class GameRoundLogic {
                 target = gameBoard.board[cords.get(0) - 1][cords.get(1) - 1];
                 break;
         }
-        if (moveToTarget(character, target, current) == false) {
-            System.out.println("Invalid move. Something is in the way.");
-            return false;
-        }
-        return true;
-    }
-    //moves the character and updates references
-    public boolean moveToTarget(Character character, RoomField target, RoomField current){
-        if(target != null){
-            current.setCharacter(null);
-            target.setCharacter(character);
-            character.setPosition(target);
-            return true;
-        }else return false;
+        return target;
     }
 }
