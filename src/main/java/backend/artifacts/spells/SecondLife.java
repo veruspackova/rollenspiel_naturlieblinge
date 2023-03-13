@@ -1,13 +1,13 @@
 package backend.artifacts.spells;
 
-import backend.logic.Dice;
 import backend.character.Character;
+import backend.logic.Dice;
 
-public class Heal implements Spell {
+public class SecondLife implements Spell {
 
     final private Dice dice;
 
-    public Heal() { dice = new Dice(8); }
+    public SecondLife() { dice = new Dice(10); }
 
     public void cast(Character target) {
         int hp = target.getHitPoints() + dice.roll();
