@@ -124,11 +124,13 @@ public class GameRoundLogic {
 
                 case "move":
                     if (movecounter > 1) {
-                        move(character, 1);
+                        boolean success = move(character);
                         gameBoard.printBoardforPlayer(character);
-                        movecounter--;
+                        if(success == true){
+                            movecounter--;
+                        }
                     }else {
-                        move(character, 1);
+                        move(character);
                         return;
                     }
                     break;
@@ -175,43 +177,42 @@ public class GameRoundLogic {
     }
 
     //Move funktion gets called on input move
-    public void move(Character character, int distance){
-        for (int i = 0; i < distance; i++) {
-            RoomField target = null;
-            RoomField current = character.getPosition();
-            ArrayList<Integer> cords = current.getCoordinates();
+    public boolean move(Character character){
+        RoomField target = null;
+        RoomField current = character.getPosition();
+        ArrayList<Integer> cords = current.getCoordinates();
 
-            switch (character.getDirection()) {
-                case North:
-                    target = gameBoard.board[cords.get(0) - 1][cords.get(1)];
-                    break;
-                case NorthEast:
-                    target = gameBoard.board[cords.get(0) - 1][cords.get(1) + 1];
-                    break;
-                case East:
-                    target = gameBoard.board[cords.get(0)][cords.get(1) + 1];
-                    break;
-                case SouthEast:
-                    target = gameBoard.board[cords.get(0) + 1][cords.get(1) + 1];
-                    break;
-                case South:
-                    target = gameBoard.board[cords.get(0) + 1][cords.get(1)];
-                    break;
-                case SouthWest:
-                    target = gameBoard.board[cords.get(0) + 1][cords.get(1) - 1];
-                    break;
-                case West:
-                    target = gameBoard.board[cords.get(0)][cords.get(1) - 1];
-                    break;
-                case NorthWest:
-                    target = gameBoard.board[cords.get(0) - 1][cords.get(1) - 1];
-                    break;
-            }
-            if (moveToTarget(character, target, current) == false) {
-                i = distance;
-                System.out.println("Invalid move. Something is in the way.");
-            }
+        switch (character.getDirection()) {
+            case North:
+                target = gameBoard.board[cords.get(0) - 1][cords.get(1)];
+                break;
+            case NorthEast:
+                target = gameBoard.board[cords.get(0) - 1][cords.get(1) + 1];
+                break;
+            case East:
+                target = gameBoard.board[cords.get(0)][cords.get(1) + 1];
+                break;
+            case SouthEast:
+                target = gameBoard.board[cords.get(0) + 1][cords.get(1) + 1];
+                break;
+            case South:
+                target = gameBoard.board[cords.get(0) + 1][cords.get(1)];
+                break;
+            case SouthWest:
+                target = gameBoard.board[cords.get(0) + 1][cords.get(1) - 1];
+                break;
+            case West:
+                target = gameBoard.board[cords.get(0)][cords.get(1) - 1];
+                break;
+            case NorthWest:
+                target = gameBoard.board[cords.get(0) - 1][cords.get(1) - 1];
+                break;
         }
+        if (moveToTarget(character, target, current) == false) {
+            System.out.println("Invalid move. Something is in the way.");
+            return false;
+        }
+        return true;
     }
     //moves the character and updates references
     public boolean moveToTarget(Character character, RoomField target, RoomField current){
