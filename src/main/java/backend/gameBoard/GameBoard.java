@@ -2,10 +2,12 @@ package backend.gameBoard;
 
 import backend.character.Character;
 import backend.character.Fighter;
+import backend.character.Monster;
 import backend.enums.Direction;
 import backend.enums.Race;
 import backend.enums.RoomType;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,8 +41,7 @@ public class GameBoard {
     public GameBoard(){
         board = new RoomField[20][20];
         this.size = 20;
-        generateStandartLayout();
-        //generateLayout(20);
+        generateMap();
         printBoard();
     }
     /**
@@ -111,19 +112,6 @@ public class GameBoard {
         else return false;
     }
 
-    public  void generateStandartLayout(){
-        for(int x = 0; x < 6; x++){
-            for (int y = 0; y < 4; y++){
-                board[x][y] = new RoomField(RoomType.Room, x, y);
-            }
-        }
-        board[3][4] = new RoomField(RoomType.Door, 3, 4);
-        for (int y = 5; y < 9; y++){
-            board[3][y] = new RoomField(RoomType.Hallway, 3, y);
-        }
-        Character test = new Fighter(Race.HUM, "jeff", 10, 10,10,10,10);
-        board[3][9] = new RoomField(RoomType.Hallway, test, 3, 9);
-    }
     /**
      * printBoard
      * (generates a Console output for the map showing the difference between rooms, hallways, doors, walls and characters
@@ -131,7 +119,9 @@ public class GameBoard {
      * room: .
      * door: |
      * hallway: ,
-     * character; 0
+     * character: 0
+     * current character: @
+     * monster: X
      * )
      */
     public void printBoard(){
@@ -160,6 +150,58 @@ public class GameBoard {
                 }
             }
             System.out.print("\n");
+        }
+        System.out.println("_______________________________________________________________________________________________");
+    }
+
+    public void printBoardforPlayer(Character currentCharacter){
+
+        for(int x = 0; x < board.length; x++){
+            for(int y = 0; y < board[0].length; y++){
+                if(board[x][y] == null){
+                    System.out.print("*  ");
+                }
+                else if (board[x][y].getCharacter() != null) {
+                    //to-do
+                    Character character = board[x][y].getCharacter();
+                    //unterscheidung monster und spieler
+                    if(character.getClass() == Monster.class){
+                        System.out.print("X  ");
+                    }else if(character == currentCharacter){
+                        System.out.print("@  ");
+                    }else {
+                        System.out.print("O  ");
+                    }
+
+                }
+                else {
+                    switch (board[x][y].getRoomType()){
+                        case Door:
+                            System.out.print("|  ");
+                            break;
+                        case Room:
+                            System.out.print(".  ");
+                            break;
+                        case Hallway:
+                            System.out.print(",  ");
+                            break;
+                    }
+                }
+            }
+            System.out.print("\n");
+        }
+        System.out.println("_______________________________________________________________________________________________");
+    }
+
+    public void placeCharacter(Character character){
+        for(int i = 0; i < size-1; i++){
+            int x = (int) (Math.random()*size);
+            int y = (int) (Math.random()*size);
+            if(board[x][y] != null){
+                board[x][y].setCharacter(character);
+                character.setPosition(board[x][y]);
+                i = size;
+            }
         }
     }
 }
