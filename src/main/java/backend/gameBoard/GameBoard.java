@@ -41,8 +41,7 @@ public class GameBoard {
     public GameBoard(){
         board = new RoomField[20][20];
         this.size = 20;
-        generateStandartLayout();
-        //generateLayout(20);
+        generateMap();
         printBoard();
     }
     /**
@@ -111,20 +110,6 @@ public class GameBoard {
             return true;
         }
         else return false;
-    }
-
-    public  void generateStandartLayout(){
-        for(int x = 0; x < 6; x++){
-            for (int y = 0; y < 4; y++){
-                board[x][y] = new RoomField(RoomType.Room, x, y);
-            }
-        }
-        board[3][4] = new RoomField(RoomType.Door, 3, 4);
-        for (int y = 5; y < 9; y++){
-            board[3][y] = new RoomField(RoomType.Hallway, 3, y);
-        }
-        //Fighter test = new Fighter(Race.HUM, "jeff", 10, 10,10,10,10);
-        //board[3][9] = new RoomField(RoomType.Hallway, test, 3, 9);
     }
 
     /**

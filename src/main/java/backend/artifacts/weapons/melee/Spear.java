@@ -1,10 +1,10 @@
 package backend.artifacts.weapons.melee;
 
-import backend.artifacts.weapons.SimpleWeapon;
+import backend.artifacts.weapons.WeaponBase;
 import backend.enums.Stat;
 import backend.logic.Dice;
 
-public class Spear extends SimpleWeapon {
+public class Spear extends WeaponBase {
 
     public Spear() {
         super(new Dice(6));
