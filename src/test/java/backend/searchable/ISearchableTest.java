@@ -101,7 +101,7 @@ public class ISearchableTest {
     @Test
     void item_searchTest()
     {
-        Item item = new Amulet();
+        Item item = new Amulet("Test", "Fall");
 
         Fighter fighter = new Fighter(Race.HOB, "fighter", 15, 12, 14, 8, 10, new ArrayList<>(), new NoWeapon(), new ArrayList<>());
         assertEquals(new ArrayList<Item>(), fighter.getItems());

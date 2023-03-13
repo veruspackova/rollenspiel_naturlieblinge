@@ -4,11 +4,12 @@ import backend.artifacts.items.Item;
 import backend.logic.Dice;
 import backend.character.Character;
 
-public class HealingPotion implements Item {
+public class HealingPotion extends Item {
 
     private final Dice dice;
 
-    public HealingPotion() {
+    public HealingPotion(String name, String description) {
+        super(name, description);
         dice = new Dice(4);
     }
 
