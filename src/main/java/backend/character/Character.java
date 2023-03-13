@@ -11,6 +11,7 @@ import backend.gameBoard.RoomField;
 import backend.logic.Dice;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Math.floor;
 
@@ -101,7 +102,16 @@ public abstract class Character {
     }
 
     public void setHitPoints(int hitPoints) {
-        this.hitPoints = hitPoints;
+        if (hitPoints > 0) {
+            this.hitPoints = hitPoints;
+        } else {
+            this.hitPoints = 0;
+            List<Item> itemList = getPosition().getItemList();
+            itemList.addAll(getItems());
+            getPosition().setItemList(itemList);
+            getPosition().setCharacter(null);
+            setPosition(null);
+        }
     }
 
     public int getArmourClass() {
