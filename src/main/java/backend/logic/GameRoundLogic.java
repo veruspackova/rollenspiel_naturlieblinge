@@ -47,48 +47,6 @@ public class GameRoundLogic {
         this.character = character;
     }
 
-    public void play2(GameRoundAction action) throws IOException {
-        if(action == GameRoundAction.fight)
-        {
-            //@todo fight
-        }
-        else if (action == GameRoundAction.move)
-        {
-            //check if move is possible and allowed (movecounter and wall check)
-            //look on gameplan if where i want to goo is a character and then see if i want to fight them
-            // after looking, move there
-        }
-        else if (action == GameRoundAction.rest)
-        {
-            //@todo when character can rest
-        }
-        else if (action == GameRoundAction.search)
-        {
-            //@todo when character can search
-        }
-        else if (action == GameRoundAction.use)
-        {
-            //@todo implement when items are usable
-        }
-        else if (action == GameRoundAction.turn)
-        {
-            String tempString = inputReader.readLine();
-            tempString = tempString.toLowerCase();
-            Direction temp = character.getDirection();
-            switch (tempString) {
-                case "north" -> temp = Direction.North;
-                case "west"  -> temp = Direction.West;
-                case "south" -> temp = Direction.South;
-                case "east"  -> temp = Direction.East;
-            }
-            character.turn(temp);
-        }
-        else
-        {
-            throw new RuntimeException("Invalid action in game round logic.");
-        }
-    }
-
     public void play() throws InputMismatchException
     {
         while (true) {
@@ -125,9 +83,9 @@ public class GameRoundLogic {
                 case "move":
                     if (movecounter > 1) {
                         boolean success = move(character);
-                        gameBoard.printBoardforPlayer(character);
                         if(success == true){
                             movecounter--;
+                            gameBoard.printBoardforPlayer(character);
                         }
                     }else {
                         move(character);
