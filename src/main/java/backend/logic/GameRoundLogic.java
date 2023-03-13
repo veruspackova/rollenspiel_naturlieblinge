@@ -1,5 +1,6 @@
 package backend.logic;
 
+import backend.artifacts.items.Item;
 import backend.character.Character;
 import backend.enums.Direction;
 import backend.enums.GameRoundAction;
@@ -98,8 +99,8 @@ public class GameRoundLogic {
             }catch (IOException e){
 
             }
-            if(input != null){
-                if (input.get(0).equals("fight")) {
+            switch (input.get(0)){
+                case "fight":
                     if (input.get(1) != null && input.get(2) != null && input.get(3) != null
                             && Integer.parseInt(input.get(1)) > 0 && Integer.parseInt(input.get(2)) > 0) {
                         int cordX = Integer.parseInt(input.get(1));
@@ -119,8 +120,9 @@ public class GameRoundLogic {
                         System.out.println("Invalid coordinates.");
                         return;
                     }
+                    break;
 
-                } else if (input.get(0).equals("move")) {
+                case "move":
                     if (movecounter > 1) {
                         move(character, 1);
                         gameBoard.printBoardforPlayer(character);
@@ -129,18 +131,32 @@ public class GameRoundLogic {
                         move(character, 1);
                         return;
                     }
+                    break;
 
-                    //check if move is possible and allowed (movecounter and wall check)
-                    //look on gameplan if where i want to goo is a character and then see if i want to fight them
-                    // after looking, move there
-                } else if (input.get(0).equals("rest")) {
+                case "rest":
                     character.rest();
-                } else if (input.get(0).equals("search")) {
+                    break;
+
+                case "search":
                     //@todo waiting for isearchable
-                } else if (input.get(0).equals("use")) {
-                    String item = input.get(1);
+                    break;
+
+                case "use":
                     //@todo waiting for items
-                } else if (input.get(0).equals("turn")) {
+                    break;
+
+                case "items":
+                    System.out.println("Itemlist of " + character.getName() + ":");
+                    for(Item item: character.getItems()){
+                        System.out.println(item);
+                    }
+                    break;
+
+                case "weapons":
+                    //@todo waiting for items
+                    break;
+
+                case "turn":
                     Direction temp = character.getDirection();
                     switch (input.get(1)) {
                         case "north" -> temp = Direction.North;
@@ -153,9 +169,7 @@ public class GameRoundLogic {
                         case "southwest" -> temp = Direction.SouthWest;
                     }
                     character.turn(temp);
-                } else {
-                    System.out.println("Invalid action in game round logic.");
-                }
+                    break;
             }
         }
     }
