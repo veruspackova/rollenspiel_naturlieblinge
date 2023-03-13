@@ -125,8 +125,6 @@ public class GameBoard {
      * )
      */
     public void printBoard(){
-        System.out.println("\033[H\033[2J");
-        System.out.flush();
         for(int x = 0; x < board.length; x++){
             for(int y = 0; y < board[0].length; y++){
                 if(board[x][y] == null){
@@ -157,8 +155,7 @@ public class GameBoard {
     }
 
     public void printBoardforPlayer(Character currentCharacter){
-        System.out.println("\033[H\033[2J");
-        System.out.flush();
+
         for(int x = 0; x < board.length; x++){
             for(int y = 0; y < board[0].length; y++){
                 if(board[x][y] == null){
