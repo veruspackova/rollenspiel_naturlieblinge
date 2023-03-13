@@ -1,6 +1,6 @@
 package backend.artifacts.armour;
 
-public class Chainmail implements BaseArmour {
+public class Chainmail extends BaseArmour {
     @Override
     public int getAcBonus() {
         return 6;

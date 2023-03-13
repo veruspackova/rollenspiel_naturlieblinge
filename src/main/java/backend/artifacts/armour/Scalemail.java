@@ -2,7 +2,7 @@ package backend.artifacts.armour;
 
 import backend.enums.Stat;
 
-public class Scalemail implements BaseArmour {
+public class Scalemail extends BaseArmour {
     @Override
     public int getAcBonus() {
         return 4;
