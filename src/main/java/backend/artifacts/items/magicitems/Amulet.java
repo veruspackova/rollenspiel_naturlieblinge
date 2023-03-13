@@ -3,9 +3,13 @@ package backend.artifacts.items.magicitems;
 import backend.artifacts.items.Item;
 import backend.character.Character;
 
-public class Amulet implements Item {
+public class Amulet extends Item {
 
     boolean wearing = false;
+
+    public Amulet(String name, String description) {
+        super(name, description);
+    }
 
     public void use(Character character) {
         int ac;

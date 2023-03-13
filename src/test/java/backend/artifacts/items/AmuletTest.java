@@ -14,9 +14,9 @@ public class AmuletTest {
 
     @Test
     void testUse() {
-        Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10, new ArrayList<Item>());
+        Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10, null, null, null);
         int initAC = f.getArmourClass();
-        Amulet amulet = new Amulet();
+        Amulet amulet = new Amulet("Test", "Fall");
         amulet.setWearing(false);
         amulet.use(f);
         assertTrue(f.getArmourClass() > initAC);

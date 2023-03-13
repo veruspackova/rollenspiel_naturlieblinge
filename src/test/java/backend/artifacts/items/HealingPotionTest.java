@@ -13,9 +13,9 @@ public class HealingPotionTest {
 
     @Test
     void testUse() {
-        Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10, new ArrayList<Item>());
+        Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10, null, null, null);
         int initHP = f.getHitPoints();
-        HealingPotion healingPotion = new HealingPotion();
+        HealingPotion healingPotion = new HealingPotion("Test", "Fall");
         healingPotion.use(f);
         assertTrue(f.getHitPoints() > initHP);
     }

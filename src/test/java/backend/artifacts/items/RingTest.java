@@ -16,9 +16,9 @@ public class RingTest {
 
     @Test
     void testUse() {
-        Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10, new ArrayList<Item>());
+        Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10, null, null, null);
         int initInt = f.getStat(Stat.INT);
-        Ring ring = new Ring();
+        Ring ring = new Ring("Test", "Fall");
         ring.setWearing(false);
         ring.use(f);
         assertTrue(f.getStat(Stat.INT) > initInt);

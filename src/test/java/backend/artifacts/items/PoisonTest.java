@@ -13,9 +13,9 @@ public class PoisonTest {
 
     @Test
     void testUse() {
-        Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10, new ArrayList<Item>());
+        Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10, null, null, null);
         int initHP = f.getHitPoints();
-        Poison poison = new Poison();
+        Poison poison = new Poison("Test", "Fall");
         poison.use(f);
         assertTrue(f.getHitPoints() < initHP);
     }
