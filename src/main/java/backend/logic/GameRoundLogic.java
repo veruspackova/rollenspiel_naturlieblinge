@@ -1,6 +1,7 @@
 package backend.logic;
 
 import backend.artifacts.items.Item;
+import backend.artifacts.spells.Spell;
 import backend.artifacts.weapons.RangedSimpleWeapon;
 import backend.artifacts.weapons.WeaponBase;
 import backend.character.Character;
@@ -62,6 +63,12 @@ public class GameRoundLogic {
                     if (input.size() == 2) {
                         int targetDistance = Integer.parseInt(input.get(1));
                         WeaponBase w = character.getSelectedWeapon();
+
+                        if (w instanceof Spell) {
+                            System.out.println("Spells must use cast, not fight!");
+                            break;
+                        }
+
                         if (w instanceof RangedSimpleWeapon && ((RangedSimpleWeapon) w).getRange() >= targetDistance) {
                             fieldToAttack = getFacingPosition(targetDistance);
                         } else {
