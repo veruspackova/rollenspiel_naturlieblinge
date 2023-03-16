@@ -1,6 +1,8 @@
 package backend.logic;
 
+import backend.artifacts.armour.BaseArmour;
 import backend.artifacts.items.Item;
+import backend.artifacts.weapons.WeaponBase;
 import backend.character.Character;
 import backend.enums.Direction;
 import backend.enums.GameRoundAction;
@@ -98,17 +100,21 @@ public class GameRoundLogic {
                     break;
 
                 case "search":
-                    //@todo waiting for isearchable
+                    search(character);
                     break;
 
                 case "use":
-                    //@todo waiting for items
+                    useItem(character, input.get(1));
                     break;
 
                 case "items":
                     System.out.println("Itemlist of " + character.getName() + ":");
+                    if(character.getItems() == null){
+                        System.out.println("There are no items in your pocket");
+                        break;
+                    }
                     for(Item item: character.getItems()){
-                        System.out.println(item);
+                        System.out.println(item.name);
                     }
                     break;
 
@@ -144,6 +150,7 @@ public class GameRoundLogic {
         }
         return true;
     }
+
     //moves the character and updates references
     public boolean moveToTarget(Character character, RoomField target, RoomField current){
         if(target != null){
@@ -154,6 +161,22 @@ public class GameRoundLogic {
         }else return false;
     }
 
+    public void  useItem(Character character, String itemName){
+        for (Item item: character.getItems()){
+            if(item.name.equals(itemName)){
+                item.use(character);
+            }
+        }
+    }
+
+    public void search(Character character){
+        RoomField field = character.getPosition();
+        for(Item item: field.getItemList()){
+            item.pickUpItem(character);
+        }
+    }
+
+    //returns the room that is in the direction of given room
     public RoomField getTargetRoom(RoomField current, Direction direction){
         RoomField target = null;
         ArrayList<Integer> cords = current.getCoordinates();

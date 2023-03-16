@@ -1,3 +1,6 @@
+import backend.artifacts.items.Item;
+import backend.artifacts.items.magicpotions.HealingPotion;
+import backend.artifacts.items.magicpotions.InvisibilityPotion;
 import backend.character.Character;
 import backend.character.Fighter;
 import backend.character.Monster;
@@ -18,16 +21,23 @@ public class Main {
     static GameBoard gameBoard;
     static List<Character> characterList = new ArrayList<>();
     public static void main(String[] args) {
-        init();
+        testInit();
         while (true){
             run();
         }
     }
 
-    public static void init(){
+    public
+
+    public static void testInit(){
         gameBoard = new GameBoard(20);
         gameBoard.generateMap();
-        Character testChar = new Fighter(Race.HUM,"test", 10,10,10,10,10,null, null, null);
+        HealingPotion i1 = new HealingPotion("healingpotion", "healingpotion");
+        InvisibilityPotion i2 = new InvisibilityPotion("InvisibilityPotion", "InvisibilityPotion");
+        ArrayList<Item> itemArrayList = new ArrayList<>();
+        itemArrayList.add(i1);
+        itemArrayList.add(i2);
+        Character testChar = new Fighter(Race.HUM,"test", 10,10,10,10,10,itemArrayList, null, null);
         Character testChar2 = new Thief(Race.HUM,"test", 10,10,10,10,10,null, null, null);
         Character testChar3 = new Monster("test", 10,10,10,10,10,10, 10, 10, null, null, null);
         characterList.add(testChar);

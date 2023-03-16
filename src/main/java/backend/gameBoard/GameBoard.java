@@ -1,5 +1,6 @@
 package backend.gameBoard;
 
+import backend.artifacts.items.Item;
 import backend.character.Character;
 import backend.character.Fighter;
 import backend.character.Monster;
@@ -87,9 +88,55 @@ public class GameBoard {
                             board[x][y] = new RoomField(RoomType.Door, x, y);
                         }
                     }
+
                 }
             }
         }
+    }
+
+    public Item placeItems(){
+        double rnd = Math.random()*100;
+        switch ((int)rnd){
+            case 0://Chainmail
+                break;
+            case 1://LeatherArmour
+                break;
+            case 2://Scalemail
+                break;
+            case 3://Shield
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            case 10:
+                break;
+            case 11:
+                break;
+            case 12:
+                break;
+            case 13:
+                break;
+            case 14:
+                break;
+            case 15:
+                break;
+            case 16:
+                break;
+            case 17:
+                break;
+            case 18:
+                break;
+        }
+        return null
     }
 
     public boolean isHallway(int x, int y){
