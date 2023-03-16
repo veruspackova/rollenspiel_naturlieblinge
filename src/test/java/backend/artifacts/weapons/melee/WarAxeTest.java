@@ -22,7 +22,6 @@ class WarAxeTest {
     void rollDamage() {
         WarAxe axe = new WarAxe();
         int roll = axe.rollDamage();
-
         assertTrue(roll > 0);
         assertTrue(roll < 7);
     }

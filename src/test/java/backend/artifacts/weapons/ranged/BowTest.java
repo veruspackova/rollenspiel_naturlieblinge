@@ -17,6 +17,7 @@ class BowTest {
         Bow bow = new Bow();
         assertEquals(0, bow.getRequiredStrength());
     }
+
     @Test
     void rollDamage() {
         Bow bow = new Bow();
@@ -25,4 +26,5 @@ class BowTest {
         assertTrue(roll > 0);
         assertTrue(roll < 9);
     }
+
 }

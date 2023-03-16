@@ -22,10 +22,8 @@ class DartTest {
     void rollDamage() {
         Dart dart = new Dart();
         int roll = dart.rollDamage();
-
         assertTrue(roll > 0);
         assertTrue(roll < 5);
     }
-
 
 }
