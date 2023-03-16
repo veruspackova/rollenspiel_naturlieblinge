@@ -17,11 +17,11 @@ public class FightRound {
         int initiative2 = rollInitiative(fighter2.getStatModifier(Stat.DEX));
 
         if (Integer.max(initiative1, initiative2) == initiative1) {
-            this.target = fighter1;
-            this.attacker = fighter2;
-        } else {
-            this.target = fighter2;
             this.attacker = fighter1;
+            this.target = fighter2;
+        } else {
+            this.attacker = fighter2;
+            this.target = fighter1;
         }
     }
 
