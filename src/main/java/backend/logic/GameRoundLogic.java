@@ -1,6 +1,8 @@
 package backend.logic;
 
 import backend.artifacts.items.Item;
+import backend.artifacts.weapons.RangedSimpleWeapon;
+import backend.artifacts.weapons.WeaponBase;
 import backend.character.Character;
 import backend.enums.Direction;
 import backend.gameBoard.GameBoard;
@@ -57,12 +59,15 @@ public class GameRoundLogic {
                 case "fight":
                     RoomField fieldToAttack = getFacingPosition();
 
-                    if (input.size() == 3
-                            && Integer.parseInt(input.get(1)) > 0
-                            && Integer.parseInt(input.get(2)) > 0) {
-                        int cordX = Integer.parseInt(input.get(1));
-                        int cordY = Integer.parseInt(input.get(2));
-                        fieldToAttack = gameBoard.board[cordX][cordY];
+                    if (input.size() == 2) {
+                        int targetDistance = Integer.parseInt(input.get(1));
+                        WeaponBase w = character.getSelectedWeapon();
+                        if (w instanceof RangedSimpleWeapon && ((RangedSimpleWeapon) w).getRange() >= targetDistance) {
+                            fieldToAttack = getFacingPosition(targetDistance);
+                        } else {
+                            System.out.println("You can't reach that far");
+                            break;
+                        }
                     }
 
                     if (fieldToAttack.getCharacter() != null) {
@@ -130,6 +135,11 @@ public class GameRoundLogic {
 
     }
 
+    private RoomField getFacingPosition(int distance) {
+        RoomField current = character.getPosition();
+        return getNextFieldByDirection(current, character.getDirection(), distance);
+    }
+
     private RoomField getFacingPosition() {
         RoomField current = character.getPosition();
         return getNextFieldByDirection(current, character.getDirection());
@@ -168,6 +178,21 @@ public class GameRoundLogic {
             case SouthWest -> gameBoard.board[cords.get(0) + 1][cords.get(1) - 1];
             case West -> gameBoard.board[cords.get(0)][cords.get(1) - 1];
             case NorthWest -> gameBoard.board[cords.get(0) - 1][cords.get(1) - 1];
+        };
+    }
+
+    public RoomField getNextFieldByDirection(RoomField currentField, Direction direction, int distance) {
+        ArrayList<Integer> cords = currentField.getCoordinates();
+
+        return switch (direction) {
+            case North -> gameBoard.board[cords.get(0) - distance][cords.get(1)];
+            case NorthEast -> gameBoard.board[cords.get(0) - distance][cords.get(1) + distance];
+            case East -> gameBoard.board[cords.get(0)][cords.get(1) + distance];
+            case SouthEast -> gameBoard.board[cords.get(0) + distance][cords.get(1) + distance];
+            case South -> gameBoard.board[cords.get(0) + distance][cords.get(1)];
+            case SouthWest -> gameBoard.board[cords.get(0) + distance][cords.get(1) - distance];
+            case West -> gameBoard.board[cords.get(0)][cords.get(1) - distance];
+            case NorthWest -> gameBoard.board[cords.get(0) - distance][cords.get(1) - distance];
         };
     }
 }
