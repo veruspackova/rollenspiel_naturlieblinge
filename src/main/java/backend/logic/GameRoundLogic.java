@@ -70,7 +70,7 @@ public class GameRoundLogic {
                         }
                     }
 
-                    if (fieldToAttack.getCharacter() != null) {
+                    if (fieldToAttack != null && fieldToAttack.getCharacter() != null) {
                         Character target = fieldToAttack.getCharacter();
                         FightRound fightRound = new FightRound(character, target);
                         fightRound.singleRound();
@@ -118,6 +118,11 @@ public class GameRoundLogic {
 
                 case "turn":
                     Direction temp = character.getDirection();
+                    if (input.size() != 2) {
+                        System.out.println("please enter a direction!");
+                        break;
+                    }
+
                     switch (input.get(1)) {
                         case "north" -> temp = Direction.North;
                         case "west" -> temp = Direction.West;
