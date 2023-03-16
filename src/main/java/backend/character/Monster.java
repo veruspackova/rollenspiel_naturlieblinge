@@ -2,6 +2,7 @@ package backend.character;
 
 import backend.artifacts.items.Item;
 import backend.artifacts.weapons.WeaponBase;
+import backend.artifacts.weapons.melee.NoWeapon;
 import backend.enums.Race;
 import backend.enums.Stat;
 import backend.logic.Dice;
@@ -17,5 +18,9 @@ public class Monster extends Character{
         setArmourClass(armourClass);
         setAttackDice(new Dice(hitDice));
         super.setHitDiceAvailable(0);
+    }
+
+    public Monster(String name) {
+        this(name,10, 10, 10, 10, 10, 5, 0, 5, new ArrayList<>(), new NoWeapon(), new ArrayList<>());
     }
 }

@@ -2,6 +2,7 @@ package backend.character;
 
 import backend.artifacts.items.Item;
 import backend.artifacts.weapons.WeaponBase;
+import backend.artifacts.weapons.melee.NoWeapon;
 import backend.enums.Race;
 import backend.enums.Stat;
 import backend.logic.Dice;
@@ -23,5 +24,13 @@ public class Fighter extends Character {
 
         setArmourClass(13);
         setAttackDice(new Dice(10));
+    }
+
+    public Fighter(Race race, String name) {
+        this(race, name, 10, 10, 10, 10, 10, new ArrayList<>(), new NoWeapon(), new ArrayList<>());
+    }
+
+    public Fighter(Race race, String name, int strength, int dexterity, int constitution, int intelligence, int wisdom) {
+        this(race, name, strength, dexterity, constitution, intelligence, wisdom, new ArrayList<>(), new NoWeapon(), new ArrayList<>());
     }
 }
