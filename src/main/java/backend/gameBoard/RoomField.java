@@ -3,12 +3,9 @@ package backend.gameBoard;
 import backend.enums.RoomType;
 import backend.artifacts.items.Item;
 import backend.character.Character;
-import javax.xml.crypto.dsig.keyinfo.KeyValue;
-import java.security.KeyPair;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * RoomFiled class
@@ -20,7 +17,8 @@ import java.util.Map;
  * @author jonasmalsbenden
  */
 public class RoomField {
-    private Map<Integer, Integer> coordinates = new HashMap<>();
+    //coordinates give the coordinates of this RoomField. index 0 is x, index 1 is y
+    private ArrayList<Integer> coordinates = new ArrayList<>();
     /**
      * Room type
      * (gives information about the type of field)
@@ -42,7 +40,8 @@ public class RoomField {
      */
     public RoomField(RoomType roomType, int x, int y){
         this.roomType = roomType;
-        this.coordinates.put(x, y);
+        this.coordinates.add(x);
+        this.coordinates.add(y);
     }
     /**
      * Constructor
@@ -59,7 +58,8 @@ public class RoomField {
     public RoomField(RoomType roomType, Character character, int x, int y){
         this.roomType = roomType;
         this.character = character;
-        this.coordinates.put(x, y);
+        this.coordinates.add(x);
+        this.coordinates.add(y);
     }
     /**
      * Constructor
@@ -69,7 +69,8 @@ public class RoomField {
         this.roomType = roomType;
         this.itemList.add(item);
         this.character = character;
-        this.coordinates.put(x, y);
+        this.coordinates.add(x);
+        this.coordinates.add(y);
     }
     //getter
     public Character getCharacter() {
@@ -82,7 +83,7 @@ public class RoomField {
         return itemList;
     }
 
-    public Map<Integer, Integer> getCoordinates() {
+    public ArrayList<Integer> getCoordinates() {
         return coordinates;
     }
     //setter
@@ -106,6 +107,7 @@ public class RoomField {
     }
 
     public void setCoordinates(int x, int y) {
-        this.coordinates.put(x, y);
+        this.coordinates.add(x);
+        this.coordinates.add(y);
     }
 }

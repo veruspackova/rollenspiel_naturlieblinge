@@ -5,6 +5,7 @@ package backend.character;
 //-- Attack/Damage: d8
 
 import backend.artifacts.items.Item;
+import backend.artifacts.weapons.WeaponBase;
 import backend.enums.Race;
 import backend.enums.Stat;
 import backend.logic.Dice;
@@ -16,8 +17,8 @@ public class Wizard extends Character {
     private int slotsHeal;
 
     // Beginning items: dagger
-    public Wizard(Race race, String name, int strength, int dexterity, int constitution, int intelligence, int wisdom, ArrayList<Item> items) {
-        super(race, name, strength, dexterity, constitution, intelligence, wisdom, items);
+    public Wizard(Race race, String name, int strength, int dexterity, int constitution, int intelligence, int wisdom, ArrayList<Item> items, WeaponBase selectedWeapon, ArrayList<WeaponBase> weapons) {
+        super(race, name, strength, dexterity, constitution, intelligence, wisdom, items, selectedWeapon, weapons);
         initialiseSpellSlots();
 
         setHitPoints(8 + getStatModifier(Stat.CON));
