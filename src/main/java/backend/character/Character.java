@@ -131,7 +131,7 @@ public abstract class Character {
         getPosition().setCharacter(null);
         setPosition(null);
 
-        System.out.println(getName() + "died");
+        System.out.println(getName() + " died :(");
     }
 
     public int getArmourClass() {
