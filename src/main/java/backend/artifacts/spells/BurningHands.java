@@ -1,29 +1,41 @@
-//package backend.artifacts.spells;
-//
-//import backend.enums.Stat;
-//import backend.logic.Attack;
-//import backend.logic.Dice;
-//import backend.character.Character;
-//
-//public class BurningHands implements Spell, Attack {
-//
-//
-//    final private Dice dice;
-//
-//    public BurningHands() { dice = new Dice(6); }
-//
-//    public void cast(Character target) {
-//        int hp = target.getHitPoints() - this.rollDamage();
-//        target.setHitPoints(hp);
-//    }
-//
-//    @Override
-//    public int rollDamage() {
-//        return dice.roll() + dice.roll() + dice.roll();
-//    }
-//
-//    public boolean isAttackSuccessful(int targetAC) {
-//        Dice d20 = new Dice(20);
-//        return d20.roll() >= targetAC + player.getProficiencyBonus() + player.getStatModifier(Stat.INT);
-//    }
-//}
+package backend.artifacts.spells;
+
+import backend.artifacts.weapons.WeaponBase;
+import backend.character.Character;
+import backend.character.Wizard;
+import backend.enums.Stat;
+import backend.logic.Dice;
+
+import java.util.ArrayList;
+
+public class BurningHands extends WeaponBase implements Spell {
+
+    public BurningHands() {
+        super(new Dice(6));
+    }
+
+    public void cast(Wizard caster, ArrayList<Character> targets) {
+        if (caster.getSlotsBurningHands() > 0) {
+            int initialDamage = rollDamage();
+
+            for (Character target : targets) {
+                int dmg = initialDamage;
+                boolean saveSucceeded = target.getSavingThrowSuccessful(Stat.DEX, caster.getSpellDC());
+
+                if (saveSucceeded) {
+                    dmg = Math.floorDiv(initialDamage, 2);
+                }
+
+                int newHP = target.getHitPoints() - dmg;
+                target.setHitPoints(newHP);
+            }
+
+            caster.setSlotsBurningHands(caster.getSlotsBurningHands() - 1);
+        }
+    }
+
+    @Override
+    public int rollDamage() {
+        return super.rollDamage() + super.rollDamage() + super.rollDamage();
+    }
+}
