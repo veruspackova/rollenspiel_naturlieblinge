@@ -4,10 +4,11 @@ import backend.artifacts.weapons.WeaponBase;
 import backend.character.Character;
 import backend.enums.Stat;
 
+
 public class FightRound {
     private final Dice d20;
-    private final Character first;
-    private final Character second;
+    private Character target;
+    private Character attacker;
 
     public FightRound(Dice d20, Character fighter1, Character fighter2) {
         this.d20 = d20;
@@ -16,11 +17,11 @@ public class FightRound {
         int initiative2 = rollInitiative(fighter2.getStatModifier(Stat.DEX));
 
         if (Integer.max(initiative1, initiative2) == initiative1) {
-            this.first = fighter1;
-            this.second = fighter2;
+            this.target = fighter1;
+            this.attacker = fighter2;
         } else {
-            this.first = fighter2;
-            this.second = fighter1;
+            this.target = fighter2;
+            this.attacker = fighter1;
         }
     }
 
@@ -29,13 +30,20 @@ public class FightRound {
     }
 
     public void fightToTheDeath() {
-        while (second.getHitPoints() > 0 && first.getHitPoints() > 0) {
-            attack(first, second);
-            attack(second, first);
+        while (attacker.getHitPoints() > 0 && target.getHitPoints() > 0) {
+            attack();
+            swapRoles();
         }
     }
 
-    private void attack(Character attacker, Character target) {
+    public void singleRound() {
+        attack();
+        swapRoles();
+        attack();
+        swapRoles();
+    }
+
+    private void attack() {
         if (isAttackSuccessful(attacker, target)) {
             WeaponBase w = attacker.getSelectedWeapon();
             int extraDamage = attacker.getStatModifier(w.getWeaponProficiencyStat());
@@ -49,31 +57,8 @@ public class FightRound {
         }
     }
 
-//    private Collection<Character> calculateInitiative() {
-//        Map<Integer, Character> fightOrderList = new TreeMap<>(Comparator.reverseOrder());
-//        ArrayList<Character> characters = new ArrayList<>();
-//        characters.add(character1);
-//        characters.add(character2);
-//
-//        for (Character c : characters) {
-//            int dex = c.getStatModifier(Stat.DEX);
-//            int initiative = rollInitiative(dex);
-//            boolean positionFound = false;
-//
-//            while (!positionFound) {
-//                if (!fightOrderList.containsKey(initiative)) {
-//                    fightOrderList.put(initiative, c);
-//                    positionFound = true;
-//                } else {
-//                    initiative = rollInitiative(dex);
-//                }
-//            }
-//        }
-//
-//        return fightOrderList.values();
-//    }
-
-    public boolean isAttackSuccessful(Character attacker, Character target) {
+    // should probably be a separate class
+    private boolean isAttackSuccessful(Character attacker, Character target) {
         int bonus = attacker.getStatModifier(attacker.getSelectedWeapon().getWeaponProficiencyStat());
         int attackRoll = d20.roll() + bonus;
         int targetDefence = target.getArmourClass() + target.getArmour().getAcBonus();
@@ -84,5 +69,10 @@ public class FightRound {
         return d20.roll() + statModifier;
     }
 
-
+    private void swapRoles() {
+        Character tmp = attacker;
+        attacker = target;
+        target = tmp;
+        System.out.println("roles swapped");
+    }
 }
