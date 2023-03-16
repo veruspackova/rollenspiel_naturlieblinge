@@ -1,9 +1,11 @@
 package backend.character;
 
+import backend.artifacts.ISearchable;
 import backend.artifacts.armour.BaseArmour;
 import backend.artifacts.armour.NoArmour;
 import backend.artifacts.items.Item;
 import backend.artifacts.weapons.WeaponBase;
+import backend.artifacts.weapons.melee.NoWeapon;
 import backend.enums.Direction;
 import backend.enums.Race;
 import backend.enums.Stat;
@@ -106,12 +108,30 @@ public abstract class Character {
             this.hitPoints = hitPoints;
         } else {
             this.hitPoints = 0;
-            List<Item> itemList = getPosition().getItemList();
-            itemList.addAll(getItems());
-            getPosition().setItemList(itemList);
-            getPosition().setCharacter(null);
-            setPosition(null);
+            characterDies();
         }
+    }
+
+    private void characterDies() {
+        List<ISearchable> itemList = getPosition().getItemList();
+
+        itemList.addAll(getItems());
+        setItems(new ArrayList<>());
+
+        itemList.addAll(getWeapons());
+        setWeapons(new ArrayList<>());
+
+        itemList.add(getSelectedWeapon());
+        setSelectedWeapon(new NoWeapon());
+
+        itemList.add(getArmour());
+        setArmour(new NoArmour());
+
+        getPosition().setItemList(itemList);
+        getPosition().setCharacter(null);
+        setPosition(null);
+
+        System.out.println(getName() + "died");
     }
 
     public int getArmourClass() {
