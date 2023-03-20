@@ -5,7 +5,9 @@ import backend.artifacts.spells.Spell;
 import backend.artifacts.weapons.RangedSimpleWeapon;
 import backend.artifacts.weapons.WeaponBase;
 import backend.character.Character;
+import backend.character.Wizard;
 import backend.enums.Direction;
+import backend.enums.Spells;
 import backend.gameBoard.GameBoard;
 import backend.gameBoard.RoomField;
 import backend.input.InputClass;
@@ -14,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 
 public class GameRoundLogic {
@@ -56,7 +59,15 @@ public class GameRoundLogic {
             } catch (IOException e) {
 
             }
-            switch (input != null ? input.get(0) : "rest") {
+
+            String playerAction;
+            if (input != null) {
+                playerAction = input.get(0);
+            } else {
+                playerAction = "rest";
+            }
+
+            switch (playerAction) {
                 case "fight":
                     RoomField fieldToAttack = getFacingPosition();
 
@@ -84,6 +95,25 @@ public class GameRoundLogic {
                     } else {
                         System.out.println("You hit nothing");
                         return;
+                    }
+                    break;
+
+                case "cast":
+                    if (character instanceof Wizard) {
+                        int availableRange = 0;
+                        if (input.size() != 2) {
+                            System.out.println("please choose which spell to cast");
+                            System.out.println(Arrays.toString(Spells.values()));
+                            break;
+                        } else {
+                            Spells spell = Spells.values()[Integer.parseInt(input.get(1))];
+                            Class<? extends Spell> chosenSpell = spell.getSpellName();
+                            // todo: figure out targets!
+                            chosenSpell.cast(character);
+                        }
+
+                    } else {
+                        System.out.println("only wizards can cast spells!");
                     }
                     break;
 
@@ -142,6 +172,8 @@ public class GameRoundLogic {
                     }
                     character.turn(temp);
                     break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + playerAction);
             }
         }
 

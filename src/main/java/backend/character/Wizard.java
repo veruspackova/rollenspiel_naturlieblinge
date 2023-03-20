@@ -8,6 +8,7 @@ import backend.artifacts.items.Item;
 import backend.artifacts.weapons.WeaponBase;
 import backend.artifacts.weapons.melee.NoWeapon;
 import backend.enums.Race;
+import backend.enums.Spells;
 import backend.enums.Stat;
 import backend.logic.Dice;
 
@@ -50,6 +51,18 @@ public class Wizard extends Character {
         slotsHeal = 2;
         slotsRayOfFrost = 1;
         slotsBurningHands = 1;
+    }
+
+    public int getSpellSlotsAvailable(Spells spell) {
+        int value = 0;
+
+        switch (spell) {
+            case BURNING_HANDS -> value = slotsBurningHands;
+            case RAY_OF_FROST -> value = slotsRayOfFrost;
+            case HEAL -> value = slotsHeal;
+        }
+
+        return value;
     }
 
     /**
