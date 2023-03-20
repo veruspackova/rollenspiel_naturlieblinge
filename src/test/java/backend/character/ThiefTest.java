@@ -2,7 +2,6 @@ package backend.character;
 
 import backend.artifacts.items.Item;
 import backend.artifacts.weapons.WeaponBase;
-import backend.artifacts.weapons.melee.Club;
 import backend.artifacts.weapons.melee.NoWeapon;
 import backend.enums.Race;
 import backend.enums.Stat;

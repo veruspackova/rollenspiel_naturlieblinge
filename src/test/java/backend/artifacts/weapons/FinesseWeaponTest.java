@@ -1,6 +1,5 @@
 package backend.artifacts.weapons;
 
-
 import backend.logic.Dice;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

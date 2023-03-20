@@ -1,7 +1,5 @@
 package backend.artifacts.weapons;
 
-import backend.artifacts.weapons.melee.WarAxe;
-import backend.enums.Stat;
 import backend.logic.Dice;
 import org.junit.jupiter.api.Test;
 

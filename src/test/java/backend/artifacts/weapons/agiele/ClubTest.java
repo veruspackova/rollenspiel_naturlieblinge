@@ -1,5 +1,6 @@
-package backend.artifacts.weapons.melee;
+package backend.artifacts.weapons.agiele;
 
+import backend.artifacts.weapons.agiele.Club;
 import backend.enums.Stat;
 import org.junit.jupiter.api.Test;
 
