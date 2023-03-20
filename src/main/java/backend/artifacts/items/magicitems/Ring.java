@@ -4,9 +4,13 @@ import backend.artifacts.items.Item;
 import backend.character.Character;
 import backend.enums.Stat;
 
-public class Ring implements Item {
+public class Ring extends Item {
 
     boolean wearing = false;
+
+    public Ring(String name, String description) {
+        super(name, description);
+    }
 
     @Override
     public void use(Character character) {
