@@ -55,7 +55,7 @@ public class GameRoundLogic {
             } catch (IOException e) {
 
             }
-            switch (input != null ? input.get(0) : "rest") {
+            switch (input != null ? input.get(0) : "rest") { //@todo maybe make this better readable
                 case "fight":
                     RoomField fieldToAttack = getFacingPosition();
 
