@@ -1,6 +1,20 @@
 package backend.gameBoard;
 
+import backend.artifacts.ISearchable;
+import backend.artifacts.armour.Chainmail;
+import backend.artifacts.armour.LeatherArmour;
+import backend.artifacts.armour.Scalemail;
+import backend.artifacts.armour.Shield;
 import backend.artifacts.items.Item;
+import backend.artifacts.items.magicitems.Amulet;
+import backend.artifacts.items.magicitems.Cape;
+import backend.artifacts.items.magicitems.Ring;
+import backend.artifacts.items.magicpotions.HealingPotion;
+import backend.artifacts.items.magicpotions.InvisibilityPotion;
+import backend.artifacts.items.magicpotions.Poison;
+import backend.artifacts.weapons.melee.*;
+import backend.artifacts.weapons.ranged.Bow;
+import backend.artifacts.weapons.ranged.Dart;
 import backend.character.Character;
 import backend.character.Fighter;
 import backend.character.Monster;
@@ -86,6 +100,7 @@ public class GameBoard {
                         double rnd = Math.random();
                         if(rnd >= 0.8){
                             board[x][y] = new RoomField(RoomType.Door, x, y);
+                            board[x][y].addItem(placeItems());
                         }
                     }
 
@@ -94,49 +109,49 @@ public class GameBoard {
         }
     }
 
-    public Item placeItems(){
+    public ISearchable placeItems(){
         double rnd = Math.random()*100;
         switch ((int)rnd){
             case 0://Chainmail
-                break;
+                return new Chainmail();
             case 1://LeatherArmour
-                break;
+                return new LeatherArmour();
             case 2://Scalemail
-                break;
+                return new Scalemail();
             case 3://Shield
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                break;
-            case 7:
-                break;
-            case 8:
-                break;
-            case 9:
-                break;
-            case 10:
-                break;
-            case 11:
-                break;
-            case 12:
-                break;
-            case 13:
-                break;
-            case 14:
-                break;
-            case 15:
-                break;
-            case 16:
-                break;
-            case 17:
-                break;
-            case 18:
-                break;
+                return new Shield();
+            case 4://Amulet
+                return new Amulet("Amulet", "Amulet");
+            case 5://Cape
+                return new Cape("Cape", "Cape");
+            case 6://Ring
+                return new Ring("Ring", "Ring");
+            case 7://HealingPotion
+                return new HealingPotion("Healing Potion", "Healing Potion");
+            case 8://InvisibilityPotion
+                return new InvisibilityPotion("Invisibility Potion", "Invisibility Potion");
+            case 9://Poison
+                return new Poison("Poison Potion", "Poison Potion");
+            case 10://Club
+                return new Club();
+            case 11://Dagger
+                return new Dagger();
+            case 12://Handaxe
+                return new HandAxe();
+            case 13://Rapier
+                return new Rapier();
+            case 14://Spear
+                return new Spear();
+            case 15://Sword
+                return new Sword();
+            case 16://Waraxe
+                return new WarAxe();
+            case 17://Bow
+                return new Bow();
+            case 18://Dart
+                return new Dart();
         }
-        return null
+        return null;
     }
 
     public boolean isHallway(int x, int y){

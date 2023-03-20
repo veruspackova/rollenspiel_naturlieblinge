@@ -27,7 +27,6 @@ public class Main {
         }
     }
 
-    public
 
     public static void testInit(){
         gameBoard = new GameBoard(20);
