@@ -7,4 +7,5 @@ public class NoWeapon extends WeaponBase {
     public NoWeapon() {
         super(new Dice(1));
     }
+
 }
