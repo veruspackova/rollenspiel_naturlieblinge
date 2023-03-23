@@ -6,9 +6,12 @@ package backend.character;
 //-- Attack/Damage: d8
 
 
+import backend.artifacts.armour.LeatherArmour;
 import backend.artifacts.items.Item;
 import backend.artifacts.weapons.WeaponBase;
+import backend.artifacts.weapons.melee.Dagger;
 import backend.artifacts.weapons.melee.NoWeapon;
+import backend.artifacts.weapons.melee.Rapier;
 import backend.enums.Race;
 import backend.enums.Stat;
 import backend.logic.Dice;
@@ -27,9 +30,28 @@ public class Thief extends Character {
 
         setArmourClass(10);
         setAttackDice(new Dice(8));
+
+
     }
 
     public Thief(Race race, String name) {
-        this(race, name, 10, 10, 10, 10, 10, new ArrayList<>(), new NoWeapon(), new ArrayList<>());
+        this(race, name, 10, 10, 10, 10, 10);
+    }
+
+    public Thief(Race race, String name, int strength, int dexterity, int constitution, int intelligence, int wisdom) {
+        super(race, name, strength, dexterity, constitution, intelligence, wisdom, new ArrayList<>(), new NoWeapon(), new ArrayList<>());
+        setHitPoints(8 + getStatModifier(Stat.CON));
+        setHitDiceAvailable(1);
+        setHitDice(new Dice(8));
+
+        setArmourClass(10);
+        setAttackDice(new Dice(8));
+
+        WeaponBase rapier = new Rapier();
+        setSelectedWeapon(rapier);
+        addWeapon(rapier);
+        addWeapon(new Dagger());
+        addWeapon(new Dagger());
+        setArmour(new LeatherArmour());
     }
 }

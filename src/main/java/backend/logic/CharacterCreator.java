@@ -20,37 +20,39 @@ public class CharacterCreator {
 
     public Character create()
     {
+        System.out.println("Character creation");
         String characterClass = this.getCharacterClass();
-
+        String characterName = this.getCharacterName();
+        Race characterRace = this.getCharacterRace();
         Map<Stat, Integer> characterStats = this.getCharacterStats();
-
+        Character character = switch (characterClass) {
+            case "fighter" -> new Fighter(characterRace, characterName, characterStats.get(Stat.STR), characterStats.get(Stat.DEX), characterStats.get(Stat.CON), characterStats.get(Stat.INT), characterStats.get(Stat.WIS));
+            case "thief" -> new Thief(characterRace, characterName, characterStats.get(Stat.STR), characterStats.get(Stat.DEX), characterStats.get(Stat.CON), characterStats.get(Stat.INT), characterStats.get(Stat.WIS));
+            case "wizard" -> new Wizard(characterRace, characterName, characterStats.get(Stat.STR), characterStats.get(Stat.DEX), characterStats.get(Stat.CON), characterStats.get(Stat.INT), characterStats.get(Stat.WIS));
+            default -> new Fighter(Race.NONE, "Invalid");
+        };
 
         return character;
     }
 
     private String getCharacterClass()
     {
-        boolean successfulInput = false;
         System.out.println("What type of character do you want to create?");
         String characterClass = "";
-        while (!successfulInput) {
+        while (true) {
             try {
                 characterClass = inputClass.read().get(0);
-                successfulInput = true;
             } catch (Exception e) {
                 System.out.println("Invalid input.");
             }
-            switch (characterClass)
-            {
-                case "fighter":
-                case "thief":
-                case "wizard":
+            switch (characterClass) {
+                case "fighter", "thief", "wizard" -> {
                     return characterClass;
-                default:
-                    System.out.println("This is not an available class.");
+                }
+                default -> System.out.println("This is not an available class.");
+
             }
         }
-        return "";
     }
 
     private Race getCharacterRace()
@@ -62,26 +64,24 @@ public class CharacterCreator {
             try {
                 String raceString = inputClass.read().get(0);
                 switch (raceString) {
-                    case "human":
+                    case "human" -> {
                         characterRace = Race.HUM;
                         successfulInput = true;
-                        break;
-                    case "dwarf":
+                    }
+                    case "dwarf" -> {
                         characterRace = Race.DWA;
                         successfulInput = true;
-                        break;
-                    case "elf":
+                    }
+                    case "elf" -> {
                         characterRace = Race.ELF;
                         successfulInput = true;
-                        break;
-                    case "hobbit":
+                    }
+                    case "hobbit" -> {
                         characterRace = Race.HOB;
                         successfulInput = true;
-                        break;
-                    default:
-                        System.out.println("Invalid race. Please enter a valid race");
+                    }
+                    default -> System.out.println("Invalid race. Please enter a valid race");
                 }
-                successfulInput = true;
             } catch (Exception e) {
                 System.out.println("Invalid input.");
             }
@@ -108,64 +108,58 @@ public class CharacterCreator {
     private Map<Stat, Integer> getCharacterStats()
     {
         //15,14,13,12,11
-        Map<Stat, Integer> statMap = new HashMap<Stat, Integer>();
+        Map<Stat, Integer> statMap = new HashMap<>();
         for (int i = 15; i > 10; i--) {
             boolean successfulInput = false;
             System.out.println("Where do you want to allocate " + i + " points?");
-            String characterStat = "";
             while (!successfulInput) {
                 try {
-                    characterStat = inputClass.read().get(0);
-                    switch (characterStat)
-                    {
-                        case "strength":
+                    String characterStat = inputClass.read().get(0);
+                    switch (characterStat) {
+                        case "strength" -> {
                             if (statMap.get(Stat.STR) == null) {
                                 statMap.put(Stat.STR, i);
-                            }
-                            else {
+                            } else {
                                 i++;
                                 System.out.println("You already allocated a value to this stat. Please allocate the points to a different stat.");
                             }
-                            break;
-                        case "dexterity":
+                        }
+                        case "dexterity" -> {
                             if (statMap.get(Stat.DEX) == null) {
                                 statMap.put(Stat.DEX, i);
-                            }
-                            else {
+                            } else {
                                 i++;
                                 System.out.println("You already allocated a value to this stat. Please allocate the points to a different stat.");
                             }
-                            break;
-                        case "constitution":
+                        }
+                        case "constitution" -> {
                             if (statMap.get(Stat.CON) == null) {
                                 statMap.put(Stat.CON, i);
-                            }
-                            else {
+                            } else {
                                 i++;
                                 System.out.println("You already allocated a value to this stat. Please allocate the points to a different stat.");
                             }
-                            break;
-                        case "intelligence":
+                        }
+                        case "intelligence" -> {
                             if (statMap.get(Stat.INT) == null) {
                                 statMap.put(Stat.INT, i);
-                            }
-                            else {
+                            } else {
                                 i++;
                                 System.out.println("You already allocated a value to this stat. Please allocate the points to a different stat.");
                             }
-                            break;
-                        case "wisodm":
+                        }
+                        case "wisdom" -> {
                             if (statMap.get(Stat.WIS) == null) {
                                 statMap.put(Stat.WIS, i);
-                            }
-                            else {
+                            } else {
                                 i++;
                                 System.out.println("You already allocated a value to this stat. Please allocate the points to a different stat.");
                             }
-                            break;
-                        default:
+                        }
+                        default -> {
                             i++;
                             System.out.println("Please allocate the points.");
+                        }
                     }
                     successfulInput = true;
                 } catch (Exception e) {
