@@ -5,7 +5,9 @@ import backend.artifacts.weapons.WeaponBase;
 import backend.artifacts.weapons.melee.Club;
 import backend.artifacts.weapons.melee.NoWeapon;
 import backend.enums.Race;
+import backend.enums.RoomType;
 import backend.enums.Stat;
+import backend.gameBoard.RoomField;
 import backend.logic.Dice;
 import org.junit.jupiter.api.Test;
 
@@ -17,19 +19,20 @@ class ThiefTest {
 
     @Test
     void testGetRace() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>(), new NoWeapon(),new ArrayList<WeaponBase>());
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
         assertEquals(Race.HOB, t.getRace());
     }
 
     @Test
     void testGetName() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>(), new NoWeapon(),new ArrayList<WeaponBase>());
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
         assertEquals("Thief", t.getName());
     }
 
     @Test
     void testSetHitPoints() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>(), new NoWeapon(),new ArrayList<WeaponBase>());
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
+        t.setPosition(new RoomField(RoomType.Room, t, 1,1));
         assertEquals(10, t.getHitPoints());
 
         t.setHitPoints(0);
@@ -38,7 +41,7 @@ class ThiefTest {
 
     @Test
     void testSetArmourClass() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>(), new NoWeapon(),new ArrayList<WeaponBase>());
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
         assertEquals(10, t.getArmourClass());
 
         t.setArmourClass(20);
@@ -47,7 +50,7 @@ class ThiefTest {
 
     @Test
     void testSetHitDiceAvailable() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>(), new NoWeapon(),new ArrayList<WeaponBase>());
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
         assertEquals(1, t.getHitDiceAvailable());
 
         t.setHitDiceAvailable(4);
@@ -56,7 +59,7 @@ class ThiefTest {
 
     @Test
     void testGetStatModifier() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>(), new NoWeapon(),new ArrayList<WeaponBase>());
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
         assertEquals(4, t.getStatModifier(Stat.DEX));
 
         t.setDexterity(8);
@@ -71,7 +74,7 @@ class ThiefTest {
 
     @Test
     void testSetStat() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>(), new NoWeapon(),new ArrayList<WeaponBase>());
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
         assertEquals(18, t.getStat(Stat.DEX));
 
         t.setStat(Stat.DEX, 10);
@@ -80,7 +83,7 @@ class ThiefTest {
 
     @Test
     void testSetAttackDice() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>(), new NoWeapon(),new ArrayList<WeaponBase>());
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
         assertEquals(8, t.getAttackDice().getDSize());
 
         t.setAttackDice(new Dice(12));
@@ -89,7 +92,7 @@ class ThiefTest {
 
     @Test
     void testSetHitDice() {
-        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10, new ArrayList<Item>(), new NoWeapon(),new ArrayList<WeaponBase>());
+        Thief t = new Thief(Race.HOB, "Thief", 10, 16, 13, 14, 10);
         assertEquals(8, t.getHitDice().getDSize());
 
         t.setHitDice(new Dice(12));

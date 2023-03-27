@@ -1,7 +1,10 @@
 package backend.character;
 
+import backend.artifacts.weapons.melee.Dagger;
 import backend.enums.Race;
 import backend.enums.Stat;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -12,8 +15,6 @@ class RaceStatBonusHelperTest {
         RaceStatBonusHelper testObject = new RaceStatBonusHelper();
         Character testNoRace = new TestCharacter(Race.NONE, "Monster",
                 5, 5, 5, 5, 5);
-
-        testObject.addStatBonuses(testNoRace);
 
         assertEquals(5, testNoRace.getStat(Stat.STR));
         assertEquals(5, testNoRace.getStat(Stat.DEX));
@@ -28,8 +29,6 @@ class RaceStatBonusHelperTest {
         Character testNoRace = new TestCharacter(Race.HUM, "Human",
                 5, 5, 5, 5, 5);
 
-        testObject.addStatBonuses(testNoRace);
-
         assertEquals(6, testNoRace.getStat(Stat.STR));
         assertEquals(6, testNoRace.getStat(Stat.DEX));
         assertEquals(6, testNoRace.getStat(Stat.CON));
@@ -42,8 +41,6 @@ class RaceStatBonusHelperTest {
         RaceStatBonusHelper testObject = new RaceStatBonusHelper();
         Character testNoRace = new TestCharacter(Race.DWA, "Dwarf",
                 5, 5, 5, 5, 5);
-
-        testObject.addStatBonuses(testNoRace);
 
         assertEquals(7, testNoRace.getStat(Stat.STR));
         assertEquals(5, testNoRace.getStat(Stat.DEX));
@@ -59,8 +56,6 @@ class RaceStatBonusHelperTest {
         Character testNoRace = new TestCharacter(Race.ELF, "Elf",
                 5, 5, 5, 5, 5);
 
-        testObject.addStatBonuses(testNoRace);
-
         assertEquals(5, testNoRace.getStat(Stat.STR));
         assertEquals(7, testNoRace.getStat(Stat.DEX));
         assertEquals(5, testNoRace.getStat(Stat.CON));
@@ -74,8 +69,6 @@ class RaceStatBonusHelperTest {
         Character testNoRace = new TestCharacter(Race.HOB, "Hobbit",
                 5, 5, 5, 5, 5);
 
-        testObject.addStatBonuses(testNoRace);
-
         assertEquals(5, testNoRace.getStat(Stat.STR));
         assertEquals(7, testNoRace.getStat(Stat.DEX));
         assertEquals(6, testNoRace.getStat(Stat.CON));
@@ -85,7 +78,7 @@ class RaceStatBonusHelperTest {
 
     public static class TestCharacter extends Character {
         public TestCharacter(Race race, String name, int strength, int dexterity, int constitution, int intelligence, int wisdom) {
-            super(race, name, strength, dexterity, constitution, intelligence, wisdom);
+            super(race, name, strength, dexterity, constitution, intelligence, wisdom, new ArrayList<>(), new Dagger(), new ArrayList<>());
         }
     }
 }
