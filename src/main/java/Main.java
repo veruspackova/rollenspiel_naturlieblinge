@@ -9,6 +9,7 @@ import backend.enums.Race;
 import backend.gameBoard.GameBoard;
 import backend.gameBoard.RoomField;
 import backend.input.InputClass;
+import backend.logic.CharacterCreator;
 import backend.logic.GameRoundLogic;
 
 import java.io.BufferedReader;
@@ -19,14 +20,55 @@ import java.util.List;
 
 public class Main {
     static GameBoard gameBoard;
+    static InputClass input;
     static List<Character> characterList = new ArrayList<>();
     public static void main(String[] args) {
+        input = new InputClass(new BufferedReader(new InputStreamReader(System.in)));
+        init();
         testInit();
         while (true){
             run();
         }
     }
 
+    public static void init(){
+        System.out.println("How many people play? (without the gamemaster)");
+        boolean successfulInput = false;
+        int characterAmount = 0;
+        while (!successfulInput) {
+            try {
+                characterAmount = Integer.parseInt(input.read().get(0));
+                if (characterAmount < 1)
+                {
+                    throw new IllegalArgumentException();
+                }
+                successfulInput = true;
+            } catch (Exception e) {
+                System.out.println("Invalid. Try again");
+            }
+        }
+        CharacterCreator creator = new CharacterCreator(input);
+        for (int i = 0; i < characterAmount; i++)
+        {
+
+        }
+
+
+        System.out.println("How big do you want your game board to be?");
+        successfulInput = false;
+        while (!successfulInput) {
+            try {
+                int size = Integer.parseInt(input.read().get(0));
+                gameBoard = new GameBoard(size);
+                successfulInput = true;
+            } catch (Exception e) {
+                System.out.println("Invalid. Try again");
+            }
+        }
+        //@todo add more field customization
+        Character testChar = new Fighter(Race.HUM,"test");
+        Character testChar2 = new Thief(Race.HUM,"test");
+        Character testChar3 = new Monster("test");
 
     public static void testInit(){
         gameBoard = new GameBoard(20);

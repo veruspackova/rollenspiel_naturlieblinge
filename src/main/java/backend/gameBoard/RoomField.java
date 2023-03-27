@@ -4,21 +4,25 @@ import backend.artifacts.ISearchable;
 import backend.enums.RoomType;
 import backend.artifacts.items.Item;
 import backend.character.Character;
+import backend.enums.RoomType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * RoomFiled class
+ * RoomField class
  * <p>
- *     roomfields are placed on the gameboard<br>
- *     store informations about what is there
+ * RoomFields are placed on the gameboard<br>
+ * store information about what is there
  * </p>
  *
  * @author jonasmalsbenden
  */
 public class RoomField {
-    //coordinates give the coordinates of this RoomField. index 0 is x, index 1 is y
+    /**
+     * give the coordinates of this RoomField.<br>
+     * index 0 is x, index 1 is y
+     */
     private ArrayList<Integer> coordinates = new ArrayList<>();
     /**
      * Room type
@@ -32,47 +36,52 @@ public class RoomField {
     private List<ISearchable> itemList = new ArrayList<>();
     /**
      * Room character
-     * (gives information about the characters standing on this field)
+     * (gives information about the character standing on this field)
      */
     private Character character;
+
     /**
      * Constructor
-     * (generates Roomfiled without items or Characters on it)
+     * (generates RoomField without items or Characters on it)
      */
-    public RoomField(RoomType roomType, int x, int y){
+    public RoomField(RoomType roomType, int x, int y) {
         this.roomType = roomType;
         this.coordinates.add(x);
         this.coordinates.add(y);
     }
+
     /**
      * Constructor
-     * (generates Roomfiled without any Characters on it)
+     * (generates RoomField without any Characters on it)
      */
 //    public RoomField(RoomType roomType, Item item){
 //        this.roomType = roomType;
 //        this.item = item;
 //    }
+
     /**
      * Constructor
-     * (generates Roomfiled without any items on it)
+     * (generates RoomField without any items on it)
      */
-    public RoomField(RoomType roomType, Character character, int x, int y){
+    public RoomField(RoomType roomType, Character character, int x, int y) {
         this.roomType = roomType;
         this.character = character;
         this.coordinates.add(x);
         this.coordinates.add(y);
     }
+
     /**
      * Constructor
-     * (generates Roomfiled with items and characters)
+     * (generates RoomField with single item and characters)
      */
-    public RoomField(RoomType roomType, Item item, Character character, int x, int y){
+    public RoomField(RoomType roomType, ISearchable item, Character character, int x, int y) {
         this.roomType = roomType;
         this.itemList.add(item);
         this.character = character;
         this.coordinates.add(x);
         this.coordinates.add(y);
     }
+
     //getter
     public Character getCharacter() {
         return character;
@@ -84,10 +93,6 @@ public class RoomField {
         return itemList;
     }
 
-    public ArrayList<Integer> getCoordinates() {
-        return coordinates;
-    }
-    //setter
     /**
      * setCharacter
      * (place a character on this field)
@@ -95,12 +100,26 @@ public class RoomField {
     public void setCharacter(Character character) {
         this.character = character;
     }
+
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public List<ISearchable> getItemList() {
+        return itemList;
+    }
+    //setter
+
     /**
      * setItem
      * (place an item on this field)
      */
     public void setItemList(List<ISearchable> itemList) {
         this.itemList = itemList;
+    }
+    
+    public ArrayList<Integer> getCoordinates() {
+        return coordinates;
     }
 
     public void addItem(ISearchable item){
