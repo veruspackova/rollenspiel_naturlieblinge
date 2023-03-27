@@ -101,13 +101,6 @@ public class RoomField {
         this.character = character;
     }
 
-    public RoomType getRoomType() {
-        return roomType;
-    }
-
-    public List<ISearchable> getItemList() {
-        return itemList;
-    }
     //setter
 
     /**

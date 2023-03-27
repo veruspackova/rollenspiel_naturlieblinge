@@ -32,15 +32,14 @@ public class Main {
         }
     }
 
-    public static void init(){
+    public static void init() {
         System.out.println("How many people play? (without the gamemaster)");
         boolean successfulInput = false;
         int characterAmount = 0;
         while (!successfulInput) {
             try {
                 characterAmount = Integer.parseInt(input.read().get(0));
-                if (characterAmount < 1)
-                {
+                if (characterAmount < 1) {
                     throw new IllegalArgumentException();
                 }
                 successfulInput = true;
@@ -49,8 +48,7 @@ public class Main {
             }
         }
         CharacterCreator creator = new CharacterCreator(input);
-        for (int i = 0; i < characterAmount; i++)
-        {
+        for (int i = 0; i < characterAmount; i++) {
 
         }
 
@@ -67,9 +65,10 @@ public class Main {
             }
         }
         //@todo add more field customization
-        Character testChar = new Fighter(Race.HUM,"test");
-        Character testChar2 = new Thief(Race.HUM,"test");
+        Character testChar = new Fighter(Race.HUM, "test");
+        Character testChar2 = new Thief(Race.HUM, "test");
         Character testChar3 = new Monster("test");
+    }
 
     public static void testInit(){
         gameBoard = new GameBoard(20);

@@ -36,7 +36,7 @@ import java.util.List;
  * @author jonasmalsbenden
  */
 public class GameBoard {
-    private RoomField[][] board;
+    public RoomField[][] board;
     public int size;
     /**
      * Constructor
