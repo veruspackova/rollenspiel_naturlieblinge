@@ -58,12 +58,14 @@ public class GameBoard {
         this.size = 20;
         generateMap();
         printBoard();
+        this.generateMap();
     }
     /**
      * generate Map
      * (generates a gameboard layout randomly)
      */
     public void generateMap(){
+        //@todo implement making monster amount and so on variable
         int x = (int) (Math.random()*size);
         int y = (int) (Math.random()*size);
         Direction lastMove = null;

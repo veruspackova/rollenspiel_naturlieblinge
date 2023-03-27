@@ -27,8 +27,7 @@ public class GameRoundLogic {
     private int movecounter;
     private BufferedReader inputReader;
 
-    public GameRoundLogic(Character character, BufferedReader inputReader, GameBoard gameBoard)
-    {
+    public GameRoundLogic(Character character, BufferedReader inputReader, GameBoard gameBoard) {
         this.inputReader = inputReader;
         this.setCharacter(character);
         this.gameBoard = gameBoard;
@@ -61,8 +60,15 @@ public class GameRoundLogic {
             }catch (IOException e){
 
             }
-            switch (input.get(0)){
-                case "f":
+            switch (input != null ? input.get(0) : "rest") { //@todo maybe make this better readable
+                case "fight":
+                    RoomField fieldToAttack = getFacingPosition();
+
+                    if (input.size() == 2) {
+                        int targetDistance = Integer.parseInt(input.get(1));
+                        WeaponBase w = character.getSelectedWeapon();
+                        if (w instanceof RangedSimpleWeapon && ((RangedSimpleWeapon) w).getRange() >= targetDistance) {
+                            fieldToAttack = getFacingPosition(targetDistance);
                     if (input.get(1) != null && input.get(2) != null && input.get(3) != null
                             && Integer.parseInt(input.get(1)) > 0 && Integer.parseInt(input.get(2)) > 0) {
                         int cordX = Integer.parseInt(input.get(1));
@@ -78,6 +84,12 @@ public class GameRoundLogic {
                             System.out.println("You hit nothing");
                             return;
                         }
+                    }
+
+                    if (fieldToAttack != null && fieldToAttack.getCharacter() != null) {
+                        Character target = fieldToAttack.getCharacter();
+                        FightRound fightRound = new FightRound(character, target);
+                        fightRound.singleRound();
                     } else {
                         System.out.println("Invalid coordinates.");
                         return;
@@ -85,6 +97,14 @@ public class GameRoundLogic {
                     break;
                 case "w":
                     if (movecounter > 1) {
+                        boolean success = move(character);
+                        if (success) {
+                            movecounter--;
+                            gameBoard.printBoardforPlayer(character);
+                        }
+                    } else {
+                        move(character);
+
                         boolean success = move(character, Direction.North);
                         if(success == true){
                             movecounter--;
@@ -131,16 +151,16 @@ public class GameRoundLogic {
                         return;
                     }
                     break;
-                case "r":
+                case "rest":
                     character.rest();
                     break;
-                case "e":
+                case "search":
                     search(character);
                     break;
                 case "use":
                     useItem(character, input.get(1));
                     break;
-                case "i":
+                case "items":
                     System.out.println("Itemlist of " + character.getName() + ":");
                     if(character.getItems() == null){
                         System.out.println("There are no items in your pocket");
@@ -155,6 +175,11 @@ public class GameRoundLogic {
                     break;
                 case "turn":
                     Direction temp = character.getDirection();
+                    if (input.size() != 2) {
+                        System.out.println("please enter a direction!");
+                        break;
+                    }
+
                     switch (input.get(1)) {
                         case "north" -> temp = Direction.North;
                         case "west" -> temp = Direction.West;
@@ -167,17 +192,26 @@ public class GameRoundLogic {
                     }
                     character.turn(temp);
                     break;
-                case "?":
-                    gameBoard.printLegend();
             }
         }
+
+    }
+
+    private RoomField getFacingPosition(int distance) {
+        RoomField current = character.getPosition();
+        return getNextFieldByDirection(current, character.getDirection(), distance);
+    }
+
+    private RoomField getFacingPosition() {
+        RoomField current = character.getPosition();
+        return getNextFieldByDirection(current, character.getDirection());
     }
 
     //Move funktion gets called on input move
-    public boolean move(Character character){
+    public boolean move(Character character) {
         RoomField current = character.getPosition();
-        RoomField target = getTargetRoom(current, character.getDirection());
-        if (moveToTarget(character, target, current) == false) {
+        RoomField target = getFacingPosition();
+        if (!moveToTarget(character, target, current)) {
             System.out.println("Invalid move. Something is in the way.");
             return false;
         }
@@ -198,15 +232,43 @@ public class GameRoundLogic {
     }
 
     //moves the character and updates references
-    public boolean moveToTarget(Character character, RoomField target, RoomField current){
-        if(target != null){
+    public boolean moveToTarget(Character character, RoomField target, RoomField current) {
+        if (target != null) {
             current.setCharacter(null);
             target.setCharacter(character);
             character.setPosition(target);
             return true;
-        }else return false;
+        } else return false;
     }
 
+    public RoomField getNextFieldByDirection(RoomField currentField, Direction direction) {
+        ArrayList<Integer> cords = currentField.getCoordinates();
+
+        return switch (direction) {
+            case North -> gameBoard.board[cords.get(0) - 1][cords.get(1)];
+            case NorthEast -> gameBoard.board[cords.get(0) - 1][cords.get(1) + 1];
+            case East -> gameBoard.board[cords.get(0)][cords.get(1) + 1];
+            case SouthEast -> gameBoard.board[cords.get(0) + 1][cords.get(1) + 1];
+            case South -> gameBoard.board[cords.get(0) + 1][cords.get(1)];
+            case SouthWest -> gameBoard.board[cords.get(0) + 1][cords.get(1) - 1];
+            case West -> gameBoard.board[cords.get(0)][cords.get(1) - 1];
+            case NorthWest -> gameBoard.board[cords.get(0) - 1][cords.get(1) - 1];
+        };
+    }
+
+    public RoomField getNextFieldByDirection(RoomField currentField, Direction direction, int distance) {
+        ArrayList<Integer> cords = currentField.getCoordinates();
+
+        return switch (direction) {
+            case North -> gameBoard.board[cords.get(0) - distance][cords.get(1)];
+            case NorthEast -> gameBoard.board[cords.get(0) - distance][cords.get(1) + distance];
+            case East -> gameBoard.board[cords.get(0)][cords.get(1) + distance];
+            case SouthEast -> gameBoard.board[cords.get(0) + distance][cords.get(1) + distance];
+            case South -> gameBoard.board[cords.get(0) + distance][cords.get(1)];
+            case SouthWest -> gameBoard.board[cords.get(0) + distance][cords.get(1) - distance];
+            case West -> gameBoard.board[cords.get(0)][cords.get(1) - distance];
+            case NorthWest -> gameBoard.board[cords.get(0) - distance][cords.get(1) - distance];
+        };
     public void  useItem(Character character, String itemName){
         for (Item item: character.getItems()){
             if(item.name.equals(itemName)){
