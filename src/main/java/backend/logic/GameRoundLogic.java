@@ -177,6 +177,7 @@ public class GameRoundLogic {
         InputClass inputClass = new InputClass(inputReader);
         ArrayList<String> input = null;
         try {
+            System.out.println("what would you like to do?");
             input = inputClass.read();
         } catch (IOException e) {
 
