@@ -42,7 +42,7 @@ public abstract class BaseArmour implements ISearchable {
         System.out.println("Would you like " + player.getName() + " to put on " + this.getClass().getSimpleName() + "?");
         try {
             input = inputClass.read();
-            String playerSelection = input.get(0).substring(0, 1).toLowerCase();
+            String playerSelection = input.get(0).substring(0, 1);
             wearNewArmour = playerSelection.equals("y");
         } catch (IOException e) {
             wearNewArmour = false;
