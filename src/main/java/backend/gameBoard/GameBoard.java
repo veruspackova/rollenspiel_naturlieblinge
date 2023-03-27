@@ -36,7 +36,7 @@ import java.util.List;
  * @author jonasmalsbenden
  */
 public class GameBoard {
-    public RoomField[][] board;
+    private RoomField[][] board;
     public int size;
     /**
      * Constructor
@@ -284,6 +284,10 @@ public class GameBoard {
                 i = size;
             }
         }
+    }
+
+    public RoomField[][] getBoard() {
+        return board;
     }
 
 //    public void placeMonsters(){
