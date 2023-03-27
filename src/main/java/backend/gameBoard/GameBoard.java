@@ -204,4 +204,8 @@ public class GameBoard {
             }
         }
     }
+
+    public RoomField getRoomFieldByCoordinates(int x, int y) {
+        return board[x][y];
+    }
 }

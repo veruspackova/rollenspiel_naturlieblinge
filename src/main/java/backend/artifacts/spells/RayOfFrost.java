@@ -8,9 +8,16 @@ import backend.enums.Stat;
 import backend.logic.Dice;
 import backend.logic.FightRound;
 
+import java.util.ArrayList;
+
 public class RayOfFrost extends RangedSimpleWeapon implements Spell {
     public RayOfFrost() {
         super(new Dice(8), 4);
+    }
+
+    @Override
+    public int getRange() {
+        return 12;
     }
 
     @Override
@@ -23,14 +30,18 @@ public class RayOfFrost extends RangedSimpleWeapon implements Spell {
         return super.rollDamage();
     }
 
+    // Make a ranged spell attack against the target. On a hit, it takes 1d8 cold damage
     @Override
-    public void cast(Wizard caster, Character target) {
+    public void castSpell(Wizard caster, ArrayList<Character> targets) {
         if (caster.getSlotsRayOfFrost() > 0) {
             WeaponBase initialWeapon = caster.getSelectedWeapon();
             caster.setSelectedWeapon(this);
+            for (Character target :
+                    targets) {
 
-            FightRound fight = new FightRound(caster, target);
-            fight.attack();
+                FightRound fight = new FightRound(caster, target);
+                fight.attack();
+            }
 
             caster.setSlotsRayOfFrost(caster.getSlotsRayOfFrost() - 1);
             caster.setSelectedWeapon(initialWeapon);

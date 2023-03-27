@@ -14,7 +14,7 @@ public class BurningHands extends WeaponBase implements Spell {
         super(new Dice(6));
     }
 
-    public void cast(Wizard caster, ArrayList<Character> targets) {
+    public void castSpell(Wizard caster, ArrayList<Character> targets) {
         if (caster.getSlotsBurningHands() > 0) {
             int initialDamage = rollDamage();
 

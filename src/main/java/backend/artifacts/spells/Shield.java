@@ -17,7 +17,7 @@ public class Shield implements Spell {
 
     // later: for x turns only?
     // 3 x 3, Wizard in centre
-    public void cast(Wizard caster, ArrayList<Character> targets) {
+    public void castSpell(Wizard caster, ArrayList<Character> targets) {
         int bonusAc = dice.roll();
         for (Character target : targets) {
             if (!(target instanceof Monster)) {

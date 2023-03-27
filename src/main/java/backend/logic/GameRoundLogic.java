@@ -1,6 +1,7 @@
 package backend.logic;
 
 import backend.artifacts.items.Item;
+import backend.artifacts.spells.RayOfFrost;
 import backend.artifacts.spells.Spell;
 import backend.artifacts.weapons.RangedSimpleWeapon;
 import backend.artifacts.weapons.WeaponBase;
@@ -52,13 +53,7 @@ public class GameRoundLogic {
 
     public void play() throws InputMismatchException {
         while (true) {
-            InputClass inputClass = new InputClass(new BufferedReader(new InputStreamReader(System.in)));
-            ArrayList<String> input = null;
-            try {
-                input = inputClass.read();
-            } catch (IOException e) {
-
-            }
+            ArrayList<String> input = getInput();
 
             String playerAction;
             if (input != null) {
@@ -102,14 +97,15 @@ public class GameRoundLogic {
                     if (character instanceof Wizard) {
                         int availableRange = 0;
                         if (input.size() != 2) {
-                            System.out.println("please choose which spell to cast");
+                            System.out.println("please cast again and choose a spell this time");
                             System.out.println(Arrays.toString(Spells.values()));
                             break;
                         } else {
                             Spells spell = Spells.values()[Integer.parseInt(input.get(1))];
-                            Class<? extends Spell> chosenSpell = spell.getSpellName();
-                            // todo: figure out targets!
-                            chosenSpell.cast(character);
+                            Spell chosenSpell = spell.createSpell();
+
+                            ArrayList<Character> targets = getAffectedCharacters(character.getPosition(), character.getDirection(), spell);
+                            chosenSpell.castSpell((Wizard) character, targets);
                         }
 
                     } else {
@@ -179,6 +175,17 @@ public class GameRoundLogic {
 
     }
 
+    private ArrayList<String> getInput() {
+        InputClass inputClass = new InputClass(new BufferedReader(new InputStreamReader(System.in)));
+        ArrayList<String> input = null;
+        try {
+            input = inputClass.read();
+        } catch (IOException e) {
+
+        }
+        return input;
+    }
+
     private RoomField getFacingPosition(int distance) {
         RoomField current = character.getPosition();
         return getNextFieldByDirection(current, character.getDirection(), distance);
@@ -208,6 +215,54 @@ public class GameRoundLogic {
             character.setPosition(target);
             return true;
         } else return false;
+    }
+
+    public ArrayList<Character> getAffectedCharacters(RoomField currentField, Direction direction, Spells spell) {
+        ArrayList<Character> affectedCharacters = new ArrayList<>();
+        if (spell == Spells.BURNING_HANDS) {
+            int o = direction.ordinal();
+            Direction leftSide = Direction.values()[o - 1];
+            Direction rightSide = Direction.values()[o + 1];
+
+            System.out.println("cone: " + direction + " and from " + leftSide + " to " + rightSide);
+
+            affectedCharacters.add(getNextFieldByDirection(currentField, direction).getCharacter());
+            affectedCharacters.add(getNextFieldByDirection(currentField, direction, 2).getCharacter());
+            affectedCharacters.add(getNextFieldByDirection(currentField, leftSide, 2).getCharacter());
+            affectedCharacters.add(getNextFieldByDirection(currentField, rightSide, 2).getCharacter());
+            // cone -- next field, then two ahead, once diagonal 'left', once diagonal 'right'
+            // N1, N2, NE2, NW2
+            // E1, E2, NE2, SE2
+            // S1, S2, SE2, SW2
+            // W1, W2, SW2, NW2
+        } else if (spell == Spells.RAY_OF_FROST) {
+            RayOfFrost s = (RayOfFrost) spell.createSpell();
+            int allowedRange = s.getRange();
+
+            int currentX = character.getPosition().getCoordinates().get(0);
+            int currentY = character.getPosition().getCoordinates().get(1);
+
+            System.out.println("you can attack up to " + allowedRange + " fields in any direction");
+            System.out.println("how many fields forward and to the right would you like to shoot? (with minus you can hit behind you/left of you)");
+            ArrayList<String> inputFieldDistance = getInput();
+            int x = Integer.parseInt(inputFieldDistance.get(0));
+            int y = Integer.parseInt(inputFieldDistance.get(1));
+
+            if (Math.abs(x) <= allowedRange && Math.abs(y) <= allowedRange) {
+                try {
+                    // todo: use the getter!
+                    RoomField roomField = gameBoard.getRoomFieldByCoordinates(currentX + x, currentY + y);
+                    affectedCharacters.add(roomField.getCharacter());
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("this field is unreachable, sorry!");
+                }
+            } else {
+                throw new InputMismatchException("allowed range is " + allowedRange);
+            }
+
+        }
+
+        return affectedCharacters;
     }
 
     public RoomField getNextFieldByDirection(RoomField currentField, Direction direction) {

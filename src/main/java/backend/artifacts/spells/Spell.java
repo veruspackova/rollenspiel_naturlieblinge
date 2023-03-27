@@ -7,9 +7,6 @@ import java.util.ArrayList;
 
 public interface Spell {
 
-    default void cast(Wizard caster, Character target) {
-    }
-
-    default void cast(Wizard caster, ArrayList<Character> targets) {
+    default void castSpell(Wizard caster, ArrayList<Character> targets) {
     }
 }
