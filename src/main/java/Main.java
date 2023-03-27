@@ -12,6 +12,7 @@ import backend.input.InputClass;
 import backend.logic.CharacterCreator;
 import backend.logic.GameRoundLogic;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,7 +25,7 @@ public class Main {
     static List<Character> characterList = new ArrayList<>();
     public static void main(String[] args) {
         input = new InputClass(new BufferedReader(new InputStreamReader(System.in)));
-        init();
+        //init();
         testInit();
         gameBoard.printLegend();
         while (true){
