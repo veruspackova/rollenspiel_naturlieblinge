@@ -40,6 +40,7 @@ public class Wizard extends Character {
         setHitPoints(8 + getStatModifier(Stat.CON));
         setHitDiceAvailable(1);
         setHitDice(new Dice(6));
+        initialiseSpellSlots();
 
         setArmourClass(10);
         setAttackDice(new Dice(8));
