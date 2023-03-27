@@ -1,8 +1,10 @@
 package backend.logic;
 
 import backend.artifacts.items.Item;
+import backend.artifacts.items.weaponitems.Arrow;
 import backend.artifacts.weapons.RangedSimpleWeapon;
 import backend.artifacts.weapons.WeaponBase;
+import backend.artifacts.weapons.ranged.Bow;
 import backend.character.Character;
 import backend.enums.Direction;
 import backend.gameBoard.GameBoard;
@@ -62,6 +64,21 @@ public class GameRoundLogic {
                     if (input.size() == 2) {
                         int targetDistance = Integer.parseInt(input.get(1));
                         WeaponBase w = character.getSelectedWeapon();
+                        if (w instanceof Bow)
+                        {
+                            ArrayList<Item> items =  character.getItems();
+                            for (Item i: items)
+                            {
+                                if (i instanceof Arrow)
+                                {
+                                    if (((Arrow) i).getAmount() <= 0)
+                                    {
+                                        System.out.println("You don't have any arrows left to shoot");
+                                        return;
+                                    }
+                                }
+                            }
+                        }
                         if (w instanceof RangedSimpleWeapon && ((RangedSimpleWeapon) w).getRange() >= targetDistance) {
                             fieldToAttack = getFacingPosition(targetDistance);
                         } else {
