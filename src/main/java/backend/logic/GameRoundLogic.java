@@ -15,7 +15,6 @@ import backend.input.InputClass;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
@@ -26,7 +25,7 @@ public class GameRoundLogic {
     private Character character;
 
     private int movecounter;
-    private BufferedReader inputReader;
+    private final BufferedReader inputReader;
 
     public GameRoundLogic(Character character, BufferedReader inputReader, GameBoard gameBoard) {
         this.inputReader = inputReader;
@@ -95,9 +94,8 @@ public class GameRoundLogic {
 
                 case "cast":
                     if (character instanceof Wizard) {
-                        int availableRange = 0;
                         if (input.size() != 2) {
-                            System.out.println("please cast again and choose a spell this time");
+                            System.out.println("please cast again and choose a spell number this time");
                             System.out.println(Arrays.toString(Spells.values()));
                             break;
                         } else {
@@ -176,7 +174,7 @@ public class GameRoundLogic {
     }
 
     private ArrayList<String> getInput() {
-        InputClass inputClass = new InputClass(new BufferedReader(new InputStreamReader(System.in)));
+        InputClass inputClass = new InputClass(inputReader);
         ArrayList<String> input = null;
         try {
             input = inputClass.read();
@@ -219,8 +217,8 @@ public class GameRoundLogic {
 
     public ArrayList<Character> getAffectedCharacters(RoomField currentField, Direction direction, Spells spell) {
         ArrayList<Character> affectedCharacters = new ArrayList<>();
+        int o = direction.ordinal();
         if (spell == Spells.BURNING_HANDS) {
-            int o = direction.ordinal();
             Direction leftSide = Direction.values()[o - 1];
             Direction rightSide = Direction.values()[o + 1];
 
@@ -260,6 +258,13 @@ public class GameRoundLogic {
                 throw new InputMismatchException("allowed range is " + allowedRange);
             }
 
+        } else if (spell == Spells.SHIELD) {
+            affectedCharacters.add(character);
+
+            for (int i = 0; i < 8; i++) {
+                Direction d = Direction.values()[o + i];
+                affectedCharacters.add(getNextFieldByDirection(currentField, d).getCharacter());
+            }
         }
 
         return affectedCharacters;
