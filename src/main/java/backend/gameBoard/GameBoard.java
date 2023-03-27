@@ -36,7 +36,7 @@ import java.util.List;
  * @author jonasmalsbenden
  */
 public class GameBoard {
-    private RoomField[][] board;
+    public RoomField[][] board;
     public int size;
     /**
      * Constructor
@@ -189,15 +189,17 @@ public class GameBoard {
      * )
      */
     public void printBoard(){
+        printLegend();
         for(int x = 0; x < board.length; x++){
             for(int y = 0; y < board[0].length; y++){
                 if(board[x][y] == null){
                     System.out.print("*  ");
                 }
                 else if (board[x][y].getCharacter() != null) {
-                    //to-do
-                    //unterscheidung monster und spieler
-                    System.out.print("@  ");
+                    if(board[x][y].getCharacter().getClass() == Monster.class){
+                        System.out.print("X  ");
+                    }
+                    System.out.print("O  ");
                 }
                 else {
                     switch (board[x][y].getRoomType()){
@@ -257,6 +259,23 @@ public class GameBoard {
         System.out.println("_______________________________________________________________________________________________");
     }
 
+    public void printLegend(){
+        System.out.println("Movement Controlls:");
+        System.out.println("w                   ->  UP");
+        System.out.println("a                   ->  Right");
+        System.out.println("s                   ->  Down");
+        System.out.println("d                   ->  Left\n");
+        System.out.println("Other Controlls:");
+        System.out.println("f                   ->  Figth");
+        System.out.println("r                   ->  Rest");
+        System.out.println("e                   ->  Search");
+        System.out.println("i                   ->  ItemList/Inventory");
+        System.out.println("q                   ->  WeaponList");
+        System.out.println("turn + 'direction'  ->  Turn around");
+        System.out.println("use + 'itemName'    ->  Use the Item");
+        System.out.println("_______________________________________________________________________________________________");
+    }
+
     public void placeCharacter(Character character){
         for(int i = 0; i < size-1; i++){
             int x = (int) (Math.random()*size);
@@ -272,4 +291,17 @@ public class GameBoard {
     public RoomField[][] getBoard() {
         return board;
     }
+
+//    public void placeMonsters(){
+//        for(int i = size/3){
+//            int x = (int) (Math.random()*size);
+//            int y = (int) (Math.random()*size);
+//            if(board[x][y] != null){
+//                Monster monster = new Monster("Monster", x, y, x, y, x, y);
+//                board[x][y].setCharacter(monster);
+//                monster.setPosition(board[x][y]);
+//                i = size;
+//            }
+//        }
+//    }
 }
