@@ -67,7 +67,7 @@ public class GameRoundLogic {
                             && Integer.parseInt(input.get(1)) > 0 && Integer.parseInt(input.get(2)) > 0) {
                         int cordX = Integer.parseInt(input.get(1));
                         int cordY = Integer.parseInt(input.get(2));
-                        RoomField roomField = gameBoard.board[cordX][cordY];
+                        RoomField roomField = gameBoard.getBoard()[cordX][cordY]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
                         if (roomField.getCharacter() != null) {
                             if (input.get(3) == null) {
                                 //@todo fight round with selected weapon none
@@ -227,28 +227,28 @@ public class GameRoundLogic {
 
         switch (direction) {
             case North:
-                target = gameBoard.board[cords.get(0) - 1][cords.get(1)];
+                target = gameBoard.getBoard()[cords.get(0) - 1][cords.get(1)]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
                 break;
             case NorthEast:
-                target = gameBoard.board[cords.get(0) - 1][cords.get(1) + 1];
+                target = gameBoard.getBoard()[cords.get(0) - 1][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
                 break;
             case East:
-                target = gameBoard.board[cords.get(0)][cords.get(1) + 1];
+                target = gameBoard.getBoard()[cords.get(0)][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
                 break;
             case SouthEast:
-                target = gameBoard.board[cords.get(0) + 1][cords.get(1) + 1];
+                target = gameBoard.getBoard()[cords.get(0) + 1][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
                 break;
             case South:
-                target = gameBoard.board[cords.get(0) + 1][cords.get(1)];
+                target = gameBoard.getBoard()[cords.get(0) + 1][cords.get(1)]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
                 break;
             case SouthWest:
-                target = gameBoard.board[cords.get(0) + 1][cords.get(1) - 1];
+                target = gameBoard.getBoard()[cords.get(0) + 1][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
                 break;
             case West:
-                target = gameBoard.board[cords.get(0)][cords.get(1) - 1];
+                target = gameBoard.getBoard()[cords.get(0)][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
                 break;
             case NorthWest:
-                target = gameBoard.board[cords.get(0) - 1][cords.get(1) - 1];
+                target = gameBoard.getBoard()[cords.get(0) - 1][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
                 break;
         }
         return target;
