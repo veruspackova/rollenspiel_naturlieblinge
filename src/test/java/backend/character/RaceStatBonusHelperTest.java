@@ -77,8 +77,9 @@ class RaceStatBonusHelperTest {
     }
 
     public static class TestCharacter extends Character {
-        public TestCharacter(Race race, String name, int strength, int dexterity, int constitution, int intelligence, int wisdom) {
+        public TestCharacter(Race race, String name, int strength, int dexterity, int constitution, int intelligence, int wisdom) {r
             super(race, name, strength, dexterity, constitution, intelligence, wisdom, new ArrayList<>(), new Dagger(), new ArrayList<>());
+
         }
     }
 }
