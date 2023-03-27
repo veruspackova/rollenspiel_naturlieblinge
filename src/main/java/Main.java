@@ -22,6 +22,7 @@ public class Main {
     static List<Character> characterList = new ArrayList<>();
     public static void main(String[] args) {
         testInit();
+        gameBoard.printLegend();
         while (true){
             run();
         }

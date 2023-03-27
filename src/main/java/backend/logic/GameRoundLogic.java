@@ -62,7 +62,7 @@ public class GameRoundLogic {
 
             }
             switch (input.get(0)){
-                case "fight":
+                case "f":
                     if (input.get(1) != null && input.get(2) != null && input.get(3) != null
                             && Integer.parseInt(input.get(1)) > 0 && Integer.parseInt(input.get(2)) > 0) {
                         int cordX = Integer.parseInt(input.get(1));
@@ -131,16 +131,16 @@ public class GameRoundLogic {
                         return;
                     }
                     break;
-                case "rest":
+                case "r":
                     character.rest();
                     break;
-                case "search":
+                case "e":
                     search(character);
                     break;
                 case "use":
                     useItem(character, input.get(1));
                     break;
-                case "items":
+                case "i":
                     System.out.println("Itemlist of " + character.getName() + ":");
                     if(character.getItems() == null){
                         System.out.println("There are no items in your pocket");
@@ -167,6 +167,8 @@ public class GameRoundLogic {
                     }
                     character.turn(temp);
                     break;
+                case "?":
+                    gameBoard.printLegend();
             }
         }
     }
