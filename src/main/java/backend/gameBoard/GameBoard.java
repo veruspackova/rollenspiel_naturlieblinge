@@ -260,19 +260,20 @@ public class GameBoard {
     }
 
     public void printLegend(){
-        System.out.println("Movement Controlls:");
-        System.out.println("w                   ->  UP");
-        System.out.println("a                   ->  Right");
-        System.out.println("s                   ->  Down");
-        System.out.println("d                   ->  Left\n");
-        System.out.println("Other Controlls:");
-        System.out.println("f                   ->  Figth");
+        System.out.println("Movement Controlls:                                                 Legend:");
+        System.out.println("w                   ->  UP                                          @           ->  Current Character");
+        System.out.println("a                   ->  Right                                       O           ->  Character");
+        System.out.println("s                   ->  Down                                        X           ->  Monster");
+        System.out.println("d                   ->  Left                                        .           ->  Room\n");
+        System.out.println("Other Controlls:                                                    |           ->  Door");
+        System.out.println("f                   ->  Figth                                       *           ->  Wall");
         System.out.println("r                   ->  Rest");
         System.out.println("e                   ->  Search");
         System.out.println("i                   ->  ItemList/Inventory");
         System.out.println("q                   ->  WeaponList");
         System.out.println("turn + 'direction'  ->  Turn around");
         System.out.println("use + 'itemName'    ->  Use the Item");
+        System.out.println("help                ->  show comandList");
         System.out.println("_______________________________________________________________________________________________");
     }
 

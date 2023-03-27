@@ -258,16 +258,16 @@ public class GameRoundLogic {
                         return;
                     }
                     break;
-                case "rest":
+                case "r":
                     character.rest();
                     break;
-                case "search":
+                case "e":
                     search(character);
                     break;
                 case "use":
                     useItem(character, input.get(1));
                     break;
-                case "items":
+                case "i":
                     System.out.println("Itemlist of " + character.getName() + ":");
                     if (character.getItems() == null) {
                         System.out.println("There are no items in your pocket");
@@ -277,7 +277,7 @@ public class GameRoundLogic {
                         System.out.println(item.name);
                     }
                     break;
-                case "weapons":
+                case "q":
                     //@todo waiting for items
                     break;
                 case "turn":
@@ -299,8 +299,9 @@ public class GameRoundLogic {
                     }
                     character.turn(temp);
                     break;
-
-
+                case "help":
+                    gameBoard.printLegend();
+                    break;
             }
         }
     }
