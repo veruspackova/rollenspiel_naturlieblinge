@@ -56,7 +56,9 @@ public class GameRoundLogic {
             }
             switch (playerAction) {
                 case "fight":
-                    RoomField fieldToAttack = getFacingPosition();
+                    RoomField fieldToAttack;
+                    getFacingPosition();
+
                     if (input.size() == 2) {
                         int targetDistance = Integer.parseInt(input.get(1));
                         WeaponBase w = character.getSelectedWeapon();
@@ -116,10 +118,9 @@ public class GameRoundLogic {
                     }
                     break;
 
-                case "move":
                 case "w":
                     if (movecounter > 1) {
-                        boolean success = move(character);
+                        boolean success = move(character, Direction.North);
                         if (success) {
                             movecounter--;
                             gameBoard.printBoardforPlayer(character);
@@ -230,14 +231,12 @@ public class GameRoundLogic {
     }
 
     //Move function gets called on input move
-    public boolean move(Character character) {
+    public void move(Character character) {
         RoomField current = character.getPosition();
         RoomField target = getFacingPosition();
         if (!moveToTarget(character, target, current)) {
             System.out.println("Invalid move. Something is in the way.");
-            return false;
         }
-        return true;
     }
 
     public boolean move(Character character, Direction direction) {
@@ -307,9 +306,8 @@ public class GameRoundLogic {
         int o = direction.ordinal();
         switch (spell) {
             case BURNING_HANDS -> addAffectedByBurningHands(affectedCharacters, currentField, direction);
-            case RAY_OF_FROST, FIREBALL -> {
-                addAffectedByRangedWeaponSpell((RangedSimpleWeapon) spell.createSpell(), affectedCharacters, o);
-            }
+            case RAY_OF_FROST, FIREBALL ->
+                    addAffectedByRangedWeaponSpell((RangedSimpleWeapon) spell.createSpell(), affectedCharacters, o);
             case SHIELD -> {
                 affectedCharacters.add(character);
                 for (int i = 0; i < 8; i++) {
@@ -356,28 +354,33 @@ public class GameRoundLogic {
         System.out.println("you can attack up to " + allowedRange + " fields in any direction");
         System.out.println("how many fields forward and to the right would you like to shoot? (with minus you can hit behind you/left of you)");
         ArrayList<String> inputFieldDistance = getInput();
-        int x = Integer.parseInt(inputFieldDistance.get(0));
-        int y = Integer.parseInt(inputFieldDistance.get(1));
-        if (Math.abs(x) <= allowedRange && Math.abs(y) <= allowedRange) {
-            try {
-                RoomField roomField = getGameBoard().getRoomFieldByCoordinates(currentX - x, currentY + y);
-                if (s instanceof Fireball) {
-                    for (int i = 0; i < 8; i++) {
-                        Direction d = Direction.values()[o + i];
-                        RoomField f = getNextFieldByDirection(roomField, d);
-                        if (f != null) {
-                            affectedCharacters.add(f.getCharacter());
+        try {
+
+            int x = Integer.parseInt(inputFieldDistance.get(0));
+            int y = Integer.parseInt(inputFieldDistance.get(1));
+            if (Math.abs(x) <= allowedRange && Math.abs(y) <= allowedRange) {
+                try {
+                    RoomField roomField = getGameBoard().getRoomFieldByCoordinates(currentX - x, currentY + y);
+                    if (s instanceof Fireball) {
+                        for (int i = 0; i < 8; i++) {
+                            Direction d = Direction.values()[o + i];
+                            RoomField f = getNextFieldByDirection(roomField, d);
+                            if (f != null) {
+                                affectedCharacters.add(f.getCharacter());
+                            }
                         }
                     }
+                    affectedCharacters.add(roomField.getCharacter());
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("this field is unreachable, sorry!");
+                } catch (NullPointerException e) {
+                    System.out.println("this field is not reachable, sorry!");
                 }
-                affectedCharacters.add(roomField.getCharacter());
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("this field is unreachable, sorry!");
-            } catch (NullPointerException e) {
-                System.out.println("this field is not reachable, sorry!");
+            } else {
+                throw new InputMismatchException("allowed range is " + allowedRange);
             }
-        } else {
-            throw new InputMismatchException("allowed range is " + allowedRange);
+        } catch (NumberFormatException e) {
+            System.out.println("please only use numbers and spaces!");
         }
     }
 
