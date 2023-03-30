@@ -20,6 +20,7 @@ public class Wizard extends Character {
     private int slotsHeal;
     private int slotsRayOfFrost;
     private int slotsBurningHands;
+    private int slotsMageArmour;
 
     // Beginning items: dagger
     public Wizard(Race race, String name, int strength, int dexterity, int constitution, int intelligence, int wisdom, ArrayList<Item> items, WeaponBase selectedWeapon, ArrayList<WeaponBase> weapons) {
@@ -38,16 +39,6 @@ public class Wizard extends Character {
         this(race, name, 10, 10, 10, 10, 10, new ArrayList<>(), new NoWeapon(), new ArrayList<>());
     }
 
-    public int getSpellDC() {
-        return 8 + getStatModifier(Stat.INT) + getProficiencyBonus();
-    }
-
-    public void setSelectedWeapon(WeaponBase selectedWeapon) {
-        if (getStat(Stat.STR) >= selectedWeapon.getRequiredStrength()) {
-            super.selectedWeapon = selectedWeapon;
-        }
-    }
-
     public Wizard(Race race, String name, int strength, int dexterity, int constitution, int intelligence, int wisdom) {
         super(race, name, strength, dexterity, constitution, intelligence, wisdom, new ArrayList<>(), new NoWeapon(), new ArrayList<>());
         setHitPoints(8 + getStatModifier(Stat.CON));
@@ -63,10 +54,21 @@ public class Wizard extends Character {
         addWeapon(dagger);
     }
 
+    public int getSpellDC() {
+        return 8 + getStatModifier(Stat.INT) + getProficiencyBonus();
+    }
+
+    public void setSelectedWeapon(WeaponBase selectedWeapon) {
+        if (getStat(Stat.STR) >= selectedWeapon.getRequiredStrength()) {
+            super.selectedWeapon = selectedWeapon;
+        }
+    }
+
     public void initialiseSpellSlots() {
         slotsHeal = 2;
         slotsRayOfFrost = 1;
         slotsBurningHands = 1;
+        slotsMageArmour = 1;
     }
 
     public int getSpellSlotsAvailable(Spells spell) {
@@ -76,9 +78,20 @@ public class Wizard extends Character {
             case BURNING_HANDS -> value = slotsBurningHands;
             case RAY_OF_FROST -> value = slotsRayOfFrost;
             case HEAL -> value = slotsHeal;
+            case MAGE_ARMOUR -> value = slotsMageArmour;
         }
 
         return value;
+    }
+
+    public void useSpellSlot(Spells spell) {
+
+        switch (spell) {
+            case BURNING_HANDS -> slotsBurningHands -= 1;
+            case RAY_OF_FROST -> slotsRayOfFrost -= 1;
+            case HEAL -> slotsHeal -= 1;
+            case MAGE_ARMOUR -> slotsMageArmour -= 1;
+        }
     }
 
     /**
@@ -95,29 +108,5 @@ public class Wizard extends Character {
 
             slotsHeal -= 1;
         }
-    }
-
-    public int getSlotsHeal() {
-        return slotsHeal;
-    }
-
-    public void setSlotsHeal(int slotsHeal) {
-        this.slotsHeal = slotsHeal;
-    }
-
-    public int getSlotsRayOfFrost() {
-        return slotsRayOfFrost;
-    }
-
-    public void setSlotsRayOfFrost(int slotsRayOfFrost) {
-        this.slotsRayOfFrost = slotsRayOfFrost;
-    }
-
-    public int getSlotsBurningHands() {
-        return slotsBurningHands;
-    }
-
-    public void setSlotsBurningHands(int slotsBurningHands) {
-        this.slotsBurningHands = slotsBurningHands;
     }
 }

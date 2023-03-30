@@ -3,6 +3,7 @@ package backend.artifacts.spells;
 import backend.artifacts.weapons.WeaponBase;
 import backend.character.Character;
 import backend.character.Wizard;
+import backend.enums.Spells;
 import backend.enums.Stat;
 import backend.logic.Dice;
 
@@ -15,7 +16,7 @@ public class BurningHands extends WeaponBase implements Spell {
     }
 
     public void castSpell(Wizard caster, ArrayList<Character> targets) {
-        if (caster.getSlotsBurningHands() > 0) {
+        if (caster.getSpellSlotsAvailable(Spells.BURNING_HANDS) > 0) {
             int initialDamage = rollDamage();
 
             for (Character target : targets) {
@@ -30,7 +31,7 @@ public class BurningHands extends WeaponBase implements Spell {
                 target.setHitPoints(newHP);
             }
 
-            caster.setSlotsBurningHands(caster.getSlotsBurningHands() - 1);
+            caster.useSpellSlot(Spells.BURNING_HANDS);
         }
     }
 
