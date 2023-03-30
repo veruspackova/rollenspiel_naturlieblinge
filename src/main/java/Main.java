@@ -23,6 +23,7 @@ public class Main {
     static GameBoard gameBoard;
     static InputClass input;
     static List<Character> characterList = new ArrayList<>();
+    static List<Monster> monsterList = new ArrayList<>();
     public static void main(String[] args) {
         input = new InputClass(new BufferedReader(new InputStreamReader(System.in)));
         //init();
@@ -48,22 +49,26 @@ public class Main {
                 System.out.println("Invalid. Try again");
             }
         }
-        CharacterCreator creator = new CharacterCreator(input);
-        for (int i = 0; i < characterAmount; i++) {
-
-        }
-
-
         System.out.println("How big do you want your game board to be?");
         successfulInput = false;
         while (!successfulInput) {
             try {
                 int size = Integer.parseInt(input.read().get(0));
                 gameBoard = new GameBoard(size);
+                gameBoard.generateMap();
                 successfulInput = true;
             } catch (Exception e) {
                 System.out.println("Invalid. Try again");
             }
+        }
+        CharacterCreator creator = new CharacterCreator(input);
+        for (int i = 0; i < characterAmount; i++) {
+            Character character = creator.create();
+            characterList.add(character);
+            gameBoard.placeCharacter(character);
+        }
+        for(int i = 0; i< gameBoard.size/2; i++){
+            monsterList.add(gameBoard.placeMonsters());
         }
         //@todo add more field customization
         Character testChar = new Fighter(Race.HUM, "test");
@@ -79,12 +84,12 @@ public class Main {
         ArrayList<Item> itemArrayList = new ArrayList<>();
         itemArrayList.add(i1);
         itemArrayList.add(i2);
-        Character testChar = new Fighter(Race.HUM,"test", 10,10,10,10,10,itemArrayList, null, null);
-        Character testChar2 = new Thief(Race.HUM,"test", 10,10,10,10,10,null, null, null);
-        Character testChar3 = new Monster("test", 10,10,10,10,10,10, 10, 10, null, null, null);
+        Character testChar = new Fighter(Race.HUM,"fighter");
+        Character testChar2 = new Thief(Race.HUM,"thief");
+        Monster testChar3 = new Monster("monster");
         characterList.add(testChar);
         characterList.add(testChar2);
-        characterList.add(testChar3);
+        monsterList.add(testChar3);
         gameBoard.placeCharacter(testChar);
         gameBoard.placeCharacter(testChar2);
         gameBoard.placeCharacter(testChar3);
@@ -92,14 +97,18 @@ public class Main {
     }
 
     public static void run(){
-        for(Character character: characterList){
-            if(character.getClass() != Monster.class){
+        for(Character character: characterList) {
+            if (character.getClass() != Monster.class) {
                 System.out.println(character.getName() + " ist am Zug\n");
                 gameBoard.printBoardforPlayer(character);
                 GameRoundLogic logic = new GameRoundLogic(character, new BufferedReader(new InputStreamReader(System.in)), gameBoard);
                 logic.play();
+                if (character.getHitPoints() <= 0) {
+                    characterList.remove(character);
+                }
                 System.out.println("_______________________________________________________________________________________________");
                 System.out.println("_______________________________________________________________________________________________");
+                monsterList = logic.moveMonsters(monsterList);
             }
         }
     }

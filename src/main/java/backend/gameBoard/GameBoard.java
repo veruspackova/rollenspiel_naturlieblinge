@@ -23,6 +23,7 @@ import backend.enums.Race;
 import backend.enums.RoomType;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,6 +39,7 @@ import java.util.List;
 public class GameBoard {
     public RoomField[][] board;
     public int size;
+
     /**
      * Constructor
      * (generates a Gamboard with a given size)
@@ -293,16 +295,16 @@ public class GameBoard {
         return board;
     }
 
-//    public void placeMonsters(){
-//        for(int i = size/3){
-//            int x = (int) (Math.random()*size);
-//            int y = (int) (Math.random()*size);
-//            if(board[x][y] != null){
-//                Monster monster = new Monster("Monster", x, y, x, y, x, y);
-//                board[x][y].setCharacter(monster);
-//                monster.setPosition(board[x][y]);
-//                i = size;
-//            }
-//        }
-//    }
+    public Monster placeMonsters(){
+        int x = (int) (Math.random()*size);
+        int y = (int) (Math.random()*size);
+        if(board[x][y] != null){
+            Monster monster = new Monster("Monster");
+            board[x][y].setCharacter(monster);
+            monster.setPosition(board[x][y]);
+            return monster;
+        }
+        return null;
+    }
+
 }
