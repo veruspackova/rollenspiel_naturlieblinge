@@ -4,10 +4,13 @@ import backend.artifacts.ISearchable;
 import backend.artifacts.items.Item;
 import backend.artifacts.spells.Fireball;
 import backend.artifacts.spells.Spell;
+import backend.artifacts.items.weaponitems.Arrow;
 import backend.artifacts.weapons.RangedSimpleWeapon;
 import backend.artifacts.weapons.WeaponBase;
+import backend.artifacts.weapons.ranged.Bow;
 import backend.character.Character;
 import backend.character.Wizard;
+import backend.character.Monster;
 import backend.enums.Direction;
 import backend.enums.Spells;
 import backend.gameBoard.GameBoard;
@@ -21,6 +24,8 @@ import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
 
 public class GameRoundLogic {
 
@@ -44,9 +49,134 @@ public class GameRoundLogic {
         this.gameBoard = gameBoard;
     }
 
+    public Character getCharacter() {
+        return character;
+    }
+
+    public void setCharacter(Character character) {
+        this.character = character;
+    }
+
+    private RoomField getFacingPosition(int distance) {
+        RoomField current = character.getPosition();
+        return getNextFieldByDirection(current, character.getDirection(), distance);
+    }
+
+    private RoomField getFacingPosition() {
+        RoomField current = character.getPosition();
+        return getNextFieldByDirection(current, character.getDirection(), 1);
+    }
+
+    //Move funktion gets called on input move
+    public boolean move(Character character) {
+        RoomField current = character.getPosition();
+        RoomField target = getFacingPosition();
+        if (!moveToTarget(character, target, current)) {
+            System.out.println("Invalid move. Something is in the way.");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean move(Character character, Direction direction) {
+        RoomField current = character.getPosition();
+        RoomField target = getTargetRoom(current, direction);
+        if (target.getCharacter() != null) {
+            FightRound fightRound = new FightRound(character, target.getCharacter());
+            fightRound.fightToTheDeath();
+            if(character.getHitPoints() <= 0){
+                return false;
+            }
+        }
+        if (moveToTarget(character, target, current) == false) {
+            System.out.println("Invalid move. Something is in the way.");
+            return false;
+        }
+
+        return true;
+    }
+
+    //moves the character and updates references
+    public boolean moveToTarget(Character character, RoomField target, RoomField current) {
+        if (target != null) {
+            current.setCharacter(null);
+            target.setCharacter(character);
+            character.setPosition(target);
+            return true;
+        } else return false;
+    }
+
+    //returns the room that is in the direction of given room
+    public RoomField getTargetRoom(RoomField current, Direction direction) {
+        RoomField target = null;
+        ArrayList<Integer> cords = current.getCoordinates();
+
+        switch (direction) {
+            case North:
+                target = gameBoard.getBoard()[cords.get(0) - 1][cords.get(1)]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+            case NorthEast:
+                target = gameBoard.getBoard()[cords.get(0) - 1][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+            case East:
+                target = gameBoard.getBoard()[cords.get(0)][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+            case SouthEast:
+                target = gameBoard.getBoard()[cords.get(0) + 1][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+            case South:
+                target = gameBoard.getBoard()[cords.get(0) + 1][cords.get(1)]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+            case SouthWest:
+                target = gameBoard.getBoard()[cords.get(0) + 1][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+            case West:
+                target = gameBoard.getBoard()[cords.get(0)][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+            case NorthWest:
+                target = gameBoard.getBoard()[cords.get(0) - 1][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+        }
+        return target;
+    }
+
+    public void useItem(Character character, String itemName) {
+        for (Item item : character.getItems()) {
+            if (item.name.equals(itemName)) {
+                item.use(character);
+            }
+        }
+    }
+
+    public void search(Character character) {
+        RoomField field = character.getPosition();
+        for (ISearchable item : field.getItemList()) {
+            item.pickUpItem(character);
+        }
+    }
+
+    public RoomField getNextFieldByDirection(RoomField currentField, Direction direction, int distance) {
+        ArrayList<Integer> cords = currentField.getCoordinates();
+
+        return switch (direction) {
+            case North -> gameBoard.board[cords.get(0) - distance][cords.get(1)];
+            case NorthEast -> gameBoard.board[cords.get(0) - distance][cords.get(1) + distance];
+            case East -> gameBoard.board[cords.get(0)][cords.get(1) + distance];
+            case SouthEast -> gameBoard.board[cords.get(0) + distance][cords.get(1) + distance];
+            case South -> gameBoard.board[cords.get(0) + distance][cords.get(1)];
+            case SouthWest -> gameBoard.board[cords.get(0) + distance][cords.get(1) - distance];
+            case West -> gameBoard.board[cords.get(0)][cords.get(1) - distance];
+            case NorthWest -> gameBoard.board[cords.get(0) - distance][cords.get(1) - distance];
+        };
+    }
+
+
     public void play() throws InputMismatchException {
         while (true) {
             ArrayList<String> input = getInput();
+            try {
+                input = inputClass.read();
+            } catch (IOException e) {
 
             String playerAction;
             if (input != null) {
@@ -62,10 +192,26 @@ public class GameRoundLogic {
                     if (input.size() == 2) {
                         int targetDistance = Integer.parseInt(input.get(1));
                         WeaponBase w = character.getSelectedWeapon();
-
+                        
                         if (w instanceof Spell) {
                             System.out.println("Spells must use cast, not fight!");
                             break;
+                        }
+
+                        if (w instanceof Bow)
+                        {
+                            ArrayList<Item> items =  character.getItems();
+                            for (Item i: items)
+                            {
+                                if (i instanceof Arrow)
+                                {
+                                    if (((Arrow) i).getAmount() <= 0)
+                                    {
+                                        System.out.println("You don't have any arrows left to shoot");
+                                        return;
+                                    }
+                                }
+                            }
                         }
 
                         if (w instanceof RangedSimpleWeapon && ((RangedSimpleWeapon) w).getRange() >= targetDistance) {
@@ -259,7 +405,23 @@ public class GameRoundLogic {
             if (item.name.equals(itemName)) {
                 item.use(character);
             }
+            if(character.getHitPoints() <= 0){
+                break;
+            }
         }
+    }
+
+    public List<Monster> moveMonsters(List<Monster> monsterList){
+        for(Monster monster : monsterList){
+            if(monster == null){
+                monsterList.remove(monster);
+            }else{
+                int rng = (int) (Math.random()*8);
+                Direction dir = Direction.values()[rng];
+                move(monster, dir);
+            }
+        }
+        return monsterList;
     }
 
     public void search(Character character) {

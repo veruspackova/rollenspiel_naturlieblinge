@@ -9,7 +9,7 @@ class DartTest {
 
     @Test
     void getWeaponProficiencyStat() {
-        Dart dart = new Dart ();
+        Dart dart = new Dart();
         assertEquals(Stat.DEX, dart.getWeaponProficiencyStat());
     }
 
@@ -18,14 +18,17 @@ class DartTest {
         Dart dart = new Dart();
         assertEquals(0, dart.getRequiredStrength());
     }
+
     @Test
     void rollDamage() {
         Dart dart = new Dart();
         int roll = dart.rollDamage();
-
         assertTrue(roll > 0);
         assertTrue(roll < 5);
     }
 
-
+    @Test
+    void dartthrow() {
+        for (int i = 0; i < 20; i++) ;
+    }
 }
