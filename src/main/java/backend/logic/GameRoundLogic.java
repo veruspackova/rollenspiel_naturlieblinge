@@ -6,6 +6,7 @@ import backend.artifacts.items.Item;
 import backend.artifacts.weapons.RangedSimpleWeapon;
 import backend.artifacts.weapons.WeaponBase;
 import backend.character.Character;
+import backend.character.Monster;
 import backend.enums.Direction;
 import backend.enums.GameRoundAction;
 import backend.gameBoard.GameBoard;
@@ -18,13 +19,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Map;
 
 public class GameRoundLogic {
 
     public GameBoard gameBoard;
     private Character character;
-
     private int movecounter;
     private BufferedReader inputReader;
 
@@ -75,13 +76,18 @@ public class GameRoundLogic {
     public boolean move(Character character, Direction direction) {
         RoomField current = character.getPosition();
         RoomField target = getTargetRoom(current, direction);
+        if (target.getCharacter() != null) {
+            FightRound fightRound = new FightRound(character, target.getCharacter());
+            fightRound.fightToTheDeath();
+            if(character.getHitPoints() <= 0){
+                return false;
+            }
+        }
         if (moveToTarget(character, target, current) == false) {
             System.out.println("Invalid move. Something is in the way.");
             return false;
         }
-        if (target.getCharacter() != null) {
-            //@todo fight
-        }
+
         return true;
     }
 
@@ -309,6 +315,22 @@ public class GameRoundLogic {
                     gameBoard.printLegend();
                     break;
             }
+            if(character.getHitPoints() <= 0){
+                break;
+            }
         }
+    }
+
+    public List<Monster> moveMonsters(List<Monster> monsterList){
+        for(Monster monster : monsterList){
+            if(monster == null){
+                monsterList.remove(monster);
+            }else{
+                int rng = (int) (Math.random()*8);
+                Direction dir = Direction.values()[rng];
+                move(monster, dir);
+            }
+        }
+        return monsterList;
     }
 }
