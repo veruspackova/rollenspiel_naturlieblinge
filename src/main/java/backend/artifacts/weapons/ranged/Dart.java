@@ -16,6 +16,7 @@ import backend.logic.Dice;
                 this();
                 this.maximaleDart = maximaleDart;
                 this.anzahlDart = maximaleDart;
+                this.dartthrow();
             }
 
             public void dartthrow() {
