@@ -3,7 +3,6 @@ package backend.logic;
 import backend.artifacts.ISearchable;
 import backend.artifacts.items.Item;
 import backend.artifacts.spells.Fireball;
-import backend.artifacts.spells.RayOfFrost;
 import backend.artifacts.spells.Spell;
 import backend.artifacts.weapons.RangedSimpleWeapon;
 import backend.artifacts.weapons.WeaponBase;
@@ -20,6 +19,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class GameRoundLogic {
 
@@ -241,41 +242,17 @@ public class GameRoundLogic {
 
     public boolean move(Character character, Direction direction) {
         RoomField current = character.getPosition();
-        RoomField target = getTargetRoom(current, direction);
+        RoomField target = getNextFieldByDirection(current, direction);
         if (!moveToTarget(character, target, current)) {
             System.out.println("Invalid move. Something is in the way.");
             return false;
+        } else {
+            character.setDirection(direction);
         }
         if (target.getCharacter() != null) {
             //@todo fight
         }
         return true;
-    }
-
-    //returns the room that is in the direction of given room
-    public RoomField getTargetRoom(RoomField current, Direction direction) {
-        RoomField target = null;
-        ArrayList<Integer> cords = current.getCoordinates();
-
-        target = switch (direction) {
-            case North ->
-                    gameBoard.getBoard()[cords.get(0) - 1][cords.get(1)]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-            case NorthEast ->
-                    gameBoard.getBoard()[cords.get(0) - 1][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-            case East ->
-                    gameBoard.getBoard()[cords.get(0)][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-            case SouthEast ->
-                    gameBoard.getBoard()[cords.get(0) + 1][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-            case South ->
-                    gameBoard.getBoard()[cords.get(0) + 1][cords.get(1)]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-            case SouthWest ->
-                    gameBoard.getBoard()[cords.get(0) + 1][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-            case West ->
-                    gameBoard.getBoard()[cords.get(0)][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-            case NorthWest ->
-                    gameBoard.getBoard()[cords.get(0) - 1][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-        };
-        return target;
     }
 
     public void useItem(Character character, String itemName) {
@@ -329,35 +306,9 @@ public class GameRoundLogic {
         ArrayList<Character> affectedCharacters = new ArrayList<>();
         int o = direction.ordinal();
         switch (spell) {
-            case BURNING_HANDS -> {
-                Direction leftSide = Direction.values()[o - 1];
-                Direction rightSide = Direction.values()[o + 1];
-                System.out.println("cone: " + direction + " and from " + leftSide + " to " + rightSide);
-                affectedCharacters.add(getNextFieldByDirection(currentField, direction).getCharacter());
-                affectedCharacters.add(getNextFieldByDirection(currentField, direction, 2).getCharacter());
-                affectedCharacters.add(getNextFieldByDirection(currentField, leftSide, 2).getCharacter());
-                affectedCharacters.add(getNextFieldByDirection(currentField, rightSide, 2).getCharacter());
-            }
-            case RAY_OF_FROST -> {
-                RayOfFrost s = (RayOfFrost) spell.createSpell();
-                int allowedRange = s.getRange();
-                int currentX = character.getPosition().getCoordinates().get(0);
-                int currentY = character.getPosition().getCoordinates().get(1);
-                System.out.println("you can attack up to " + allowedRange + " fields in any direction");
-                System.out.println("how many fields forward and to the right would you like to shoot? (with minus you can hit behind you/left of you)");
-                ArrayList<String> inputFieldDistance = getInput();
-                int x = Integer.parseInt(inputFieldDistance.get(0));
-                int y = Integer.parseInt(inputFieldDistance.get(1));
-                if (Math.abs(x) <= allowedRange && Math.abs(y) <= allowedRange) {
-                    try {
-                        RoomField roomField = getGameBoard().getRoomFieldByCoordinates(currentX + x, currentY + y);
-                        affectedCharacters.add(roomField.getCharacter());
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("this field is unreachable, sorry!");
-                    }
-                } else {
-                    throw new InputMismatchException("allowed range is " + allowedRange);
-                }
+            case BURNING_HANDS -> addAffectedByBurningHands(affectedCharacters, currentField, direction);
+            case RAY_OF_FROST, FIREBALL -> {
+                addAffectedByRangedWeaponSpell((RangedSimpleWeapon) spell.createSpell(), affectedCharacters, o);
             }
             case SHIELD -> {
                 affectedCharacters.add(character);
@@ -367,37 +318,67 @@ public class GameRoundLogic {
                 }
             }
             case MAGE_ARMOUR -> affectedCharacters.add((character));
-            case FIREBALL -> {
-                Fireball s = (Fireball) spell.createSpell();
-                int allowedRange = s.getRange();
-                int currentX = character.getPosition().getCoordinates().get(0);
-                int currentY = character.getPosition().getCoordinates().get(1);
-                System.out.println("you can attack up to " + allowedRange + " fields in any direction");
-                System.out.println("how many fields forward and to the right would you like to shoot? (with minus you can hit behind you/left of you)");
-                ArrayList<String> inputFieldDistance = getInput();
-                int x = Integer.parseInt(inputFieldDistance.get(0));
-                int y = Integer.parseInt(inputFieldDistance.get(1));
-                if (Math.abs(x) <= allowedRange && Math.abs(y) <= allowedRange) {
-                    try {
-                        RoomField roomField = getGameBoard().getRoomFieldByCoordinates(currentX + x, currentY + y);
-                        for (int i = 0; i < 8; i++) {
-                            Direction d = Direction.values()[o + i];
-                            affectedCharacters.add(getNextFieldByDirection(roomField, d).getCharacter());
-                        }
-                        affectedCharacters.add(roomField.getCharacter());
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("this field is unreachable, sorry!");
-                    }
-                } else {
-                    throw new InputMismatchException("allowed range is " + allowedRange);
+            case HEAL, SECOND_LIFE -> {
+                RoomField field = getNextFieldByDirection(currentField, direction);
+                if (field != null) {
+                    affectedCharacters.add(field.getCharacter());
                 }
-            }
-            case SECOND_LIFE -> {
-                affectedCharacters.add(getNextFieldByDirection(currentField, direction).getCharacter());
             }
         }
 
-        return affectedCharacters;
+        return (ArrayList<Character>) affectedCharacters.stream().filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    private void addAffectedByBurningHands(ArrayList<Character> affectedCharacters, RoomField currentField, Direction direction) {
+        int o = direction.ordinal();
+
+        Direction leftSide = Direction.values()[Math.floorMod(o - 1, 8)];
+        Direction rightSide = Direction.values()[Math.floorMod(o + 1, 8)];
+        System.out.println("cone: " + direction + " and from " + leftSide + " to " + rightSide);
+
+        ArrayList<RoomField> fields = new ArrayList<>();
+        fields.add(getNextFieldByDirection(currentField, direction));
+        fields.add(getNextFieldByDirection(currentField, direction, 2));
+        fields.add(getNextFieldByDirection(currentField, leftSide, 2));
+        fields.add(getNextFieldByDirection(currentField, rightSide, 2));
+
+        for (RoomField field : fields) {
+            if (field != null) {
+                affectedCharacters.add(field.getCharacter());
+            }
+        }
+    }
+
+    private void addAffectedByRangedWeaponSpell(RangedSimpleWeapon s, ArrayList<Character> affectedCharacters, int o) {
+        int allowedRange = s.getRange();
+        int currentX = character.getPosition().getCoordinates().get(0);
+        int currentY = character.getPosition().getCoordinates().get(1);
+        System.out.println("you can attack up to " + allowedRange + " fields in any direction");
+        System.out.println("how many fields forward and to the right would you like to shoot? (with minus you can hit behind you/left of you)");
+        ArrayList<String> inputFieldDistance = getInput();
+        int x = Integer.parseInt(inputFieldDistance.get(0));
+        int y = Integer.parseInt(inputFieldDistance.get(1));
+        if (Math.abs(x) <= allowedRange && Math.abs(y) <= allowedRange) {
+            try {
+                RoomField roomField = getGameBoard().getRoomFieldByCoordinates(currentX - x, currentY + y);
+                if (s instanceof Fireball) {
+                    for (int i = 0; i < 8; i++) {
+                        Direction d = Direction.values()[o + i];
+                        RoomField f = getNextFieldByDirection(roomField, d);
+                        if (f != null) {
+                            affectedCharacters.add(f.getCharacter());
+                        }
+                    }
+                }
+                affectedCharacters.add(roomField.getCharacter());
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("this field is unreachable, sorry!");
+            } catch (NullPointerException e) {
+                System.out.println("this field is not reachable, sorry!");
+            }
+        } else {
+            throw new InputMismatchException("allowed range is " + allowedRange);
+        }
     }
 
     public RoomField getNextFieldByDirection(RoomField currentField, Direction direction) {
