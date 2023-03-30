@@ -1,5 +1,6 @@
-package backend.artifacts.weapons.melee;
+package backend.artifacts.weapons.agiele;
 
+import backend.artifacts.weapons.agiele.Spear;
 import backend.enums.Stat;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +10,7 @@ class SpearTest {
     @Test
     void getWeaponProficiencyStat() {
         Spear spear = new Spear();
-        assertEquals(Stat.NONE, spear.getWeaponProficiencyStat());
+        assertEquals(Stat.DEX, spear.getWeaponProficiencyStat());
     }
 
     @Test

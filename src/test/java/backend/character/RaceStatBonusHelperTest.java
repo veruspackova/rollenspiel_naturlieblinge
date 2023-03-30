@@ -1,6 +1,8 @@
 package backend.character;
 
-import backend.artifacts.weapons.melee.Dagger;
+import backend.artifacts.items.Item;
+import backend.artifacts.weapons.WeaponBase;
+import backend.artifacts.weapons.melee.NoWeapon;
 import backend.enums.Race;
 import backend.enums.Stat;
 
@@ -77,9 +79,8 @@ class RaceStatBonusHelperTest {
     }
 
     public static class TestCharacter extends Character {
-        public TestCharacter(Race race, String name, int strength, int dexterity, int constitution, int intelligence, int wisdom) {r
-            super(race, name, strength, dexterity, constitution, intelligence, wisdom, new ArrayList<>(), new Dagger(), new ArrayList<>());
-
+        public TestCharacter(Race race, String name, int strength, int dexterity, int constitution, int intelligence, int wisdom) {
+            super(race, name, strength, dexterity, constitution, intelligence, wisdom, new ArrayList<Item>(), new NoWeapon(), new ArrayList<WeaponBase>());
         }
     }
 }

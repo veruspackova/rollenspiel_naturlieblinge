@@ -1,12 +1,12 @@
-package backend.artifacts.weapons.melee;
+package backend.artifacts.weapons.agiele;
 
-import backend.artifacts.weapons.WeaponBase;
+import backend.artifacts.weapons.RangedSimpleWeapon;
 import backend.enums.Stat;
 import backend.logic.Dice;
 
-public class HandAxe extends WeaponBase {
+public class HandAxe extends RangedSimpleWeapon {
     public HandAxe() {
-        super(new Dice(6));
+        super(new Dice(6),2);
     }
 
     @Override
