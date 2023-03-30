@@ -1,3 +1,6 @@
+import backend.artifacts.items.Item;
+import backend.artifacts.items.magicpotions.HealingPotion;
+import backend.artifacts.items.magicpotions.InvisibilityPotion;
 import backend.character.Character;
 import backend.character.Fighter;
 import backend.character.Monster;
@@ -6,8 +9,10 @@ import backend.enums.Race;
 import backend.gameBoard.GameBoard;
 import backend.gameBoard.RoomField;
 import backend.input.InputClass;
+import backend.logic.CharacterCreator;
 import backend.logic.GameRoundLogic;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,20 +21,67 @@ import java.util.List;
 
 public class Main {
     static GameBoard gameBoard;
+    static InputClass input;
     static List<Character> characterList = new ArrayList<>();
     public static void main(String[] args) {
-        init();
+        input = new InputClass(new BufferedReader(new InputStreamReader(System.in)));
+        //init();
+        testInit();
+        gameBoard.printLegend();
         while (true){
             run();
         }
     }
 
-    public static void init(){
+    public static void init() {
+        System.out.println("How many people play? (without the gamemaster)");
+        boolean successfulInput = false;
+        int characterAmount = 0;
+        while (!successfulInput) {
+            try {
+                characterAmount = Integer.parseInt(input.read().get(0));
+                if (characterAmount < 1) {
+                    throw new IllegalArgumentException();
+                }
+                successfulInput = true;
+            } catch (Exception e) {
+                System.out.println("Invalid. Try again");
+            }
+        }
+        CharacterCreator creator = new CharacterCreator(input);
+        for (int i = 0; i < characterAmount; i++) {
+
+        }
+
+
+        System.out.println("How big do you want your game board to be?");
+        successfulInput = false;
+        while (!successfulInput) {
+            try {
+                int size = Integer.parseInt(input.read().get(0));
+                gameBoard = new GameBoard(size);
+                successfulInput = true;
+            } catch (Exception e) {
+                System.out.println("Invalid. Try again");
+            }
+        }
+        //@todo add more field customization
+        Character testChar = new Fighter(Race.HUM, "test");
+        Character testChar2 = new Thief(Race.HUM, "test");
+        Character testChar3 = new Monster("test");
+    }
+
+    public static void testInit(){
         gameBoard = new GameBoard(20);
         gameBoard.generateMap();
-        Character testChar = new Fighter(Race.HUM,"test");
-        Character testChar2 = new Thief(Race.HUM,"test");
-        Character testChar3 = new Monster("test");
+        HealingPotion i1 = new HealingPotion("healingpotion", "healingpotion");
+        InvisibilityPotion i2 = new InvisibilityPotion("InvisibilityPotion", "InvisibilityPotion");
+        ArrayList<Item> itemArrayList = new ArrayList<>();
+        itemArrayList.add(i1);
+        itemArrayList.add(i2);
+        Character testChar = new Fighter(Race.HUM,"test", 10,10,10,10,10,itemArrayList, null, null);
+        Character testChar2 = new Thief(Race.HUM,"test", 10,10,10,10,10,null, null, null);
+        Character testChar3 = new Monster("test", 10,10,10,10,10,10, 10, 10, null, null, null);
         characterList.add(testChar);
         characterList.add(testChar2);
         characterList.add(testChar3);

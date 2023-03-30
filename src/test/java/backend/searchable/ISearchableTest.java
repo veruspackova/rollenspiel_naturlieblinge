@@ -33,7 +33,7 @@ public class ISearchableTest {
         Fighter fighter = new Fighter(Race.HOB, "fighter", 15, 12, 14, 8, 10, new ArrayList<>(), selectedWeapon, new ArrayList<>());
         assertEquals(selectedWeapon, fighter.getSelectedWeapon());
 
-        searchedWeapon.search(fighter);
+        searchedWeapon.pickUpItem(fighter);
         assertEquals(searchedWeapon, fighter.getSelectedWeapon());
     }
 
@@ -51,7 +51,7 @@ public class ISearchableTest {
         Fighter fighter = new Fighter(Race.HOB, "fighter", 15, 12, 14, 8, 10, new ArrayList<>(), selectedWeapon, new ArrayList<>());
         assertEquals(selectedWeapon, fighter.getSelectedWeapon());
 
-        searchedWeapon.search(fighter);
+        searchedWeapon.pickUpItem(fighter);
         assertEquals(selectedWeapon, fighter.getSelectedWeapon());
     }
 
@@ -72,7 +72,7 @@ public class ISearchableTest {
         Fighter fighter = new Fighter(Race.HOB, "fighter", 15, 12, 14, 8, 10, new ArrayList<>(), new NoWeapon(), new ArrayList<>());
         assertEquals(0, fighter.getArmour().getAcBonus());
 
-        armour.search(fighter);
+        armour.pickUpItem(fighter);
         assertEquals(10, fighter.getArmour().getAcBonus());
     }
 
@@ -94,7 +94,7 @@ public class ISearchableTest {
         Fighter fighter = new Fighter(Race.HOB, "fighter", 15, 12, 14, 8, 10, new ArrayList<>(), new NoWeapon(), new ArrayList<>());
         assertEquals(0, fighter.getArmour().getAcBonus());
 
-        armour.search(fighter);
+        armour.pickUpItem(fighter);
         assertEquals(0, fighter.getArmour().getAcBonus());
     }
 
@@ -106,7 +106,7 @@ public class ISearchableTest {
         Fighter fighter = new Fighter(Race.HOB, "fighter", 15, 12, 14, 8, 10, new ArrayList<>(), new NoWeapon(), new ArrayList<>());
         assertEquals(new ArrayList<Item>(), fighter.getItems());
 
-        item.search(fighter);
+        item.pickUpItem(fighter);
         ArrayList<Item> searchedArray = new ArrayList<Item>();
         searchedArray.add(item);
         assertEquals(searchedArray, fighter.getItems());

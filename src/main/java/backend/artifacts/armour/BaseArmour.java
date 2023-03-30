@@ -32,7 +32,7 @@ public abstract class BaseArmour implements ISearchable {
     }
 
     @Override
-    public void search(Character player) {
+    public void pickUpItem(Character player) {
         ArrayList<String> input;
         boolean wearNewArmour;
 

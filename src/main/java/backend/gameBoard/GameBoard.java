@@ -1,5 +1,20 @@
 package backend.gameBoard;
 
+import backend.artifacts.ISearchable;
+import backend.artifacts.armour.Chainmail;
+import backend.artifacts.armour.LeatherArmour;
+import backend.artifacts.armour.Scalemail;
+import backend.artifacts.armour.Shield;
+import backend.artifacts.items.Item;
+import backend.artifacts.items.magicitems.Amulet;
+import backend.artifacts.items.magicitems.Cape;
+import backend.artifacts.items.magicitems.Ring;
+import backend.artifacts.items.magicpotions.HealingPotion;
+import backend.artifacts.items.magicpotions.InvisibilityPotion;
+import backend.artifacts.items.magicpotions.Poison;
+import backend.artifacts.weapons.melee.*;
+import backend.artifacts.weapons.ranged.Bow;
+import backend.artifacts.weapons.ranged.Dart;
 import backend.character.Character;
 import backend.character.Fighter;
 import backend.character.Monster;
@@ -43,12 +58,14 @@ public class GameBoard {
         this.size = 20;
         generateMap();
         printBoard();
+        this.generateMap();
     }
     /**
      * generate Map
      * (generates a gameboard layout randomly)
      */
     public void generateMap(){
+        //@todo implement making monster amount and so on variable
         int x = (int) (Math.random()*size);
         int y = (int) (Math.random()*size);
         Direction lastMove = null;
@@ -85,11 +102,58 @@ public class GameBoard {
                         double rnd = Math.random();
                         if(rnd >= 0.8){
                             board[x][y] = new RoomField(RoomType.Door, x, y);
+                            board[x][y].addItem(placeItems());
                         }
                     }
+
                 }
             }
         }
+    }
+
+    public ISearchable placeItems(){
+        double rnd = Math.random()*100;
+        switch ((int)rnd){
+            case 0://Chainmail
+                return new Chainmail();
+            case 1://LeatherArmour
+                return new LeatherArmour();
+            case 2://Scalemail
+                return new Scalemail();
+            case 3://Shield
+                return new Shield();
+            case 4://Amulet
+                return new Amulet("Amulet", "Amulet");
+            case 5://Cape
+                return new Cape("Cape", "Cape");
+            case 6://Ring
+                return new Ring("Ring", "Ring");
+            case 7://HealingPotion
+                return new HealingPotion("Healing Potion", "Healing Potion");
+            case 8://InvisibilityPotion
+                return new InvisibilityPotion("Invisibility Potion", "Invisibility Potion");
+            case 9://Poison
+                return new Poison("Poison Potion", "Poison Potion");
+            case 10://Club
+                return new Club();
+            case 11://Dagger
+                return new Dagger();
+            case 12://Handaxe
+                return new HandAxe();
+            case 13://Rapier
+                return new Rapier();
+            case 14://Spear
+                return new Spear();
+            case 15://Sword
+                return new Sword();
+            case 16://Waraxe
+                return new WarAxe();
+            case 17://Bow
+                return new Bow();
+            case 18://Dart
+                return new Dart();
+        }
+        return null;
     }
 
     public boolean isHallway(int x, int y){
@@ -125,15 +189,17 @@ public class GameBoard {
      * )
      */
     public void printBoard(){
+        printLegend();
         for(int x = 0; x < board.length; x++){
             for(int y = 0; y < board[0].length; y++){
                 if(board[x][y] == null){
                     System.out.print("*  ");
                 }
                 else if (board[x][y].getCharacter() != null) {
-                    //to-do
-                    //unterscheidung monster und spieler
-                    System.out.print("@  ");
+                    if(board[x][y].getCharacter().getClass() == Monster.class){
+                        System.out.print("X  ");
+                    }
+                    System.out.print("O  ");
                 }
                 else {
                     switch (board[x][y].getRoomType()){
@@ -193,6 +259,24 @@ public class GameBoard {
         System.out.println("_______________________________________________________________________________________________");
     }
 
+    public void printLegend(){
+        System.out.println("Movement Controlls:                                                 Legend:");
+        System.out.println("w                   ->  UP                                          @           ->  Current Character");
+        System.out.println("a                   ->  Right                                       O           ->  Character");
+        System.out.println("s                   ->  Down                                        X           ->  Monster");
+        System.out.println("d                   ->  Left                                        .           ->  Room\n");
+        System.out.println("Other Controlls:                                                    |           ->  Door");
+        System.out.println("f                   ->  Figth                                       *           ->  Wall");
+        System.out.println("r                   ->  Rest");
+        System.out.println("e                   ->  Search");
+        System.out.println("i                   ->  ItemList/Inventory");
+        System.out.println("q                   ->  WeaponList");
+        System.out.println("turn + 'direction'  ->  Turn around");
+        System.out.println("use + 'itemName'    ->  Use the Item");
+        System.out.println("help                ->  show comandList");
+        System.out.println("_______________________________________________________________________________________________");
+    }
+
     public void placeCharacter(Character character){
         for(int i = 0; i < size-1; i++){
             int x = (int) (Math.random()*size);
@@ -204,6 +288,23 @@ public class GameBoard {
             }
         }
     }
+
+    public RoomField[][] getBoard() {
+        return board;
+    }
+
+//    public void placeMonsters(){
+//        for(int i = size/3){
+//            int x = (int) (Math.random()*size);
+//            int y = (int) (Math.random()*size);
+//            if(board[x][y] != null){
+//                Monster monster = new Monster("Monster", x, y, x, y, x, y);
+//                board[x][y].setCharacter(monster);
+//                monster.setPosition(board[x][y]);
+//                i = size;
+//            }
+//        }
+//    }
 
     public RoomField getRoomFieldByCoordinates(int x, int y) {
         return board[x][y];

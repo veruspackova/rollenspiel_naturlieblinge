@@ -1,5 +1,7 @@
 package backend.logic;
 
+import backend.artifacts.ISearchable;
+import backend.artifacts.armour.BaseArmour;
 import backend.artifacts.items.Item;
 import backend.artifacts.spells.RayOfFrost;
 import backend.artifacts.spells.Spell;
@@ -9,15 +11,19 @@ import backend.character.Character;
 import backend.character.Wizard;
 import backend.enums.Direction;
 import backend.enums.Spells;
+import backend.enums.GameRoundAction;
 import backend.gameBoard.GameBoard;
 import backend.gameBoard.RoomField;
 import backend.input.InputClass;
 
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.Map;
 
 public class GameRoundLogic {
 
@@ -50,6 +56,115 @@ public class GameRoundLogic {
         this.character = character;
     }
 
+    private RoomField getFacingPosition(int distance) {
+        RoomField current = character.getPosition();
+        return getNextFieldByDirection(current, character.getDirection(), distance);
+    }
+
+    private RoomField getFacingPosition() {
+        RoomField current = character.getPosition();
+        return getNextFieldByDirection(current, character.getDirection(), 1);
+    }
+
+    //Move funktion gets called on input move
+    public boolean move(Character character) {
+        RoomField current = character.getPosition();
+        RoomField target = getFacingPosition();
+        if (!moveToTarget(character, target, current)) {
+            System.out.println("Invalid move. Something is in the way.");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean move(Character character, Direction direction) {
+        RoomField current = character.getPosition();
+        RoomField target = getTargetRoom(current, direction);
+        if (moveToTarget(character, target, current) == false) {
+            System.out.println("Invalid move. Something is in the way.");
+            return false;
+        }
+        if (target.getCharacter() != null) {
+            //@todo fight
+        }
+        return true;
+    }
+
+    //moves the character and updates references
+    public boolean moveToTarget(Character character, RoomField target, RoomField current) {
+        if (target != null) {
+            current.setCharacter(null);
+            target.setCharacter(character);
+            character.setPosition(target);
+            return true;
+        } else return false;
+    }
+
+    //returns the room that is in the direction of given room
+    public RoomField getTargetRoom(RoomField current, Direction direction) {
+        RoomField target = null;
+        ArrayList<Integer> cords = current.getCoordinates();
+
+        switch (direction) {
+            case North:
+                target = gameBoard.getBoard()[cords.get(0) - 1][cords.get(1)]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+            case NorthEast:
+                target = gameBoard.getBoard()[cords.get(0) - 1][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+            case East:
+                target = gameBoard.getBoard()[cords.get(0)][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+            case SouthEast:
+                target = gameBoard.getBoard()[cords.get(0) + 1][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+            case South:
+                target = gameBoard.getBoard()[cords.get(0) + 1][cords.get(1)]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+            case SouthWest:
+                target = gameBoard.getBoard()[cords.get(0) + 1][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+            case West:
+                target = gameBoard.getBoard()[cords.get(0)][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+            case NorthWest:
+                target = gameBoard.getBoard()[cords.get(0) - 1][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                break;
+        }
+        return target;
+    }
+
+    public void useItem(Character character, String itemName) {
+        for (Item item : character.getItems()) {
+            if (item.name.equals(itemName)) {
+                item.use(character);
+            }
+        }
+    }
+
+    public void search(Character character) {
+        RoomField field = character.getPosition();
+        for (ISearchable item : field.getItemList()) {
+            item.pickUpItem(character);
+        }
+    }
+
+    public RoomField getNextFieldByDirection(RoomField currentField, Direction direction, int distance) {
+        ArrayList<Integer> cords = currentField.getCoordinates();
+
+        return switch (direction) {
+            case North -> gameBoard.board[cords.get(0) - distance][cords.get(1)];
+            case NorthEast -> gameBoard.board[cords.get(0) - distance][cords.get(1) + distance];
+            case East -> gameBoard.board[cords.get(0)][cords.get(1) + distance];
+            case SouthEast -> gameBoard.board[cords.get(0) + distance][cords.get(1) + distance];
+            case South -> gameBoard.board[cords.get(0) + distance][cords.get(1)];
+            case SouthWest -> gameBoard.board[cords.get(0) + distance][cords.get(1) - distance];
+            case West -> gameBoard.board[cords.get(0)][cords.get(1) - distance];
+            case NorthWest -> gameBoard.board[cords.get(0) - distance][cords.get(1) - distance];
+        };
+    }
+
+
     public void play() throws InputMismatchException {
         while (true) {
             ArrayList<String> input = getInput();
@@ -60,11 +175,9 @@ public class GameRoundLogic {
             } else {
                 playerAction = "rest";
             }
-
             switch (playerAction) {
                 case "fight":
                     RoomField fieldToAttack = getFacingPosition();
-
                     if (input.size() == 2) {
                         int targetDistance = Integer.parseInt(input.get(1));
                         WeaponBase w = character.getSelectedWeapon();
@@ -76,19 +189,32 @@ public class GameRoundLogic {
 
                         if (w instanceof RangedSimpleWeapon && ((RangedSimpleWeapon) w).getRange() >= targetDistance) {
                             fieldToAttack = getFacingPosition(targetDistance);
-                        } else {
-                            System.out.println("You can't reach that far");
-                            break;
-                        }
-                    }
+                            if (input.get(1) != null && input.get(2) != null && input.get(3) != null
+                                    && Integer.parseInt(input.get(1)) > 0 && Integer.parseInt(input.get(2)) > 0) {
+                                int cordX = Integer.parseInt(input.get(1));
+                                int cordY = Integer.parseInt(input.get(2));
+                                RoomField roomField = gameBoard.getBoard()[cordX][cordY]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+                                if (roomField.getCharacter() != null) {
+                                    if (input.get(3) == null) {
+                                        //@todo fight round with selected weapon none
+                                    }
+                                    //@todo weapon selection
+                                    //@todo when fightround is implemented
+                                } else {
+                                    System.out.println("You hit nothing");
+                                    return;
+                                }
+                            }
 
-                    if (fieldToAttack != null && fieldToAttack.getCharacter() != null) {
-                        Character target = fieldToAttack.getCharacter();
-                        FightRound fightRound = new FightRound(character, target);
-                        fightRound.singleRound();
-                    } else {
-                        System.out.println("You hit nothing");
-                        return;
+                            if (fieldToAttack != null && fieldToAttack.getCharacter() != null) {
+                                Character target = fieldToAttack.getCharacter();
+                                FightRound fightRound = new FightRound(character, target);
+                                fightRound.singleRound();
+                            } else {
+                                System.out.println("Invalid coordinates.");
+                                return;
+                            }
+                        }
                     }
                     break;
 
@@ -112,6 +238,7 @@ public class GameRoundLogic {
                     break;
 
                 case "move":
+                case "w":
                     if (movecounter > 1) {
                         boolean success = move(character);
                         if (success) {
@@ -120,33 +247,72 @@ public class GameRoundLogic {
                         }
                     } else {
                         move(character);
+
+                        boolean success = move(character, Direction.North);
+                        if (success == true) {
+                            movecounter--;
+                            gameBoard.printBoardforPlayer(character);
+                        }
+                    }
+                    break;
+                case "a":
+                    if (movecounter > 1) {
+                        boolean success = move(character, Direction.West);
+                        if (success == true) {
+                            movecounter--;
+                            gameBoard.printBoardforPlayer(character);
+                        }
+                    } else {
+                        move(character, Direction.West);
                         return;
                     }
                     break;
-
-                case "rest":
-                    character.rest();
-                    break;
-
-                case "search":
-                    //@todo waiting for isearchable
-                    break;
-
-                case "use":
-                    //@todo waiting for items
-                    break;
-
-                case "items":
-                    System.out.println("Itemlist of " + character.getName() + ":");
-                    for (Item item : character.getItems()) {
-                        System.out.println(item);
+                case "s":
+                    if (movecounter > 1) {
+                        boolean success = move(character, Direction.South);
+                        if (success == true) {
+                            movecounter--;
+                            gameBoard.printBoardforPlayer(character);
+                        }
+                    } else {
+                        move(character, Direction.South);
+                        return;
                     }
                     break;
-
-                case "weapons":
+                case "d":
+                    if (movecounter > 1) {
+                        boolean success = move(character, Direction.East);
+                        if (success == true) {
+                            movecounter--;
+                            gameBoard.printBoardforPlayer(character);
+                        }
+                    } else {
+                        move(character, Direction.East);
+                        return;
+                    }
+                    break;
+                case "r":
+                    character.rest();
+                    break;
+                case "e":
+                    search(character);
+                    break;
+                case "use":
+                    useItem(character, input.get(1));
+                    break;
+                case "i":
+                    System.out.println("Itemlist of " + character.getName() + ":");
+                    if (character.getItems() == null) {
+                        System.out.println("There are no items in your pocket");
+                        break;
+                    }
+                    for (Item item : character.getItems()) {
+                        System.out.println(item.name);
+                    }
+                    break;
+                case "q":
                     //@todo waiting for items
                     break;
-
                 case "turn":
                     Direction temp = character.getDirection();
                     if (input.size() != 2) {
@@ -165,6 +331,9 @@ public class GameRoundLogic {
                         case "southwest" -> temp = Direction.SouthWest;
                     }
                     character.turn(temp);
+                    break;
+                case "help":
+                    gameBoard.printLegend();
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + playerAction);

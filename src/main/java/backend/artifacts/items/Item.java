@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public abstract class Item implements ISearchable {
 
-    private final String name;
-    private final String description;
+    public final String name;
+    public final String description;
 
     public Item(String name, String description)
     {
@@ -17,7 +17,7 @@ public abstract class Item implements ISearchable {
     }
     public abstract void use(Character character);
 
-    public void search(Character player)
+    public void pickUpItem(Character player)
     {
         System.out.println(player.getName() + " found item!\n" + this + "\n");
         player.addItem(this);

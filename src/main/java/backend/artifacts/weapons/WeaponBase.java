@@ -41,7 +41,7 @@ public abstract class WeaponBase implements Attack, ISearchable {
     }
 
     @Override
-    public void search(Character player) {
+    public void pickUpItem(Character player) {
         player.addWeapon(this);
         ArrayList<String> input;
         boolean equipNewWeapon;

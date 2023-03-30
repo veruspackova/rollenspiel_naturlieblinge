@@ -1,6 +1,8 @@
 package backend.gameBoard;
 
 import backend.artifacts.ISearchable;
+import backend.enums.RoomType;
+import backend.artifacts.items.Item;
 import backend.character.Character;
 import backend.enums.RoomType;
 
@@ -84,6 +86,12 @@ public class RoomField {
     public Character getCharacter() {
         return character;
     }
+    public RoomType getRoomType() {
+        return roomType;
+    }
+    public List<ISearchable> getItemList() {
+        return itemList;
+    }
 
     /**
      * setCharacter
@@ -93,13 +101,6 @@ public class RoomField {
         this.character = character;
     }
 
-    public RoomType getRoomType() {
-        return roomType;
-    }
-
-    public List<ISearchable> getItemList() {
-        return itemList;
-    }
     //setter
 
     /**
@@ -109,12 +110,12 @@ public class RoomField {
     public void setItemList(List<ISearchable> itemList) {
         this.itemList = itemList;
     }
-
+    
     public ArrayList<Integer> getCoordinates() {
         return coordinates;
     }
 
-    public void addItem(ISearchable item) {
+    public void addItem(ISearchable item){
         this.itemList.add(item);
     }
 
