@@ -25,8 +25,8 @@ public class Main {
     static List<Character> characterList = new ArrayList<>();
     public static void main(String[] args) {
         input = new InputClass(new BufferedReader(new InputStreamReader(System.in)));
-        //init();
-        testInit();
+        init();
+        //testInit();
         gameBoard.printLegend();
         while (true){
             run();
@@ -48,22 +48,26 @@ public class Main {
                 System.out.println("Invalid. Try again");
             }
         }
-        CharacterCreator creator = new CharacterCreator(input);
-        for (int i = 0; i < characterAmount; i++) {
-
-        }
-
-
         System.out.println("How big do you want your game board to be?");
         successfulInput = false;
         while (!successfulInput) {
             try {
                 int size = Integer.parseInt(input.read().get(0));
                 gameBoard = new GameBoard(size);
+                gameBoard.generateMap();
                 successfulInput = true;
             } catch (Exception e) {
                 System.out.println("Invalid. Try again");
             }
+        }
+        CharacterCreator creator = new CharacterCreator(input);
+        for (int i = 0; i < characterAmount; i++) {
+            Character character = creator.create();
+            characterList.add(character);
+            gameBoard.placeCharacter(character);
+        }
+        for(int i = 0; i< gameBoard.size/2; i++){
+            gameBoard.placeMonsters();
         }
         //@todo add more field customization
         Character testChar = new Fighter(Race.HUM, "test");

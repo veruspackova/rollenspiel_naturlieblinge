@@ -293,16 +293,13 @@ public class GameBoard {
         return board;
     }
 
-//    public void placeMonsters(){
-//        for(int i = size/3){
-//            int x = (int) (Math.random()*size);
-//            int y = (int) (Math.random()*size);
-//            if(board[x][y] != null){
-//                Monster monster = new Monster("Monster", x, y, x, y, x, y);
-//                board[x][y].setCharacter(monster);
-//                monster.setPosition(board[x][y]);
-//                i = size;
-//            }
-//        }
-//    }
+    public void placeMonsters(){
+        int x = (int) (Math.random()*size);
+        int y = (int) (Math.random()*size);
+        if(board[x][y] != null){
+            Monster monster = new Monster("Monster");
+            board[x][y].setCharacter(monster);
+            monster.setPosition(board[x][y]);
+        }
+    }
 }

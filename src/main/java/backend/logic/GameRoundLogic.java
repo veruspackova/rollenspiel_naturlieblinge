@@ -162,6 +162,12 @@ public class GameRoundLogic {
 
     public void play() throws InputMismatchException {
         while (true) {
+//            int test;
+//            try {
+//                test = System.in.read();
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
             InputClass inputClass = new InputClass(new BufferedReader(new InputStreamReader(System.in)));
             ArrayList<String> input = null;
             try {
