@@ -1,16 +1,35 @@
 package backend.artifacts.spells;
 
+import backend.artifacts.weapons.RangedSimpleWeapon;
+import backend.artifacts.weapons.WeaponBase;
 import backend.character.Character;
+import backend.character.Wizard;
+import backend.enums.Spells;
 import backend.logic.Dice;
+import backend.logic.FightRound;
 
-public class Fireball implements Spell {
+import java.util.ArrayList;
 
-    final private Dice dice;
+public class Fireball extends RangedSimpleWeapon implements Spell {
 
-    public Fireball() { dice = new Dice(8); }
+    public Fireball() {
+        super(new Dice(8), 3);
+    }
 
-    public void cast(Character target) {
+    // range weapon attacks "all on field" (3x3) d8 damage range +3 fields
+    public void castSpell(Wizard caster, ArrayList<Character> targets) {
+        if (caster.getSpellSlotsAvailable(Spells.FIREBALL) > 0) {
+            WeaponBase initialWeapon = caster.getSelectedWeapon();
+            caster.setSelectedWeapon(this);
+            for (Character target :
+                    targets) {
 
-//        System.out.println(target.getName());
+                FightRound fight = new FightRound(caster, target);
+                fight.attack();
+            }
+
+            caster.useSpellSlot(Spells.FIREBALL);
+            caster.setSelectedWeapon(initialWeapon);
+        }
     }
 }
