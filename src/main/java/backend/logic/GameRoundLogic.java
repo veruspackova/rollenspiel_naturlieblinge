@@ -2,6 +2,7 @@ package backend.logic;
 
 import backend.artifacts.ISearchable;
 import backend.artifacts.items.Item;
+import backend.artifacts.spells.Fireball;
 import backend.artifacts.spells.RayOfFrost;
 import backend.artifacts.spells.Spell;
 import backend.artifacts.weapons.RangedSimpleWeapon;
@@ -342,7 +343,6 @@ public class GameRoundLogic {
                 int allowedRange = s.getRange();
                 int currentX = character.getPosition().getCoordinates().get(0);
                 int currentY = character.getPosition().getCoordinates().get(1);
-                // cone
                 System.out.println("you can attack up to " + allowedRange + " fields in any direction");
                 System.out.println("how many fields forward and to the right would you like to shoot? (with minus you can hit behind you/left of you)");
                 ArrayList<String> inputFieldDistance = getInput();
@@ -350,8 +350,7 @@ public class GameRoundLogic {
                 int y = Integer.parseInt(inputFieldDistance.get(1));
                 if (Math.abs(x) <= allowedRange && Math.abs(y) <= allowedRange) {
                     try {
-                        // todo: use the getter!
-                        RoomField roomField = gameBoard.getRoomFieldByCoordinates(currentX + x, currentY + y);
+                        RoomField roomField = getGameBoard().getRoomFieldByCoordinates(currentX + x, currentY + y);
                         affectedCharacters.add(roomField.getCharacter());
                     } catch (ArrayIndexOutOfBoundsException e) {
                         System.out.println("this field is unreachable, sorry!");
@@ -368,6 +367,34 @@ public class GameRoundLogic {
                 }
             }
             case MAGE_ARMOUR -> affectedCharacters.add((character));
+            case FIREBALL -> {
+                Fireball s = (Fireball) spell.createSpell();
+                int allowedRange = s.getRange();
+                int currentX = character.getPosition().getCoordinates().get(0);
+                int currentY = character.getPosition().getCoordinates().get(1);
+                System.out.println("you can attack up to " + allowedRange + " fields in any direction");
+                System.out.println("how many fields forward and to the right would you like to shoot? (with minus you can hit behind you/left of you)");
+                ArrayList<String> inputFieldDistance = getInput();
+                int x = Integer.parseInt(inputFieldDistance.get(0));
+                int y = Integer.parseInt(inputFieldDistance.get(1));
+                if (Math.abs(x) <= allowedRange && Math.abs(y) <= allowedRange) {
+                    try {
+                        RoomField roomField = getGameBoard().getRoomFieldByCoordinates(currentX + x, currentY + y);
+                        for (int i = 0; i < 8; i++) {
+                            Direction d = Direction.values()[o + i];
+                            affectedCharacters.add(getNextFieldByDirection(roomField, d).getCharacter());
+                        }
+                        affectedCharacters.add(roomField.getCharacter());
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("this field is unreachable, sorry!");
+                    }
+                } else {
+                    throw new InputMismatchException("allowed range is " + allowedRange);
+                }
+            }
+            case SECOND_LIFE -> {
+                affectedCharacters.add(getNextFieldByDirection(currentField, direction).getCharacter());
+            }
         }
 
         return affectedCharacters;

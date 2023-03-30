@@ -17,47 +17,45 @@ public enum Spells implements SpellBuilder {
         public Spell createSpell() {
             return new BurningHands();
         }
-    },
-    FIREBALL {
+    }, FIREBALL {
         @Override
         public Spell createSpell() {
             return new Fireball();
         }
-    },
-    RAY_OF_FROST {
+    }, RAY_OF_FROST {
         @Override
         public Spell createSpell() {
             return new RayOfFrost();
         }
-    },
-    MAGE_ARMOUR {
+    }, MAGE_ARMOUR {
         @Override
         public Spell createSpell() {
             return new MageArmour();
         }
-    },
-    SHIELD {
+    }, SHIELD {
         @Override
         public Spell createSpell() {
             return new Shield();
         }
-    },
-    HEAL {
+    }, HEAL {
         @Override
         public Spell createSpell() {
             return new Heal();
         }
-    },
-    SLEEP {
+    }, SLEEP {
         @Override
         public Spell createSpell() {
             return new Sleep();
         }
-    },
-    MAGIC_MIST {
+    }, MAGIC_MIST {
         @Override
         public Spell createSpell() {
             return new MagicMist();
+        }
+    }, SECOND_LIFE {
+        @Override
+        public Spell createSpell() {
+            return new SecondLife();
         }
     },
     ;
