@@ -126,7 +126,7 @@ public class GameRoundLogic {
                         move(character);
 
                         boolean success = move(character, Direction.North);
-                        if (success == true) {
+                        if (success) {
                             movecounter--;
                             gameBoard.printBoardforPlayer(character);
                         }
@@ -135,7 +135,7 @@ public class GameRoundLogic {
                 case "a":
                     if (movecounter > 1) {
                         boolean success = move(character, Direction.West);
-                        if (success == true) {
+                        if (success) {
                             movecounter--;
                             gameBoard.printBoardforPlayer(character);
                         }
@@ -147,7 +147,7 @@ public class GameRoundLogic {
                 case "s":
                     if (movecounter > 1) {
                         boolean success = move(character, Direction.South);
-                        if (success == true) {
+                        if (success) {
                             movecounter--;
                             gameBoard.printBoardforPlayer(character);
                         }
@@ -159,7 +159,7 @@ public class GameRoundLogic {
                 case "d":
                     if (movecounter > 1) {
                         boolean success = move(character, Direction.East);
-                        if (success == true) {
+                        if (success) {
                             movecounter--;
                             gameBoard.printBoardforPlayer(character);
                         }
@@ -227,7 +227,7 @@ public class GameRoundLogic {
         this.character = character;
     }
 
-    //Move funktion gets called on input move
+    //Move function gets called on input move
     public boolean move(Character character) {
         RoomField current = character.getPosition();
         RoomField target = getFacingPosition();
@@ -241,7 +241,7 @@ public class GameRoundLogic {
     public boolean move(Character character, Direction direction) {
         RoomField current = character.getPosition();
         RoomField target = getTargetRoom(current, direction);
-        if (moveToTarget(character, target, current) == false) {
+        if (!moveToTarget(character, target, current)) {
             System.out.println("Invalid move. Something is in the way.");
             return false;
         }
@@ -256,32 +256,24 @@ public class GameRoundLogic {
         RoomField target = null;
         ArrayList<Integer> cords = current.getCoordinates();
 
-        switch (direction) {
-            case North:
-                target = gameBoard.getBoard()[cords.get(0) - 1][cords.get(1)]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-                break;
-            case NorthEast:
-                target = gameBoard.getBoard()[cords.get(0) - 1][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-                break;
-            case East:
-                target = gameBoard.getBoard()[cords.get(0)][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-                break;
-            case SouthEast:
-                target = gameBoard.getBoard()[cords.get(0) + 1][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-                break;
-            case South:
-                target = gameBoard.getBoard()[cords.get(0) + 1][cords.get(1)]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-                break;
-            case SouthWest:
-                target = gameBoard.getBoard()[cords.get(0) + 1][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-                break;
-            case West:
-                target = gameBoard.getBoard()[cords.get(0)][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-                break;
-            case NorthWest:
-                target = gameBoard.getBoard()[cords.get(0) - 1][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
-                break;
-        }
+        target = switch (direction) {
+            case North ->
+                    gameBoard.getBoard()[cords.get(0) - 1][cords.get(1)]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+            case NorthEast ->
+                    gameBoard.getBoard()[cords.get(0) - 1][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+            case East ->
+                    gameBoard.getBoard()[cords.get(0)][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+            case SouthEast ->
+                    gameBoard.getBoard()[cords.get(0) + 1][cords.get(1) + 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+            case South ->
+                    gameBoard.getBoard()[cords.get(0) + 1][cords.get(1)]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+            case SouthWest ->
+                    gameBoard.getBoard()[cords.get(0) + 1][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+            case West ->
+                    gameBoard.getBoard()[cords.get(0)][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+            case NorthWest ->
+                    gameBoard.getBoard()[cords.get(0) - 1][cords.get(1) - 1]; //@todo use getRoomFieldByCoordinates once Oleas Branch is merged
+        };
         return target;
     }
 
@@ -307,7 +299,7 @@ public class GameRoundLogic {
             System.out.println("what would you like to do?");
             input = inputClass.read();
         } catch (IOException e) {
-
+            // to be implemented
         }
         return input;
     }
