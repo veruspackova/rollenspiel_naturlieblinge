@@ -4,6 +4,7 @@ import backend.artifacts.ISearchable;
 import backend.artifacts.armour.BaseArmour;
 import backend.artifacts.armour.NoArmour;
 import backend.artifacts.items.Item;
+import backend.artifacts.spells.Spell;
 import backend.artifacts.weapons.WeaponBase;
 import backend.artifacts.weapons.melee.NoWeapon;
 import backend.enums.Direction;
@@ -18,6 +19,7 @@ import java.util.List;
 import static java.lang.Math.floor;
 
 public abstract class Character {
+    protected WeaponBase selectedWeapon;
     private Race race;
     private String name;
     private RoomField position;
@@ -33,7 +35,6 @@ public abstract class Character {
     private int intelligence;
     private int wisdom;
     private ArrayList<Item> items;
-    private WeaponBase selectedWeapon;
     private ArrayList<WeaponBase> weapons;
     private BaseArmour armour;
 
@@ -276,7 +277,9 @@ public abstract class Character {
     }
 
     public void setSelectedWeapon(WeaponBase selectedWeapon) {
-        this.selectedWeapon = selectedWeapon;
+        if (!(selectedWeapon instanceof Spell) && getStat(Stat.STR) >= selectedWeapon.getRequiredStrength()) {
+            this.selectedWeapon = selectedWeapon;
+        }
     }
 
     public void rest() {

@@ -295,6 +295,10 @@ public class GameBoard {
         return board;
     }
 
+    public RoomField getRoomFieldByCoordinates(int x, int y) {
+        return board[x][y];
+    }
+
     public Monster placeMonsters(){
         int x = (int) (Math.random()*size);
         int y = (int) (Math.random()*size);
@@ -306,5 +310,4 @@ public class GameBoard {
         }
         return null;
     }
-
 }

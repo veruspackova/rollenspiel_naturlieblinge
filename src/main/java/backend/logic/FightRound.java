@@ -43,7 +43,7 @@ public class FightRound {
         swapRoles();
     }
 
-    private void attack() {
+    public void attack() {
         if (isAttackSuccessful(attacker, target)) {
             WeaponBase w = attacker.getSelectedWeapon();
             int extraDamage = attacker.getStatModifier(w.getWeaponProficiencyStat());
@@ -52,8 +52,10 @@ public class FightRound {
 
             int newHp = target.getHitPoints() - totalDmg;
             target.setHitPoints(newHp);
+            // arrow or dart disappears
         } else {
             System.out.println(attacker.getName() + "'s attack failed");
+            // lose arrow or dart (arrow on the field)
         }
     }
 
