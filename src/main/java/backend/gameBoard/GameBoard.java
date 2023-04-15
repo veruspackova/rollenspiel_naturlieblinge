@@ -15,9 +15,10 @@ import backend.artifacts.weapons.agiele.Club;
 import backend.artifacts.weapons.agiele.Dagger;
 import backend.artifacts.weapons.agiele.HandAxe;
 import backend.artifacts.weapons.agiele.Spear;
-import backend.artifacts.weapons.melee.*;
+import backend.artifacts.weapons.melee.Rapier;
+import backend.artifacts.weapons.melee.Sword;
+import backend.artifacts.weapons.melee.WarAxe;
 import backend.artifacts.weapons.ranged.Bow;
-import backend.artifacts.weapons.ranged.Dart;
 import backend.character.Character;
 import backend.character.Monster;
 import backend.enums.Direction;
@@ -27,8 +28,8 @@ import backend.enums.RoomType;
 /**
  * Gameboard class
  * <p>
- *     generate a Gameboard where rooms ca be placed in<br>
- *     sets the size of the game
+ * generate a Gameboard where rooms ca be placed in<br>
+ * sets the size of the game
  * </p>
  *
  * @author jonasmalsbenden
@@ -41,50 +42,52 @@ public class GameBoard {
      * Constructor
      * (generates a Gamboard with a given size)
      */
-    public GameBoard(int size){
-        if(size < 1){
+    public GameBoard(int size) {
+        if (size < 1) {
             throw new IllegalArgumentException("Invalide board size");
         }
         board = new RoomField[size][size];
         this.size = size;
     }
+
     /**
      * Default Constructor
      * (generates a Gameboard with a size fo 20)
      */
-    public GameBoard(){
+    public GameBoard() {
         board = new RoomField[20][20];
         this.size = 20;
         generateMap();
         printBoard();
         this.generateMap();
     }
+
     /**
      * generate Map
      * (generates a gameboard layout randomly)
      */
-    public void generateMap(){
+    public void generateMap() {
         //@todo implement making monster amount and so on variable
-        int x = (int) (Math.random()*size);
-        int y = (int) (Math.random()*size);
+        int x = (int) (Math.random() * size);
+        int y = (int) (Math.random() * size);
         Direction lastMove = null;
-        for (int i = 0; i < (size*size); i++){
+        for (int i = 0; i < (size * size); i++) {
             board[x][y] = new RoomField(RoomType.Room, x, y);
-            double direction = Math.random()*10;
-            if(direction <= 5){
-                if(direction < 2 && x > 0 && lastMove != Direction.East){
+            double direction = Math.random() * 10;
+            if (direction <= 5) {
+                if (direction < 2 && x > 0 && lastMove != Direction.East) {
                     x--;
                     lastMove = Direction.West;
-                }else if(x < size-1 && lastMove != Direction.West){
+                } else if (x < size - 1 && lastMove != Direction.West) {
                     x++;
                     lastMove = Direction.East;
                 }
             }
-            if(direction > 5){
-                if(direction < 8 && y > 0 && lastMove != Direction.North){
+            if (direction > 5) {
+                if (direction < 8 && y > 0 && lastMove != Direction.North) {
                     y--;
                     lastMove = Direction.South;
-                }else if(y < size-1 && lastMove != Direction.South){
+                } else if (y < size - 1 && lastMove != Direction.South) {
                     y++;
                     lastMove = Direction.North;
                 }
@@ -93,13 +96,13 @@ public class GameBoard {
         setRooms();
     }
 
-    public void setRooms(){
-        for(int x = 0; x < size; x++){
-            for(int y = 0; y < size; y++){
-                if(board[x][y] != null){
-                    if(isHallway(x, y)){
+    public void setRooms() {
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                if (board[x][y] != null) {
+                    if (isHallway(x, y)) {
                         double rnd = Math.random();
-                        if(rnd >= 0.8){
+                        if (rnd >= 0.8) {
                             board[x][y] = new RoomField(RoomType.Door, x, y);
                             board[x][y].addItem(placeItems());
                         }
@@ -110,8 +113,8 @@ public class GameBoard {
         }
     }
 
-    public ISearchable placeItems(){
-        double rnd = Math.random()*100;
+    public ISearchable placeItems() {
+        double rnd = Math.random() * 100;
         return switch ((int) rnd) {
             case 0 ->//Chainmail
                     new Chainmail();
@@ -149,24 +152,22 @@ public class GameBoard {
                     new WarAxe();
             case 17 ->//Bow
                     new Bow();
-            case 18 ->//Dart
-                    new Dart();
             default -> null;
         };
     }
 
-    public boolean isHallway(int x, int y){
+    public boolean isHallway(int x, int y) {
         int counter = 0;
-        if(y <= 0 || board[x][y-1] == null){
+        if (y <= 0 || board[x][y - 1] == null) {
             counter++;
         }
-        if(x == size-1 || board[x+1][y] == null){
+        if (x == size - 1 || board[x + 1][y] == null) {
             counter++;
         }
-        if(y == size-1 || board[x][y+1] == null){
+        if (y == size - 1 || board[x][y + 1] == null) {
             counter++;
         }
-        if(x <= 0 || board[x-1][y] == null){
+        if (x <= 0 || board[x - 1][y] == null) {
             counter++;
         }
         return counter >= 2;
@@ -184,7 +185,7 @@ public class GameBoard {
      * monster: X
      * )
      */
-    public void printBoard(){
+    public void printBoard() {
         printLegend();
         for (RoomField[] roomFields : board) {
             for (int y = 0; y < board[0].length; y++) {
@@ -208,7 +209,7 @@ public class GameBoard {
         System.out.println("_______________________________________________________________________________________________");
     }
 
-    public void printBoardforPlayer(Character currentCharacter){
+    public void printBoardforPlayer(Character currentCharacter) {
 
         for (RoomField[] roomFields : board) {
             for (int y = 0; y < board[0].length; y++) {
@@ -239,29 +240,30 @@ public class GameBoard {
         System.out.println("_______________________________________________________________________________________________");
     }
 
-    public void printLegend(){
-        System.out.println("Movement Controlls:                                                 Legend:");
-        System.out.println("w                   ->  UP                                          @           ->  Current Character");
+    public void printLegend() {
+        System.out.println("Movement Controls:                                                  Legend:");
+        System.out.println("w                   ->  Up                                          @           ->  Current Character");
         System.out.println("a                   ->  Right                                       O           ->  Character");
         System.out.println("s                   ->  Down                                        X           ->  Monster");
         System.out.println("d                   ->  Left                                        .           ->  Room\n");
-        System.out.println("Other Controlls:                                                    |           ->  Door");
-        System.out.println("f                   ->  Figth                                       *           ->  Wall");
+        System.out.println("Other Controls:                                                     |           ->  Door");
+        System.out.println("f                   ->  Fight                                       *           ->  Wall");
+        System.out.println("c                   ->  Cast Spell");
         System.out.println("r                   ->  Rest");
         System.out.println("e                   ->  Search");
         System.out.println("i                   ->  ItemList/Inventory");
         System.out.println("q                   ->  WeaponList");
         System.out.println("turn + 'direction'  ->  Turn around");
         System.out.println("use + 'itemName'    ->  Use the Item");
-        System.out.println("help                ->  show comandList");
+        System.out.println("help                ->  show command list");
         System.out.println("_______________________________________________________________________________________________");
     }
 
-    public void placeCharacter(Character character){
-        for(int i = 0; i < size-1; i++){
-            int x = (int) (Math.random()*size);
-            int y = (int) (Math.random()*size);
-            if(board[x][y] != null){
+    public void placeCharacter(Character character) {
+        for (int i = 0; i < size - 1; i++) {
+            int x = (int) (Math.random() * size);
+            int y = (int) (Math.random() * size);
+            if (board[x][y] != null) {
                 board[x][y].setCharacter(character);
                 character.setPosition(board[x][y]);
                 i = size;
@@ -277,10 +279,10 @@ public class GameBoard {
         return board[x][y];
     }
 
-    public Monster placeMonsters(){
-        int x = (int) (Math.random()*size);
-        int y = (int) (Math.random()*size);
-        if(board[x][y] != null){
+    public Monster placeMonsters() {
+        int x = (int) (Math.random() * size);
+        int y = (int) (Math.random() * size);
+        if (board[x][y] != null) {
             Monster monster = new Monster("Monster");
             board[x][y].setCharacter(monster);
             monster.setPosition(board[x][y]);

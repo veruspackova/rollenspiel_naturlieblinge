@@ -244,10 +244,6 @@ public class GameRoundLogic {
         } else {
             character.setDirection(direction);
         }
-        if (target.getCharacter() != null) {
-            FightRound fightRound = new FightRound(character, target.getCharacter());
-            fightRound.fightToTheDeath();
-        }
         return true;
     }
 
@@ -294,6 +290,10 @@ public class GameRoundLogic {
     //moves the character and updates references
     public boolean moveToTarget(Character character, RoomField target, RoomField current) {
         if (target != null) {
+            if (target.getCharacter() != null) {
+                FightRound fightRound = new FightRound(character, target.getCharacter());
+                fightRound.fightToTheDeath();
+            }
             current.setCharacter(null);
             target.setCharacter(character);
             character.setPosition(target);
@@ -386,7 +386,7 @@ public class GameRoundLogic {
 
     public List<Monster> moveMonsters(List<Monster> monsterList) {
         for (Monster monster : monsterList) {
-            if (monster != null) {
+            if (monster != null && monster.getPosition() != null) {
                 int rng = (int) (Math.random() * 8);
                 Direction dir = Direction.values()[rng];
                 move(monster, dir);
@@ -396,32 +396,28 @@ public class GameRoundLogic {
     }
 
     public RoomField getNextFieldByDirection(RoomField currentField, Direction direction) {
-        ArrayList<Integer> cords = currentField.getCoordinates();
-
-        return switch (direction) {
-            case North -> gameBoard.board[cords.get(0) - 1][cords.get(1)];
-            case NorthEast -> gameBoard.board[cords.get(0) - 1][cords.get(1) + 1];
-            case East -> gameBoard.board[cords.get(0)][cords.get(1) + 1];
-            case SouthEast -> gameBoard.board[cords.get(0) + 1][cords.get(1) + 1];
-            case South -> gameBoard.board[cords.get(0) + 1][cords.get(1)];
-            case SouthWest -> gameBoard.board[cords.get(0) + 1][cords.get(1) - 1];
-            case West -> gameBoard.board[cords.get(0)][cords.get(1) - 1];
-            case NorthWest -> gameBoard.board[cords.get(0) - 1][cords.get(1) - 1];
-        };
+        return getNextFieldByDirection(currentField, direction, 1);
     }
 
     public RoomField getNextFieldByDirection(RoomField currentField, Direction direction, int distance) {
         ArrayList<Integer> cords = currentField.getCoordinates();
+        RoomField roomField = currentField;
 
-        return switch (direction) {
-            case North -> gameBoard.board[cords.get(0) - distance][cords.get(1)];
-            case NorthEast -> gameBoard.board[cords.get(0) - distance][cords.get(1) + distance];
-            case East -> gameBoard.board[cords.get(0)][cords.get(1) + distance];
-            case SouthEast -> gameBoard.board[cords.get(0) + distance][cords.get(1) + distance];
-            case South -> gameBoard.board[cords.get(0) + distance][cords.get(1)];
-            case SouthWest -> gameBoard.board[cords.get(0) + distance][cords.get(1) - distance];
-            case West -> gameBoard.board[cords.get(0)][cords.get(1) - distance];
-            case NorthWest -> gameBoard.board[cords.get(0) - distance][cords.get(1) - distance];
-        };
+        try {
+            switch (direction) {
+                case North -> roomField = gameBoard.board[cords.get(0) - distance][cords.get(1)];
+                case NorthEast -> roomField = gameBoard.board[cords.get(0) - distance][cords.get(1) + distance];
+                case East -> roomField = gameBoard.board[cords.get(0)][cords.get(1) + distance];
+                case SouthEast -> roomField = gameBoard.board[cords.get(0) + distance][cords.get(1) + distance];
+                case South -> roomField = gameBoard.board[cords.get(0) + distance][cords.get(1)];
+                case SouthWest -> roomField = gameBoard.board[cords.get(0) + distance][cords.get(1) - distance];
+                case West -> roomField = gameBoard.board[cords.get(0)][cords.get(1) - distance];
+                case NorthWest -> roomField = gameBoard.board[cords.get(0) - distance][cords.get(1) - distance];
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Oops, you can't go that far");
+        }
+
+        return roomField;
     }
 }
