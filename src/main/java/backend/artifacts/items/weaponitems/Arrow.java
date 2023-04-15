@@ -9,8 +9,7 @@ public class Arrow extends Item {
 
     private int amount;
 
-    public Arrow(String name, String description, int amount)
-    {
+    public Arrow(String name, String description, int amount) {
         super(name, description);
         this.amount = amount;
     }
@@ -27,19 +26,16 @@ public class Arrow extends Item {
         this.amount = amount;
     }
 
-    public void addArrows(int amount)
-    {
+    public void addArrows(int amount) {
         setAmount(getAmount() + amount);
     }
 
     @Override
-    public void search(Character player) {
-        ArrayList<Item> items =  player.getItems();
+    public void pickUpItem(Character player) {
+        ArrayList<Item> items = player.getItems();
         System.out.println(player.getName() + " found " + amount + " arrows!");//Items array was nach arrows durchsucht wird
-        for (Item i: items)
-        {
-            if (i instanceof Arrow)
-            {
+        for (Item i : items) {
+            if (i instanceof Arrow) {
                 ((Arrow) i).addArrows(this.getAmount());
                 return;
             }

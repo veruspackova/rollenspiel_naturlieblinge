@@ -7,14 +7,11 @@ import backend.character.Monster;
 import backend.character.Thief;
 import backend.enums.Race;
 import backend.gameBoard.GameBoard;
-import backend.gameBoard.RoomField;
 import backend.input.InputClass;
 import backend.logic.CharacterCreator;
 import backend.logic.GameRoundLogic;
 
-import javax.swing.*;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +21,13 @@ public class Main {
     static InputClass input;
     static List<Character> characterList = new ArrayList<>();
     static List<Monster> monsterList = new ArrayList<>();
+
     public static void main(String[] args) {
         input = new InputClass(new BufferedReader(new InputStreamReader(System.in)));
         //init();
         testInit();
         gameBoard.printLegend();
-        while (true){
+        while (true) {
             run();
         }
     }
@@ -67,7 +65,7 @@ public class Main {
             characterList.add(character);
             gameBoard.placeCharacter(character);
         }
-        for(int i = 0; i< gameBoard.size/2; i++){
+        for (int i = 0; i < gameBoard.size / 2; i++) {
             monsterList.add(gameBoard.placeMonsters());
         }
         //@todo add more field customization
@@ -76,7 +74,7 @@ public class Main {
         Character testChar3 = new Monster("test");
     }
 
-    public static void testInit(){
+    public static void testInit() {
         gameBoard = new GameBoard(20);
         gameBoard.generateMap();
         HealingPotion i1 = new HealingPotion("healingpotion", "healingpotion");
@@ -84,8 +82,8 @@ public class Main {
         ArrayList<Item> itemArrayList = new ArrayList<>();
         itemArrayList.add(i1);
         itemArrayList.add(i2);
-        Character testChar = new Fighter(Race.HUM,"fighter");
-        Character testChar2 = new Thief(Race.HUM,"thief");
+        Character testChar = new Fighter(Race.HUM, "fighter");
+        Character testChar2 = new Thief(Race.HUM, "thief");
         Monster testChar3 = new Monster("monster");
         characterList.add(testChar);
         characterList.add(testChar2);
@@ -96,8 +94,8 @@ public class Main {
 
     }
 
-    public static void run(){
-        for(Character character: characterList) {
+    public static void run() {
+        for (Character character : characterList) {
             if (character.getClass() != Monster.class) {
                 System.out.println(character.getName() + " ist am Zug\n");
                 gameBoard.printBoardforPlayer(character);

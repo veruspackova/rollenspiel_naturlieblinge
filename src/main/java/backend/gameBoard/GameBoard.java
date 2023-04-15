@@ -5,27 +5,24 @@ import backend.artifacts.armour.Chainmail;
 import backend.artifacts.armour.LeatherArmour;
 import backend.artifacts.armour.Scalemail;
 import backend.artifacts.armour.Shield;
-import backend.artifacts.items.Item;
 import backend.artifacts.items.magicitems.Amulet;
 import backend.artifacts.items.magicitems.Cape;
 import backend.artifacts.items.magicitems.Ring;
 import backend.artifacts.items.magicpotions.HealingPotion;
 import backend.artifacts.items.magicpotions.InvisibilityPotion;
 import backend.artifacts.items.magicpotions.Poison;
+import backend.artifacts.weapons.agiele.Club;
+import backend.artifacts.weapons.agiele.Dagger;
+import backend.artifacts.weapons.agiele.HandAxe;
+import backend.artifacts.weapons.agiele.Spear;
 import backend.artifacts.weapons.melee.*;
 import backend.artifacts.weapons.ranged.Bow;
 import backend.artifacts.weapons.ranged.Dart;
 import backend.character.Character;
-import backend.character.Fighter;
 import backend.character.Monster;
 import backend.enums.Direction;
-import backend.enums.Race;
 import backend.enums.RoomType;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Gameboard class
@@ -115,47 +112,47 @@ public class GameBoard {
 
     public ISearchable placeItems(){
         double rnd = Math.random()*100;
-        switch ((int)rnd){
-            case 0://Chainmail
-                return new Chainmail();
-            case 1://LeatherArmour
-                return new LeatherArmour();
-            case 2://Scalemail
-                return new Scalemail();
-            case 3://Shield
-                return new Shield();
-            case 4://Amulet
-                return new Amulet("Amulet", "Amulet");
-            case 5://Cape
-                return new Cape("Cape", "Cape");
-            case 6://Ring
-                return new Ring("Ring", "Ring");
-            case 7://HealingPotion
-                return new HealingPotion("Healing Potion", "Healing Potion");
-            case 8://InvisibilityPotion
-                return new InvisibilityPotion("Invisibility Potion", "Invisibility Potion");
-            case 9://Poison
-                return new Poison("Poison Potion", "Poison Potion");
-            case 10://Club
-                return new Club();
-            case 11://Dagger
-                return new Dagger();
-            case 12://Handaxe
-                return new HandAxe();
-            case 13://Rapier
-                return new Rapier();
-            case 14://Spear
-                return new Spear();
-            case 15://Sword
-                return new Sword();
-            case 16://Waraxe
-                return new WarAxe();
-            case 17://Bow
-                return new Bow();
-            case 18://Dart
-                return new Dart();
-        }
-        return null;
+        return switch ((int) rnd) {
+            case 0 ->//Chainmail
+                    new Chainmail();
+            case 1 ->//LeatherArmour
+                    new LeatherArmour();
+            case 2 ->//Scalemail
+                    new Scalemail();
+            case 3 ->//Shield
+                    new Shield();
+            case 4 ->//Amulet
+                    new Amulet("Amulet", "Amulet");
+            case 5 ->//Cape
+                    new Cape("Cape", "Cape");
+            case 6 ->//Ring
+                    new Ring("Ring", "Ring");
+            case 7 ->//HealingPotion
+                    new HealingPotion("Healing Potion", "Healing Potion");
+            case 8 ->//InvisibilityPotion
+                    new InvisibilityPotion("Invisibility Potion", "Invisibility Potion");
+            case 9 ->//Poison
+                    new Poison("Poison Potion", "Poison Potion");
+            case 10 ->//Club
+                    new Club();
+            case 11 ->//Dagger
+                    new Dagger();
+            case 12 ->//Handaxe
+                    new HandAxe();
+            case 13 ->//Rapier
+                    new Rapier();
+            case 14 ->//Spear
+                    new Spear();
+            case 15 ->//Sword
+                    new Sword();
+            case 16 ->//Waraxe
+                    new WarAxe();
+            case 17 ->//Bow
+                    new Bow();
+            case 18 ->//Dart
+                    new Dart();
+            default -> null;
+        };
     }
 
     public boolean isHallway(int x, int y){
@@ -172,10 +169,7 @@ public class GameBoard {
         if(x <= 0 || board[x-1][y] == null){
             counter++;
         }
-        if(counter >= 2){
-            return true;
-        }
-        else return false;
+        return counter >= 2;
     }
 
     /**
@@ -192,28 +186,20 @@ public class GameBoard {
      */
     public void printBoard(){
         printLegend();
-        for(int x = 0; x < board.length; x++){
-            for(int y = 0; y < board[0].length; y++){
-                if(board[x][y] == null){
+        for (RoomField[] roomFields : board) {
+            for (int y = 0; y < board[0].length; y++) {
+                if (roomFields[y] == null) {
                     System.out.print("*  ");
-                }
-                else if (board[x][y].getCharacter() != null) {
-                    if(board[x][y].getCharacter().getClass() == Monster.class){
+                } else if (roomFields[y].getCharacter() != null) {
+                    if (roomFields[y].getCharacter().getClass() == Monster.class) {
                         System.out.print("X  ");
                     }
                     System.out.print("O  ");
-                }
-                else {
-                    switch (board[x][y].getRoomType()){
-                        case Door:
-                            System.out.print("|  ");
-                            break;
-                        case Room:
-                            System.out.print(".  ");
-                            break;
-                        case Hallway:
-                            System.out.print(",  ");
-                            break;
+                } else {
+                    switch (roomFields[y].getRoomType()) {
+                        case Door -> System.out.print("|  ");
+                        case Room -> System.out.print(".  ");
+                        case Hallway -> System.out.print(",  ");
                     }
                 }
             }
@@ -224,35 +210,27 @@ public class GameBoard {
 
     public void printBoardforPlayer(Character currentCharacter){
 
-        for(int x = 0; x < board.length; x++){
-            for(int y = 0; y < board[0].length; y++){
-                if(board[x][y] == null){
+        for (RoomField[] roomFields : board) {
+            for (int y = 0; y < board[0].length; y++) {
+                if (roomFields[y] == null) {
                     System.out.print("*  ");
-                }
-                else if (board[x][y].getCharacter() != null) {
+                } else if (roomFields[y].getCharacter() != null) {
                     //to-do
-                    Character character = board[x][y].getCharacter();
+                    Character character = roomFields[y].getCharacter();
                     //unterscheidung monster und spieler
-                    if(character.getClass() == Monster.class){
+                    if (character.getClass() == Monster.class) {
                         System.out.print("X  ");
-                    }else if(character == currentCharacter){
+                    } else if (character == currentCharacter) {
                         System.out.print("@  ");
-                    }else {
+                    } else {
                         System.out.print("O  ");
                     }
 
-                }
-                else {
-                    switch (board[x][y].getRoomType()){
-                        case Door:
-                            System.out.print("|  ");
-                            break;
-                        case Room:
-                            System.out.print(".  ");
-                            break;
-                        case Hallway:
-                            System.out.print(",  ");
-                            break;
+                } else {
+                    switch (roomFields[y].getRoomType()) {
+                        case Door -> System.out.print("|  ");
+                        case Room -> System.out.print(".  ");
+                        case Hallway -> System.out.print(",  ");
                     }
                 }
             }

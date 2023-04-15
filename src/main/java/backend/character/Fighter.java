@@ -3,7 +3,7 @@ package backend.character;
 import backend.artifacts.armour.Chainmail;
 import backend.artifacts.items.Item;
 import backend.artifacts.weapons.WeaponBase;
-import backend.artifacts.weapons.melee.HandAxe;
+import backend.artifacts.weapons.agiele.HandAxe;
 import backend.artifacts.weapons.melee.NoWeapon;
 import backend.artifacts.weapons.melee.Sword;
 import backend.artifacts.weapons.melee.WarAxe;

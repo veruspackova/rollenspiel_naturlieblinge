@@ -1,19 +1,11 @@
 package backend.character;
 
-import backend.artifacts.items.Item;
-import backend.artifacts.weapons.WeaponBase;
-import backend.artifacts.weapons.melee.NoWeapon;
 import backend.enums.Race;
-import backend.enums.RoomType;
+import backend.enums.Spells;
 import backend.enums.Stat;
-import backend.gameBoard.RoomField;
 import backend.logic.Dice;
-import backend.character.Character;
-
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WizardTest {
 
@@ -123,40 +115,8 @@ class WizardTest {
     @org.junit.jupiter.api.Test
     void initialiseSpellSlots() {
         Wizard w = new Wizard(Race.ELF, "Wizard", 10, 15, 12, 15, 10);
-        assertEquals(2, w.getSlotsHeal());
-    }
-
-    @org.junit.jupiter.api.Test
-    void castHeal() {
-        Wizard w = new Wizard(Race.ELF, "Wizard", 10, 15, 12, 15, 10);
-        Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10);
-        f.setPosition(new RoomField(RoomType.Room, f, 1,1));
-        f.setHitPoints(0);
-        w.castHeal(f);
-        assertTrue(f.getHitPoints() > 0);
-    }
-
-    @org.junit.jupiter.api.Test
-    void getSlotsHeal() {
-        Wizard w = new Wizard(Race.ELF, "Wizard", 10, 15, 12, 15, 10);
-        assertEquals(2, w.getSlotsHeal());
-
-        Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10);
-        f.setPosition(new RoomField(RoomType.Room, f, 1,1));
-        f.setHitPoints(0);
-        w.castHeal(f);
-        assertEquals(1, w.getSlotsHeal());
-
-        w.castHeal(f);
-        assertEquals(0, w.getSlotsHeal());
-    }
-
-    @org.junit.jupiter.api.Test
-    void setSlotsHeal() {
-        Wizard w = new Wizard(Race.ELF, "Wizard", 10, 15, 12, 15, 10);
-        assertEquals(2, w.getSlotsHeal());
-
-        w.setSlotsHeal(4);
-        assertEquals(4, w.getSlotsHeal());
+        assertEquals(2, w.getSpellSlotsAvailable(Spells.HEAL));
+        assertEquals(1, w.getSpellSlotsAvailable(Spells.FIREBALL));
+        assertEquals(1, w.getSpellSlotsAvailable(Spells.RAY_OF_FROST));
     }
 }

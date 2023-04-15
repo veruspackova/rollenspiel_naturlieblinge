@@ -8,6 +8,7 @@ import backend.artifacts.weapons.RangedSimpleWeapon;
 import backend.artifacts.weapons.WeaponBase;
 import backend.artifacts.weapons.ranged.Bow;
 import backend.character.Character;
+import backend.character.Monster;
 import backend.character.Wizard;
 import backend.enums.Direction;
 import backend.enums.Spells;
@@ -17,10 +18,7 @@ import backend.input.InputClass;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.InputMismatchException;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameRoundLogic {
@@ -46,7 +44,7 @@ public class GameRoundLogic {
     }
 
     public void play() throws InputMismatchException {
-        while (true) {
+        while (character.getHitPoints() > 0) {
             ArrayList<String> input = getInput();
 
             String playerAction;
@@ -56,6 +54,7 @@ public class GameRoundLogic {
                 playerAction = "rest";
             }
             switch (playerAction) {
+                case "f":
                 case "fight":
                     RoomField fieldToAttack = getFacingPosition();
 
@@ -88,6 +87,7 @@ public class GameRoundLogic {
                     }
                     break;
 
+                case "c":
                 case "cast":
                     if (character instanceof Wizard) {
                         if (input.size() != 2) {
@@ -180,7 +180,14 @@ public class GameRoundLogic {
                     }
                     break;
                 case "q":
-                    //@todo waiting for items
+                    System.out.println("Weapon list of " + character.getName() + ":");
+                    if (character.getWeapons() == null) {
+                        System.out.println("You have no weapons available");
+                        break;
+                    }
+                    for (WeaponBase weapon : character.getWeapons()) {
+                        System.out.println(weapon);
+                    }
                     break;
                 case "turn":
                     Direction temp = character.getDirection();
@@ -248,6 +255,9 @@ public class GameRoundLogic {
         for (Item item : character.getItems()) {
             if (item.name.equals(itemName)) {
                 item.use(character);
+            }
+            if (character.getHitPoints() <= 0) {
+                break;
             }
         }
     }
@@ -372,6 +382,17 @@ public class GameRoundLogic {
         } catch (NumberFormatException e) {
             System.out.println("please only use numbers and spaces!");
         }
+    }
+
+    public List<Monster> moveMonsters(List<Monster> monsterList) {
+        for (Monster monster : monsterList) {
+            if (monster != null) {
+                int rng = (int) (Math.random() * 8);
+                Direction dir = Direction.values()[rng];
+                move(monster, dir);
+            }
+        }
+        return monsterList;
     }
 
     public RoomField getNextFieldByDirection(RoomField currentField, Direction direction) {

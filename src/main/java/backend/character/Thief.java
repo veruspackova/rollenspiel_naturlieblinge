@@ -9,7 +9,7 @@ package backend.character;
 import backend.artifacts.armour.LeatherArmour;
 import backend.artifacts.items.Item;
 import backend.artifacts.weapons.WeaponBase;
-import backend.artifacts.weapons.melee.Dagger;
+import backend.artifacts.weapons.agiele.Dagger;
 import backend.artifacts.weapons.melee.NoWeapon;
 import backend.artifacts.weapons.melee.Rapier;
 import backend.enums.Race;
@@ -30,8 +30,6 @@ public class Thief extends Character {
 
         setArmourClass(10);
         setAttackDice(new Dice(8));
-
-
     }
 
     public Thief(Race race, String name) {

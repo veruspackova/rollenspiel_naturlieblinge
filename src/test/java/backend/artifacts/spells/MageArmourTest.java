@@ -1,8 +1,6 @@
 package backend.artifacts.spells;
 
-import backend.artifacts.items.Item;
-import backend.artifacts.items.magicitems.Amulet;
-import backend.character.Fighter;
+import backend.character.Wizard;
 import backend.enums.Race;
 import org.junit.jupiter.api.Test;
 
@@ -14,10 +12,15 @@ public class MageArmourTest {
 
     @Test
     void testCast() {
-        Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10, null, null, null);
-        int initAC = f.getArmourClass();
+        Wizard wizard = new Wizard(Race.HUM, "Wizard");
+        int initAC = wizard.getArmourClass();
+
+        ArrayList targets = new ArrayList<Character>();
+        targets.add(wizard);
+
         MageArmour mg = new MageArmour();
-        mg.cast(f);
-        assertTrue(f.getArmourClass() > initAC);
+        mg.cast(wizard, targets);
+
+        assertTrue(wizard.getArmourClass() > initAC);
     }
 }

@@ -1,8 +1,10 @@
 package backend.artifacts.spells;
 
-import backend.character.Fighter;
+import backend.character.Wizard;
 import backend.enums.Race;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -10,10 +12,15 @@ public class HealTest {
 
     @Test
     void testCast() {
-        Fighter f = new Fighter(Race.HUM, "Fighter", 15, 13, 14, 12, 10, null, null, null);
-        int initHP = f.getHitPoints();
-        Heal h = new Heal();
-        h.cast(f);
-        assertTrue(f.getHitPoints() > initHP);
+        Wizard wizard = new Wizard(Race.HUM, "Wizard");
+        int initHP = wizard.getHitPoints();
+
+        ArrayList targets = new ArrayList<>();
+        targets.add(wizard);
+
+        Heal spell = new Heal();
+        spell.castSpell(wizard, targets);
+
+        assertTrue(wizard.getArmourClass() > initHP);
     }
 }
