@@ -4,6 +4,7 @@ import backend.artifacts.ISearchable;
 import backend.artifacts.armour.BaseArmour;
 import backend.artifacts.armour.NoArmour;
 import backend.artifacts.items.Item;
+import backend.artifacts.items.weaponitems.Arrow;
 import backend.artifacts.spells.Spell;
 import backend.artifacts.weapons.WeaponBase;
 import backend.artifacts.weapons.melee.NoWeapon;
@@ -297,6 +298,19 @@ public abstract class Character {
 
     public void setArmour(BaseArmour armour) {
         this.armour = armour;
+    }
+
+    public int getArrowCount() {
+        int amount = 0;
+
+        for (Item i : getItems()) {
+            if (i instanceof Arrow) {
+                amount = ((Arrow) i).getAmount();
+                break;
+            }
+        }
+
+        return amount;
     }
 
     /*public ISearchable search()
