@@ -14,6 +14,7 @@ import backend.logic.GameRoundLogic;
 
 import javax.swing.*;
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -25,9 +26,23 @@ public class Main {
     static List<Character> characterList = new ArrayList<>();
     static List<Monster> monsterList = new ArrayList<>();
     public static void main(String[] args) {
+
+        try
+        {
+            // Just one line and you are done !
+            // We have given a command to start cmd
+            // /K : Carries out command specified by string
+            Runtime.getRuntime().exec(new String[] {"cmd", "/K", "Start"});
+
+        }
+        catch (Exception e)
+        {
+            System.out.println("HEY Buddy ! U r Doing Something Wrong ");
+            e.printStackTrace();
+        }
         input = new InputClass(new BufferedReader(new InputStreamReader(System.in)));
-        //init();
-        testInit();
+        init();
+        //testInit();
         gameBoard.printLegend();
         while (true){
             run();
