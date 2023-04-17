@@ -25,18 +25,18 @@ public class CharacterCreator {
         String characterName = this.getCharacterName();
         Race characterRace = this.getCharacterRace();
         Map<Stat, Integer> characterStats = this.getCharacterStats();
-        Character character = switch (characterClass) {
+
+        return switch (characterClass) {
             case "fighter" -> new Fighter(characterRace, characterName, characterStats.get(Stat.STR), characterStats.get(Stat.DEX), characterStats.get(Stat.CON), characterStats.get(Stat.INT), characterStats.get(Stat.WIS));
             case "thief" -> new Thief(characterRace, characterName, characterStats.get(Stat.STR), characterStats.get(Stat.DEX), characterStats.get(Stat.CON), characterStats.get(Stat.INT), characterStats.get(Stat.WIS));
             case "wizard" -> new Wizard(characterRace, characterName, characterStats.get(Stat.STR), characterStats.get(Stat.DEX), characterStats.get(Stat.CON), characterStats.get(Stat.INT), characterStats.get(Stat.WIS));
             default -> new Fighter(Race.NONE, "Invalid");
         };
-
-        return character;
     }
 
     private String getCharacterClass()
     {
+        System.out.println("You could be a fighter, thief or wizard...");
         System.out.println("What type of character do you want to create?");
         String characterClass = "";
         while (true) {
@@ -58,6 +58,7 @@ public class CharacterCreator {
     private Race getCharacterRace()
     {
         boolean successfulInput = false;
+        System.out.println("You could be a human, dwarf, elf or hobbit...");
         System.out.println("What race do you want your character to be?");
         Race characterRace = Race.NONE;
         while (!successfulInput) {
@@ -80,10 +81,10 @@ public class CharacterCreator {
                         characterRace = Race.HOB;
                         successfulInput = true;
                     }
-                    default -> System.out.println("Invalid race. Please enter a valid race");
+                    default -> System.out.println("Invalid race. Please enter a valid race (human, dwarf, elf or hobbit)");
                 }
             } catch (Exception e) {
-                System.out.println("Invalid input.");
+                System.out.println("Invalid input. Please type either human, dwarf, elf or hobbit");
             }
         }
         return characterRace;
@@ -107,6 +108,10 @@ public class CharacterCreator {
 
     private Map<Stat, Integer> getCharacterStats()
     {
+        System.out.println("You have 5 stats: strength (str), dexterity (dex), constitution (con), intelligence (int) and wisdom (wis)");
+        System.out.println("You can now allocate points to each stat, from largest to smallest amount.");
+        System.out.println("Please choose the most important stats first!");
+
         //15,14,13,12,11
         Map<Stat, Integer> statMap = new HashMap<>();
         for (int i = 15; i > 10; i--) {
@@ -116,7 +121,7 @@ public class CharacterCreator {
                 try {
                     String characterStat = inputClass.read().get(0);
                     switch (characterStat) {
-                        case "strength" -> {
+                        case "str" -> {
                             if (statMap.get(Stat.STR) == null) {
                                 statMap.put(Stat.STR, i);
                             } else {
@@ -124,7 +129,7 @@ public class CharacterCreator {
                                 System.out.println("You already allocated a value to this stat. Please allocate the points to a different stat.");
                             }
                         }
-                        case "dexterity" -> {
+                        case "dex" -> {
                             if (statMap.get(Stat.DEX) == null) {
                                 statMap.put(Stat.DEX, i);
                             } else {
@@ -132,7 +137,7 @@ public class CharacterCreator {
                                 System.out.println("You already allocated a value to this stat. Please allocate the points to a different stat.");
                             }
                         }
-                        case "constitution" -> {
+                        case "con" -> {
                             if (statMap.get(Stat.CON) == null) {
                                 statMap.put(Stat.CON, i);
                             } else {
@@ -140,7 +145,7 @@ public class CharacterCreator {
                                 System.out.println("You already allocated a value to this stat. Please allocate the points to a different stat.");
                             }
                         }
-                        case "intelligence" -> {
+                        case "int" -> {
                             if (statMap.get(Stat.INT) == null) {
                                 statMap.put(Stat.INT, i);
                             } else {
@@ -148,7 +153,7 @@ public class CharacterCreator {
                                 System.out.println("You already allocated a value to this stat. Please allocate the points to a different stat.");
                             }
                         }
-                        case "wisdom" -> {
+                        case "wis" -> {
                             if (statMap.get(Stat.WIS) == null) {
                                 statMap.put(Stat.WIS, i);
                             } else {

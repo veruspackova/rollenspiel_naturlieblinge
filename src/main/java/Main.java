@@ -24,8 +24,8 @@ public class Main {
 
     public static void main(String[] args) {
         input = new InputClass(new BufferedReader(new InputStreamReader(System.in)));
-        //init();
-        testInit();
+        init();
+//        testInit();
         gameBoard.printLegend();
         while (true) {
             run();
@@ -33,7 +33,7 @@ public class Main {
     }
 
     public static void init() {
-        System.out.println("How many people play? (without the gamemaster)");
+        System.out.println("How many people are playing? (without the game master)");
         boolean successfulInput = false;
         int characterAmount = 0;
         while (!successfulInput) {
@@ -44,10 +44,10 @@ public class Main {
                 }
                 successfulInput = true;
             } catch (Exception e) {
-                System.out.println("Invalid. Try again");
+                System.out.println("Invalid. Try again -- please type a whole number!");
             }
         }
-        System.out.println("How big do you want your game board to be?");
+        System.out.println("How big do you want your game board to be? (Recommended: 20)");
         successfulInput = false;
         while (!successfulInput) {
             try {
@@ -56,7 +56,7 @@ public class Main {
                 gameBoard.generateMap();
                 successfulInput = true;
             } catch (Exception e) {
-                System.out.println("Invalid. Try again");
+                System.out.println("Invalid. Try again -- please type a whole number!");
             }
         }
         CharacterCreator creator = new CharacterCreator(input);

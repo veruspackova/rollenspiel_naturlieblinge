@@ -209,10 +209,9 @@ public class GameRoundLogic {
                     character.turn(temp);
                     break;
                 case "help":
+                default:
                     gameBoard.printLegend();
                     break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + playerAction);
             }
         }
 
@@ -290,7 +289,7 @@ public class GameRoundLogic {
     //moves the character and updates references
     public boolean moveToTarget(Character character, RoomField target, RoomField current) {
         if (target != null) {
-            if (target.getCharacter() != null) {
+            if (target.getCharacter() != null && target.getCharacter() != character) {
                 FightRound fightRound = new FightRound(character, target.getCharacter());
                 fightRound.fightToTheDeath();
             }
@@ -385,6 +384,7 @@ public class GameRoundLogic {
     }
 
     public List<Monster> moveMonsters(List<Monster> monsterList) {
+        System.out.println("Now the monsters will move");
         for (Monster monster : monsterList) {
             if (monster != null && monster.getPosition() != null) {
                 int rng = (int) (Math.random() * 8);
